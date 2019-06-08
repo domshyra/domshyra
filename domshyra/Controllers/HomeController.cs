@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using domshyra.Models;
 
 namespace domshyra.Controllers
 {
@@ -17,9 +18,11 @@ namespace domshyra.Controllers
         {
             return View();
         }
-        public IActionResult Intrests()
+        public ActionResult Intrests()
         {
-            return View();
+            IntrestModel model = new IntrestModel();
+
+            return View(model);
         }
         public IActionResult AboutMe()
         {

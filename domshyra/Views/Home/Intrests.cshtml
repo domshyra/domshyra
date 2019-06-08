@@ -1,4 +1,4 @@
-﻿@page
+﻿@model domshyra.Models.IntrestModel
 @{
     ViewData["Title"] = "Intrests";
 }
@@ -12,13 +12,19 @@
     </section>
     <h3>Hobbies</h3>
     <div class="row">
-
+        <div class="col-6">
+            <h5>Drawing</h5>
+        </div>
+        <div class="col-6">
+            <h5>Playing music</h5>
+            <p>I have been playing piano for @Model.PianoYears years, and I have been playing guitar for @Model.GuitarYears.</p>
+        </div>
     </div>
     <h3>Intrests</h3>
     <div class="row mt-3">
         <div class="col-6">
             <h5>Music</h5>
-            <p>Music to me is a great way to escape, but also to focus. I listen to music 90% of my day and have a hand ful of playlists on <a href="https://itunes.apple.com/profile/domshyra">apple music</a></p>
+            <p>Music to me is a great way to escape, but also to focus. I listen to music 90% of my day and have a hand ful of playlists on <a href="https://itunes.apple.com/profile/domshyra">apple music</a>.</p>
         </div>
     </div>
 </div>
