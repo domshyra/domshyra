@@ -28,9 +28,36 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a asp-area="" asp-controller="Home" asp-action="Home">Home</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About me</a>
+                    <div class="dropdown-menu" role="menu" aria-labelledby="AboutMeDropdown">
+                        <a class="dropdown-item" href="@Url.Action("AboutMe")#about-me">About me</a>
+                        <a class="dropdown-item" href="@Url.Action("AboutMe")#education">Education</a>
+                        <a class="dropdown-item" href="@Url.Action("AboutMe")#work-experience">Work experience</a>
+                    </div>
+
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Projects</a>
+                    <div class="dropdown-menu" role="menu" aria-labelledby="ProjectsDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Projects")#about-me">About me</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Intrests</a>
+                    <div class="dropdown-menu" role="menu" aria-labelledby="IntrestsDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Intrests")#about-me">About me</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Skills</a>
+                    <div class="dropdown-menu" role="menu" aria-labelledby="SkillsDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Skills")#about-me">About me</a>
+                    </div>
                 </li>
             </ul>
             <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
@@ -56,13 +83,12 @@
             <a class="btn btn-outline-primary d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3" href="mailto:domshyra@gmail.com?subject=Contacting you from your website">Contact</a>
         </div>
     </header>
-    <div class="container body-content my-3">
+    <div class="container body-content my-3 py-3">
         @RenderBody()
     </div>
     <div class="container-fluid mt-1 pt-2 border-top border-light">
         <footer>
             <p>&copy; @DateTime.Now.Year - dominic schira</p>
-            <p class="text-muted">View this websites source code <a herf="https://github.com/domshyra/domshyra">here</a>.</p>
         </footer>
     </div>
 </body>
