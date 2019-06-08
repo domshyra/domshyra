@@ -1,30 +1,37 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="mt-4">
+<div class="my-4">
     <div class="row">
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-3 col-6">
             <div class="landing">
                 <a href="@Url.Action("AboutMe")" class="far fa-user"></a>
-                <h3>About Me</h3>
-                <p class="text-muted">A breif history about me.</p>
+                <h3>About me</h3>
+                <p class="text-muted">A breif history about me</p>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-3 col-6">
             <div class="landing">
                 <a href="@Url.Action("Projects")" class="fa fa-edit"></a>
                 <h3>Projects</h3>
-                <p class="text-muted">List of projects I've worked on.</p>
+                <p class="text-muted">List of projects</p>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-3 col-6">
             <div class="landing">
                 <a href="@Url.Action("Intrests")" class="fab fa-itunes-note"></a>
                 <h3>Intrests</h3>
-                <p class="text-muted">About my intrests.</p>
+                <p class="text-muted">Hobbies and intrests</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="landing">
+                <a href="@Url.Action("Skills")" class="fas fa-code"></a>
+                <h3>Skills</h3>
+                <p class="text-muted">Technical skills</p>
             </div>
         </div>
     </div>
