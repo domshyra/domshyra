@@ -17,11 +17,10 @@
 
 .landing {
     text-align: center;
-    margin-bottom: 100px;
 }
 
     .landing a {
-        font-size: 6em;
+        font-size: 5em;
         line-height: 1.4;
         background: -webkit-linear-gradient(to left, #007bff, #006fe6);
         background: linear-gradient(to left, #007bff, #006fe6);

@@ -18,7 +18,7 @@ namespace domshyra.Controllers
         {
             return View();
         }
-        public ActionResult Intrests()
+        public ActionResult Interests()
         {
             IntrestModel model = new IntrestModel();
 
@@ -30,7 +30,9 @@ namespace domshyra.Controllers
         }
         public IActionResult Skills()
         {
-            return View();
+            SkillsModel model = new SkillsModel();
+
+            return View(model);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model domshyra.Models.SkillsModel
+@{
     ViewData["Title"] = "Technical skills";
 }
 
@@ -16,36 +17,41 @@
     </h2>
     <div class="row pt-2">
         <div class="col-12">
-            <table class="table table-borderless">
+            <table class="table table-borderless table-sm">
                 <tr>
-                    <td data-toggle="tooltip" data-placement="bottom" title="">HTML</td>
-                    <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="">Javascript</td>
-                    <td class="text-right" data-toggle="tooltip" data-placement="bottom" title="">CCS</td>
+                    <td> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BaseProgrammingYears years">HTML</txt></td>
+                    <td class="text-center"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BaseProgrammingYears years">Javascript</txt></td>
+                    <td class="text-right"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BaseProgrammingYears years">CCS</txt></td>
                 </tr>
                 <tr>
-                    <td data-toggle="tooltip" data-placement="bottom" title="">UI/UX design</td>
-                    <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="">Photoshop</td>
-                    <td class="text-right" data-toggle="tooltip" data-placement="bottom" title="">Entity framework</td>
+                    <td> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BaseProgrammingYears years">UI/UX design</txt></td>
+                    <td class="text-center"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BaseProgrammingYears years">Photoshop</txt></td>
+                    <td class="text-right"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.CurrieAndBrownYears years">Entity framework</txt></td>
                 </tr>
                 <tr>
-                    <td data-toggle="tooltip" data-placement="bottom" title="">Unix</td>
-                    <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="">Problem solving</td>
-                    <td class="text-right" data-toggle="tooltip" data-placement="bottom" title="">Bootstrap</td>
+                    <td> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BaseProgrammingYears years">Unix</txt></td>
+                    <td class="text-center"> <txt data-toggle="tooltip" data-placement="bottom" title="">Problem solving</txt></td>
+                    <td class="text-right"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BootstrapYears years">Bootstrap</txt></td>
                 </tr>
                 <tr>
-                    <td data-toggle="tooltip" data-placement="bottom" title="">Communications skills</td>
-                    <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="">Open source software development</td>
-                    <td class="text-right" data-toggle="tooltip" data-placement="bottom" title="">Devextreme</td>
+                    <td> <txt data-toggle="tooltip" data-placement="bottom" title="">Communications skills</td>
+                    <td class="text-center"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.PSUYears years">Open source software development</txt></td>
+                    <td class="text-right"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.CurrieAndBrownYears years">Devextreme</txt></td>
                 </tr>
                 <tr>
-                    <td data-toggle="tooltip" data-placement="bottom" title="">Git</td>
-                    <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="">MVC design pattern</td>
-                    <td class="text-right" data-toggle="tooltip" data-placement="bottom" title="">Object-oriented paradigm</td>
+                    <td> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.BaseProgrammingYears years">Git</txt></td>
+                    <td class="text-center"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.PSUYears years">MVC design pattern</txt></td>
+                    <td class="text-right"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.PSUYears years">Object-oriented paradigm</txt></td>
                 </tr>
                 <tr>
-                    <td data-toggle="tooltip" data-placement="bottom" title="">Visual studio/ TFS</td>
-                    <td class="text-center" data-toggle="tooltip" data-placement="bottom" title="">ASP. Net Core</td>
-                    <td class="text-right" data-toggle="tooltip" data-placement="bottom" title="">REST APIs</td>
+                    <td> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.PSUYears years">Visual studio/ TFS</txt></td>
+                    <td class="text-center"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.CurrieAndBrownYears years">ASP. Net Core</txt></td>
+                    <td class="text-right"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.PSUYears years">REST APIs</txt></td>
+                </tr>
+                <tr>
+                    <td> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.PSUYears years">Web design</txt></td>
+                    <td class="text-center"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.CurrieAndBrownYears years">Microsoft SQL Server</txt></td>
+                    <td class="text-right"> <txt data-toggle="tooltip" data-placement="bottom" title="@Model.CurrieAndBrownYears years">Full Stack Development</txt></td>
                 </tr>
             </table>
         </div>
