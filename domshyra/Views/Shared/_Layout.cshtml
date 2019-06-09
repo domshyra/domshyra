@@ -5,22 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - domshyra</title>
 
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        @RenderSection("Scripts", required: false)
         <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.2.1/css/bootstrap.min.css"
-          asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
-          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-</environment>
+        @RenderSection("Scripts", required: false)
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </environment>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 </head>
 <body>
     <header class="navbar navbar-expand-lg navbar-light bg-light">
@@ -76,13 +83,13 @@
                 <li class="nav-item">
                     <a class="nav-link p-2" href="https://github.com/domshyra" target="_blank" rel="noopener" aria-label="GitHub"
                        data-toggle="tooltip" data-placement="bottom" title="View my GitHub">
-                        <i class="fa fa-github social-media"></i>
+                        <i class="fab fa-github social-media"></i>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link p-2" href="https://www.linkedin.com/in/domshyra/" target="_blank" rel="noopener" aria-label="LinkedIn"
                        data-toggle="tooltip" data-placement="bottom" title="View my LinkedIn">
-                        <i class="fa fa-linkedin-square social-media"></i>
+                        <i class="fab fa-linkedin-in social-media"></i>
                     </a>
                 </li>
             </ul>
