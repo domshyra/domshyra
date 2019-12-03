@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace domshyra.Providers
 {
@@ -46,11 +47,11 @@ namespace domshyra.Providers
             string client_secret = _configuration["SecretValues:SecretClientSecret"];
 
             //url to query
-            string url5 = "https://accounts.spotify.com/api/token";
+            string authTokenURL = "https://accounts.spotify.com/api/token";
 
             //request to get the access token
 
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url5);
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(authTokenURL);
             //endcode the clientId and client secret
             var plainTextBytes = Encoding.UTF8.GetBytes($"{client_id}:{client_secret}");
             string encodedAppInfo = Convert.ToBase64String(plainTextBytes);
@@ -77,11 +78,12 @@ namespace domshyra.Providers
                 {
                     //should get back a string i can then turn to json and parse for accesstoken
                     json = rdr.ReadToEnd();
+
+                    authToken = JsonConvert.DeserializeObject<SpotifyAuth>(json).access_token;
+
                     rdr.Close();
                 }
             }
-
-            authToken = json;
 
             return authToken;
         }
