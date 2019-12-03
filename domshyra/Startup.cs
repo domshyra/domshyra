@@ -1,3 +1,5 @@
+using domshyra.Interfaces;
+using domshyra.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +30,10 @@ namespace domshyra
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            #region Interfaces
+            services.AddTransient<ISpotifyProivder, SpotifyProivder>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
