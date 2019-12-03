@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -29,7 +30,7 @@ namespace domshyra.Providers
 
             List<PlaylistsModel> playlists = new List<PlaylistsModel>();
 
-            List<string> playlistIds = GetPlaylistIds();
+            List<string> playlistIds = await GetPlaylistIds(authToken);
 
             foreach (string playlistId in playlistIds)
             {
@@ -60,17 +61,53 @@ namespace domshyra.Providers
             };
         }
 
-        //TODO: automate this code but for now lets hard code it as a test
-        public List<string> GetPlaylistIds()
+        
+        private async Task<List<string>> GetPlaylistIds(string authToken)
         {
-            return new List<string>()
+            string baseUrl = $"https://api.spotify.com/v1/users/domshyra/playlists?limit=40";
+
+            try
             {
-                "3vaznYrm9fSPz3ENlcOR3e",
-                "5IUjuF00hzonDk6MzuanBs"
-            };
+                using (HttpClient client = new HttpClient())
+                {
+                    //add the spotify auth 
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+
+                    using (HttpResponseMessage res = await client.GetAsync(baseUrl))
+                    {
+                        using (HttpContent content = res.Content)
+                        {
+                            var data = await content.ReadAsStringAsync();
+
+                            if (data != null)
+                            {
+                                dynamic playlistHeader = JObject.Parse(data);
+
+                                SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
+
+                                return playlists.items.ToList()
+                                    .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase))
+                                    .Select(x => x.id).ToList();
+                            }
+                            else
+                            {
+                                Console.WriteLine("NO Data----------");
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception exception)
+            {
+                Console.WriteLine("Exception Hit------------");
+                Console.WriteLine(exception);
+            }
+
+            return new List<string>();
         }
 
-        public string GetAuthToken()
+        private string GetAuthToken()
         {
             string authToken;
             string client_id = _configuration["SecretValues:SecretClientID"];
@@ -117,7 +154,7 @@ namespace domshyra.Providers
             return authToken;
         }
 
-        public async Task<PlaylistsModel> GetPlaylistInfoAsync(string playlistId, string authToken)
+        private async Task<PlaylistsModel> GetPlaylistInfoAsync(string playlistId, string authToken)
         {
             //spotify api https://api.spotify.com/v1/playlists/{playlist_id}
             string baseUrl = $"https://api.spotify.com/v1/playlists/{playlistId}";
