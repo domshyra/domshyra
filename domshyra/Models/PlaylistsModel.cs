@@ -12,5 +12,6 @@ namespace domshyra.Models
         public string AppleMusicLink { get; set; }
         public string SpotifyMusicLink { get; set; }
         public string ImageURL { get; set; }
+        public string SpotifyId { get; set; }
     }
 }

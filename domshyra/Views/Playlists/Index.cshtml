@@ -10,10 +10,12 @@
     .description-row {
         height: 200px;
         max-height: 200px;
-    }    
+    }
+
     .playlist-img {
         max-height: 180px;
     }
+
     .card-body-playlist {
         min-height: 250px;
     }
@@ -31,12 +33,11 @@
     </section>
     <h2 class="pb-2">Playlists</h2>
     <div class="row">
-        <!--Silver Spurs-->
-        <div class="col-12 col-xl-6">
-            @foreach (PlaylistsModel playlist in Model)
-            {
+        @foreach (PlaylistsModel playlist in Model)
+        {
+            <div class="col-12 col-xl-6">
                 <partial name="_PlaylistCardPartial" model="playlist" />
-            }
-        </div>
+            </div>
+        }
     </div>
 </div>

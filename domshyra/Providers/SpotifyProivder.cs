@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using System.Net.Http;
+﻿using domshyra.Interfaces;
 using domshyra.Models;
-using domshyra.Interfaces;
-using System.Net;
-using System.Text;
-using System.IO;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace domshyra.Providers
 {
@@ -34,10 +34,30 @@ namespace domshyra.Providers
             foreach (string playlistId in playlistIds)
             {
                 PlaylistsModel model = await GetPlaylistInfoAsync(playlistId, authToken);
+
+                AddAppleMusicURL(model);
+
                 playlists.Add(model);
             }
 
             return playlists;
+        }
+
+        private void AddAppleMusicURL(PlaylistsModel model)
+        {
+            switch (model.SpotifyId)
+            {
+                //silver spurs
+                case "3vaznYrm9fSPz3ENlcOR3e":
+                    model.AppleMusicLink = "https://music.apple.com/us/playlist/silver-spurs-radio/pl.u-xlKY2uXJ4jE0";
+                    break;                
+                //silver spurs
+                case "5IUjuF00hzonDk6MzuanBs":
+                    model.AppleMusicLink = "https://music.apple.com/us/playlist/equanimity-radio/pl.u-GgN8RCbo4Mrl";
+                    break;
+                default:
+                    break;
+            };
         }
 
         //TODO: automate this code but for now lets hard code it as a test
@@ -45,7 +65,8 @@ namespace domshyra.Providers
         {
             return new List<string>()
             {
-                "3vaznYrm9fSPz3ENlcOR3e"
+                "3vaznYrm9fSPz3ENlcOR3e",
+                "5IUjuF00hzonDk6MzuanBs"
             };
         }
 
@@ -118,14 +139,18 @@ namespace domshyra.Providers
                             {
                                 dynamic playlistJSON = JObject.Parse(data);
 
-                                return new PlaylistsModel()
+                                PlaylistsModel playlist = new PlaylistsModel()
                                 {
                                     SpotifyMusicLink = playlistJSON.href,
                                     ImageURL = playlistJSON.images[0].url,
                                     Title = playlistJSON.name,
-                                    Description = playlistJSON.description
+                                    Description = playlistJSON.description,
+                                    SpotifyId = playlistJSON.id
                                 };
 
+                                playlist.Description = HttpUtility.HtmlDecode(playlist.Description);
+
+                                return playlist;
                             }
                             else
                             {
