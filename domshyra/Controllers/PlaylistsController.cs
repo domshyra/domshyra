@@ -16,7 +16,7 @@ namespace domshyra.Controllers
 
         public IActionResult Index()
         {
-            _spotifyProivder.GetPlaylistInfoAsync("3vaznYrm9fSPz3ENlcOR3e");
+            _spotifyProivder.GetPlaylists();
 
             return View(GetPlaylistsList());
         }

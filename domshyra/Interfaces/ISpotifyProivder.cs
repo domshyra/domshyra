@@ -8,6 +8,6 @@ namespace domshyra.Interfaces
     {
         List<string> GetPlaylistIds();
         Task<string> GetPlaylistInfoAsync(string playlistId, string authToken);
-        List<PlaylistsModel> GetPlaylists();
+        Task<List<PlaylistsModel>> GetPlaylists();
     }
 }

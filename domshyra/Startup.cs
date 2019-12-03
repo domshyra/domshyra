@@ -11,9 +11,24 @@ namespace domshyra
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private string _SecretClientID = null;
+        private string _SecretClientSecret = null;
+
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json",
+                    optional: false,
+                    reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -33,7 +48,12 @@ namespace domshyra
 
             #region Interfaces
             services.AddTransient<ISpotifyProivder, SpotifyProivder>();
+
+            services.AddSingleton(Configuration);
             #endregion
+
+            _SecretClientID = Configuration["SecretValues:SecretClientID"];
+            _SecretClientSecret = Configuration["SecretValues:SecretClientSecret"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

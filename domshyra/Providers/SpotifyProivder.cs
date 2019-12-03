@@ -9,13 +9,24 @@ using domshyra.Interfaces;
 using System.Net;
 using System.Text;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace domshyra.Providers
 {
     public class SpotifyProivder : ISpotifyProivder
     {
-        public List<PlaylistsModel> GetPlaylists()
+        private readonly IConfiguration _configuration;
+
+        public SpotifyProivder(IConfiguration Configuration)
         {
+            _configuration = Configuration;
+        }
+
+        public async Task<List<PlaylistsModel>> GetPlaylists()
+        {
+            string authToken = GetAuthToken();
+
+            await GetPlaylistInfoAsync(GetPlaylistIds().First(), authToken);
             return new List<PlaylistsModel>();
         }
 
@@ -31,20 +42,23 @@ namespace domshyra.Providers
         public string GetAuthToken()
         {
             string authToken;
+            string client_id = _configuration["SecretValues:SecretClientID"];
+            string client_secret = _configuration["SecretValues:SecretClientSecret"];
 
+            //url to query
             string url5 = "https://accounts.spotify.com/api/token";
 
             //request to get the access token
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url5);
-
+            //endcode the clientId and client secret
             var plainTextBytes = Encoding.UTF8.GetBytes($"{client_id}:{client_secret}");
-            string encodedSecrets = Convert.ToBase64String(plainTextBytes);
+            string encodedAppInfo = Convert.ToBase64String(plainTextBytes);
 
             webRequest.Method = "POST";
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.Accept = "application/json";
-            webRequest.Headers.Add("Authorization: Basic" + );
+            webRequest.Headers.Add($"Authorization: Basic {encodedAppInfo}");
             var request = ("grant_type=client_credentials");
             byte[] req_bytes = Encoding.ASCII.GetBytes(request);
             webRequest.ContentLength = req_bytes.Length;
