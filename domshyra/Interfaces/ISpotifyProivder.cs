@@ -7,7 +7,7 @@ namespace domshyra.Interfaces
     public interface ISpotifyProivder
     {
         List<string> GetPlaylistIds();
-        Task<string> GetPlaylistInfoAsync(string playlistId, string authToken);
+        Task<PlaylistsModel> GetPlaylistInfoAsync(string playlistId, string authToken);
         Task<List<PlaylistsModel>> GetPlaylists();
     }
 }

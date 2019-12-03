@@ -27,8 +27,17 @@ namespace domshyra.Providers
         {
             string authToken = GetAuthToken();
 
-            await GetPlaylistInfoAsync(GetPlaylistIds().First(), authToken);
-            return new List<PlaylistsModel>();
+            List<PlaylistsModel> playlists = new List<PlaylistsModel>();
+
+            List<string> playlistIds = GetPlaylistIds();
+
+            foreach (string playlistId in playlistIds)
+            {
+                PlaylistsModel model = await GetPlaylistInfoAsync(playlistId, authToken);
+                playlists.Add(model);
+            }
+
+            return playlists;
         }
 
         //TODO: automate this code but for now lets hard code it as a test
@@ -71,13 +80,12 @@ namespace domshyra.Providers
 
             HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
 
-            String json = "";
             using (Stream respStr = resp.GetResponseStream())
             {
                 using (StreamReader rdr = new StreamReader(respStr, Encoding.UTF8))
                 {
                     //should get back a string i can then turn to json and parse for accesstoken
-                    json = rdr.ReadToEnd();
+                    var json = rdr.ReadToEnd();
 
                     authToken = JsonConvert.DeserializeObject<SpotifyAuth>(json).access_token;
 
@@ -88,19 +96,17 @@ namespace domshyra.Providers
             return authToken;
         }
 
-        public async Task<string> GetPlaylistInfoAsync(string playlistId, string authToken)
+        public async Task<PlaylistsModel> GetPlaylistInfoAsync(string playlistId, string authToken)
         {
             //spotify api https://api.spotify.com/v1/playlists/{playlist_id}
             string baseUrl = $"https://api.spotify.com/v1/playlists/{playlistId}";
 
             try
             {
-
-
                 using (HttpClient client = new HttpClient())
                 {
                     //add the spotify auth 
-                    client.DefaultRequestHeaders.Add("Authorization", authToken);
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
 
                     using (HttpResponseMessage res = await client.GetAsync(baseUrl))
                     {
@@ -110,7 +116,15 @@ namespace domshyra.Providers
 
                             if (data != null)
                             {
-                                var x = JObject.Parse(data);
+                                dynamic playlistJSON = JObject.Parse(data);
+
+                                return new PlaylistsModel()
+                                {
+                                    SpotifyMusicLink = playlistJSON.href,
+                                    ImageURL = playlistJSON.images[0].url,
+                                    Title = playlistJSON.name,
+                                    Description = playlistJSON.description
+                                };
 
                             }
                             else
@@ -128,7 +142,7 @@ namespace domshyra.Providers
                 Console.WriteLine(exception);
             }
 
-            return "x";
+            return null;
         }
     }
 }
