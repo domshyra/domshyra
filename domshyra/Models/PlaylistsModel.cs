@@ -13,5 +13,6 @@ namespace domshyra.Models
         public string SpotifyMusicLink { get; set; }
         public string ImageURL { get; set; }
         public string SpotifyId { get; set; }
+        public string TrackCount { get; set; }
     }
 }

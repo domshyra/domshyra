@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <h5 class="card-title">@Model.Title</h5>
                         <p class="card-text">@Model.Description</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text"><small class="text-muted">@Model.TrackCount tracks.</small></p>
 
                     </div>
                 </div>
@@ -22,9 +22,11 @@
                     <div class="offset-6 col-6">
                         <a class="float-right px-2" href="@Model.SpotifyMusicLink" title="Open in Spotify"
                            aria-label="Open in Spotify" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-spotify"></i></a>
-
-                        <a class="float-right px-2" href="@Model.AppleMusicLink" title="Open in Apple Music"
-                           aria-label="Open in Apple Music" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-itunes-note"></i></a>
+                        @if (Model.AppleMusicLink != null)
+                        {
+                            <a class="float-right px-2" href="@Model.AppleMusicLink" title="Open in Apple Music"
+                               aria-label="Open in Apple Music" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-itunes-note"></i></a>
+                        }
                     </div>
                 </div>
             </div>
@@ -36,7 +38,7 @@
             <div class="card-body">
                 <h5 class="card-title">@Model.Title</h5>
                 <p class="card-text">@Model.Description</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                <p class="card-text"><small class="text-muted">@Model.TrackCount tracks.</small></p>
             </div>
             <div class="card-footer">
                 <div class="row">
@@ -44,8 +46,11 @@
                         <a class="float-right px-2" href="@Model.SpotifyMusicLink" title="Open in Spotify"
                            aria-label="Open in Spotify" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-spotify"></i></a>
 
-                        <a class="float-right px-2" href="@Model.AppleMusicLink" title="Open in Apple Music"
-                           aria-label="Open in Apple Music" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-itunes-note"></i></a>
+                        @if (Model.AppleMusicLink != null)
+                        {
+                            <a class="float-right px-2" href="@Model.AppleMusicLink" title="Open in Apple Music"
+                               aria-label="Open in Apple Music" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-itunes-note"></i></a>
+                        }
                     </div>
                 </div>
             </div>

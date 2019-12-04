@@ -28,17 +28,11 @@ namespace domshyra.Providers
         {
             string authToken = GetAuthToken();
 
-            List<PlaylistsModel> playlists = new List<PlaylistsModel>();
+            List<PlaylistsModel> playlists = await GetPlaylists(authToken);
 
-            List<string> playlistIds = await GetPlaylistIds(authToken);
-
-            foreach (string playlistId in playlistIds)
+            foreach (PlaylistsModel model in playlists)
             {
-                PlaylistsModel model = await GetPlaylistInfoAsync(playlistId, authToken);
-
                 AddAppleMusicURL(model);
-
-                playlists.Add(model);
             }
 
             return playlists;
@@ -52,7 +46,7 @@ namespace domshyra.Providers
                 case "3vaznYrm9fSPz3ENlcOR3e":
                     model.AppleMusicLink = "https://music.apple.com/us/playlist/silver-spurs-radio/pl.u-xlKY2uXJ4jE0";
                     break;                
-                //silver spurs
+                //equ radio
                 case "5IUjuF00hzonDk6MzuanBs":
                     model.AppleMusicLink = "https://music.apple.com/us/playlist/equanimity-radio/pl.u-GgN8RCbo4Mrl";
                     break;
@@ -83,10 +77,12 @@ namespace domshyra.Providers
                             {
                                 dynamic playlistHeader = JObject.Parse(data);
 
+                                //lets get these items into a list I can parse
                                 SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
 
+                                //I only want to display public playlists by me
                                 return playlists.items.ToList()
-                                    .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase))
+                                    .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
                                     .Select(x => x.id).ToList();
                             }
                             else
@@ -107,6 +103,72 @@ namespace domshyra.Providers
             return new List<string>();
         }
 
+        private async Task<List<PlaylistsModel>> GetPlaylists(string authToken)
+        {
+            string baseUrl = $"https://api.spotify.com/v1/users/domshyra/playlists?limit=40";
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    //add the spotify auth 
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+
+                    using (HttpResponseMessage res = await client.GetAsync(baseUrl))
+                    {
+                        using (HttpContent content = res.Content)
+                        {
+                            var data = await content.ReadAsStringAsync();
+
+                            if (data != null)
+                            {
+                                dynamic playlistHeader = JObject.Parse(data);
+
+                                //lets get these items into a list I can parse
+                                SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
+
+                                //I only want to display public playlists by me
+                                List<PlaylistsModel> playlistsModels = playlists.items.ToList()
+                                    .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
+                                    .Select(playlist => new PlaylistsModel() {
+                                        Description = playlist.description,
+                                        ImageURL = playlist.images[0].url,
+                                        SpotifyId = playlist.id,
+                                        Title = playlist.name,
+                                        TrackCount = playlist.tracks.total,
+                                        SpotifyMusicLink = playlist.external_urls.spotify
+                                    }).ToList();
+
+                                //decode the html
+                                foreach (PlaylistsModel playlistModel in playlistsModels)
+                                {
+                                    playlistModel.Description = HttpUtility.HtmlDecode(playlistModel.Description);
+                                }
+
+                                return playlistsModels;
+                            }
+                            else
+                            {
+                                Console.WriteLine("NO Data----------");
+                            }
+                        }
+                    }
+                }
+            }
+
+            catch (Exception exception)
+            {
+                Console.WriteLine("Exception Hit------------");
+                Console.WriteLine(exception);
+            }
+
+            return new List<PlaylistsModel>();
+        }
+
+        /// <summary>
+        /// Get the auth token for my queries since a user isn't authenticating it 
+        /// </summary>
+        /// <returns></returns>
         private string GetAuthToken()
         {
             string authToken;
