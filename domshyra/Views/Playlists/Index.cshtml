@@ -1,0 +1,43 @@
+﻿@using domshyra.Models;
+@using System.Collections.Generic
+@model List<PlaylistsModel>
+
+@{
+    Layout = "_Layout";
+}
+
+<style>
+    .description-row {
+        height: 200px;
+        max-height: 200px;
+    }
+
+    .playlist-img {
+        max-height: 180px;
+    }
+
+    .card-body-playlist {
+        min-height: 250px;
+    }
+</style>
+
+<div class="container">
+    <section class="jumbotron text-center bg-light">
+        <div class="container">
+            <h1 class="jumbotron-heading">Playlists</h1>
+            <p class="lead text-muted">
+                Music is the oldest form of story telling and I've always loved a good story.
+            </p>
+            <small class="text-center"><b>Note:</b> Apple music is depricated and the most up to date playlists are on <a href="https://open.spotify.com/user/domshyra">Spotify</a></small>
+        </div>
+    </section>
+    <h2 class="pb-2">Playlists</h2>
+    <div class="row">
+        @foreach (PlaylistsModel playlist in Model)
+        {
+            <div class="col-12 col-xl-6 mb-2">
+                <partial name="_PlaylistCardPartial" model="playlist" />
+            </div>
+        }
+    </div>
+</div>

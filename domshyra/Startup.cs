@@ -1,3 +1,5 @@
+using domshyra.Interfaces;
+using domshyra.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,9 +11,24 @@ namespace domshyra
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private string _SecretClientID = null;
+        private string _SecretClientSecret = null;
+
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json",
+                    optional: false,
+                    reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -28,6 +45,15 @@ namespace domshyra
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            #region Interfaces
+            services.AddTransient<ISpotifyProivder, SpotifyProivder>();
+
+            services.AddSingleton(Configuration);
+            #endregion
+
+            _SecretClientID = Configuration["SecretValues:SecretClientID"];
+            _SecretClientSecret = Configuration["SecretValues:SecretClientSecret"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

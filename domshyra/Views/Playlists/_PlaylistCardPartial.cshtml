@@ -1,0 +1,59 @@
+﻿@model domshyra.Models.PlaylistsModel
+
+@if (Model != null)
+{
+    <div class="d-none d-xl-block">
+        <div class="card mb-2">
+            <div class="row no-gutters">
+                <div class="col-md-4 col-6">
+                    <img src="@Model.ImageURL" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8 col-6">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Title</h5>
+                        <p class="card-text">@Model.Description</p>
+                        <p class="card-text"><small class="text-muted">@Model.TrackCount tracks.</small></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="offset-6 col-6">
+                        <a class="float-right px-2" href="@Model.SpotifyMusicLink" title="Open in Spotify"
+                           aria-label="Open in Spotify" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-spotify"></i></a>
+                        @if (Model.AppleMusicLink != null)
+                        {
+                            <a class="float-right px-2" href="@Model.AppleMusicLink" title="Open in Apple Music"
+                               aria-label="Open in Apple Music" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-itunes-note"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-xl-none">
+        <div class="card mb-3 ">
+            <img src="@Model.ImageURL" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Title</h5>
+                <p class="card-text">@Model.Description</p>
+                <p class="card-text"><small class="text-muted">@Model.TrackCount tracks.</small></p>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="offset-6 col-6">
+                        <a class="float-right px-2" href="@Model.SpotifyMusicLink" title="Open in Spotify"
+                           aria-label="Open in Spotify" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-spotify"></i></a>
+
+                        @if (Model.AppleMusicLink != null)
+                        {
+                            <a class="float-right px-2" href="@Model.AppleMusicLink" title="Open in Apple Music"
+                               aria-label="Open in Apple Music" data-toggle="tooltip" data-placement="bottom"><i class="fab fa-itunes-note"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
