@@ -50,6 +50,10 @@ namespace domshyra.Providers
                 case "5IUjuF00hzonDk6MzuanBs":
                     model.AppleMusicLink = "https://music.apple.com/us/playlist/equanimity-radio/pl.u-GgN8RCbo4Mrl";
                     break;
+                //sticky fingers radio
+                case "4WFRmZdZ5RfUvRDC9ijOjM":
+                    model.AppleMusicLink = "https://music.apple.com/us/playlist/sticky-fingers-radio/pl.u-8adAahNvzkZG";
+                    break;
                 default:
                     break;
             };
