@@ -8,10 +8,12 @@ namespace domshyra.Models
         {
             PianoYears = Years(new DateTime(2019, 1, 1), DateTime.Now);
             GuitarYears = Years(new DateTime(2017, 3, 1), DateTime.Now);
+            BassYears = Years(new DateTime(2020, 3, 1), DateTime.Now);
         }
         public int PianoYears { get; set; }
         
         public int GuitarYears { get; set; }
+        public int BassYears { get; set; }
     }
 
 
