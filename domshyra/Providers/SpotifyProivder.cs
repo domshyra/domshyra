@@ -35,7 +35,7 @@ namespace domshyra.Providers
                 AddAppleMusicURL(model);
             }
 
-            return playlists;
+            return playlists.OrderBy(x => x.Title).ToList();
         }
 
         private void AddAppleMusicURL(PlaylistsModel model)
