@@ -28,16 +28,22 @@
 </style>
 
 <div class="container">
-    <section class="jumbotron text-center bg-light">
-        <div class="container">
-            <h1 class="jumbotron-heading">Playlists</h1>
-            <p class="lead text-muted">
-                Music is the oldest form of story telling and I've always loved a good story.
-            </p>
-            <small class="text-center"><b>Note:</b> Apple music is depricated and the most up to date playlists are on <a href="https://open.spotify.com/user/domshyra">Spotify</a></small>
-        </div>
-    </section>
-    <h2 class="pb-2">Playlists</h2>
+    <div class="d-none d-xl-block">
+        <section class="jumbotron text-center bg-light">
+            <div class="container">
+                <h1 class="jumbotron-heading">Radio stations</h1>
+                <p class="lead text-muted">
+                    Music is the oldest form of story telling and I've always loved a good story.
+                </p>
+                <small class="text-center"><b>Note:</b> Apple music is deprecated and the most up to date playlists are on <a href="https://open.spotify.com/user/domshyra">Spotify</a></small>
+            </div>
+        </section>
+    </div>
+    <div class="d-xl-none">
+
+        <h2 class="pb-2">Radio stations</h2>
+    </div>
+
     <div class="row">
         @foreach (PlaylistsModel playlist in Model)
         {
