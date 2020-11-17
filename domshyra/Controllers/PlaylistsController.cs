@@ -21,6 +21,14 @@ namespace domshyra.Controllers
 
             return View(playlists);
         }
+        //TODO
+        //[Route("Radio")]
+        //public async Task<IActionResult> Radio()
+        //{
+        //    List<PlaylistsModel> playlists = await _spotifyProivder.GetPlaylists();
+
+        //    return View(playlists);
+        //}
 
     }
 }

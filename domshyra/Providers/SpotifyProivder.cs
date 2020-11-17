@@ -129,6 +129,7 @@ namespace domshyra.Providers
                                 dynamic playlistHeader = JObject.Parse(data);
 
                                 //lets get these items into a list I can parse
+                                //TODO query tracks for more info and get follower count
                                 SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
 
                                 //I only want to display public playlists by me

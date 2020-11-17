@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace domshyra.Models
+﻿namespace domshyra.Models
 {
     public class SpotifyPlaylistHeader
     {
@@ -28,7 +23,7 @@ namespace domshyra.Models
     public class Track
     {
         public string href { get; set; }
-        public string total { get; set; }
+        public int total { get; set; }
     }
     public class ExternalUrls
     {
