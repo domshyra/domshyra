@@ -12,19 +12,19 @@ namespace domshyra.Models
         public string ImageURL { get; set; }
         public string SpotifyId { get; set; }
         [DisplayFormat(DataFormatString = "{0:n0}")]
-        public string TrackCount { get; set; }
-        public string FollowerCount { get; set; }
+        public int TrackCount { get; set; }
+        public int FollowerCount { get; set; }
         public string TrackAndFollowerText
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(FollowerCount))
+                if (FollowerCount == 0)
                 {
-                    return $"{TrackCount} tracks";
+                    return $"{TrackCount:N0} tracks";
                 }
                 else
                 {
-                    return $"{TrackCount} tracks and {FollowerCount} followers";
+                    return $"{TrackCount:N0} tracks and {FollowerCount:N0} followers";
                 }
             }
         }
