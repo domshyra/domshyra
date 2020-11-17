@@ -10,11 +10,11 @@
                 </div>
                 <div class="col-md-8 col-6">
                     <div class="card-body">
-                        <h5 class="card-title">@Model.Title</h5>
+                        <h5 class="card-title font-weight-bold">@Model.Title</h5>
                         <p class="card-text">@Model.Description</p>
                         <blockquote class="mb-0">
-                            <p class="mb-0">@Model.TrackAndFollowerText</p>
-                            <footer><small class="text-muted">@Html.Raw(Model.CrossFadeText)</small></footer>
+                            <p class="mb-0 font-weight-light">@Model.TrackAndFollowerText</p>
+                            <footer><small class="text-muted font-weight-light">@Html.Raw(Model.CrossFadeText)</small></footer>
                         </blockquote>
 
                     </div>
@@ -47,11 +47,11 @@
         <div class="card mb-3 ">
             <img src="@Model.ImageURL" class="card-img-top px-3 pt-3" alt="...">
             <div class="card-body">
-                <h5 class="card-title">@Model.Title</h5>
+                <h5 class="card-title font-weight-bold">@Model.Title</h5>
                 <p class="card-text">@Model.Description</p>
                 <blockquote class="mb-0">
-                    <p class="mb-0">@Model.TrackAndFollowerText</p>
-                    <footer><small class="text-muted">@Html.Raw(Model.CrossFadeText)</small></footer>
+                    <p class="mb-0 font-weight-light">@Model.TrackAndFollowerText</p>
+                    <footer><small class="text-muted font-weight-light">@Html.Raw(Model.CrossFadeText)</small></footer>
                 </blockquote>
             </div>
             <div class="card-footer">
