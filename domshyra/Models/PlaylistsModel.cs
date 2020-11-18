@@ -1,11 +1,17 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace domshyra.Models
 {
     public class PlaylistsModel
     {
         public string Title { get; set; }
+        public string AnchorId
+        {
+            get
+            {
+                return Title.ToLower().Trim().Replace(" ", "-");
+            }
+        }
         public string Description { get; set; }
         public string AppleMusicLink { get; set; }
         public string SpotifyMusicLink { get; set; }
