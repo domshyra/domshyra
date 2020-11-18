@@ -51,7 +51,7 @@
     <div class="row">
         @foreach (PlaylistsModel playlist in Model)
         {
-            <div class="col-12 col-xl-6 mb-2" id="@playlist.AnchorId">
+            <div class="col-12 col-xl-6 mb-2" title="@playlist.Title" aria-label="@playlist.Title" id="@playlist.AnchorId">
                 <partial name="_PlaylistCardPartial" model="playlist" />
             </div>
         }
