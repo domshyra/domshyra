@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>domshyra</name>
+    </assembly>
+    <members>
+        <member name="T:domshyra.Controllers.HomeController">
+            <summary>
+            Baisic home controller
+            </summary>
+        </member>
+        <member name="M:domshyra.Controllers.HomeController.Index">
+            <summary>
+            Home page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:domshyra.Controllers.HomeController.Projects">
+            <summary>
+            Projects page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:domshyra.Controllers.HomeController.Interests">
+            <summary>
+            Intrests page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:domshyra.Controllers.HomeController.AboutMe">
+            <summary>
+            About me page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:domshyra.Controllers.HomeController.Skills">
+            <summary>
+            Skills page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:domshyra.Providers.SpotifyProivder.AddAppleMusicURL(domshyra.Models.PlaylistsModel)">
+            <summary>
+            Used to match the apple music urls to the spotify ones
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:domshyra.Providers.SpotifyProivder.GetAuthToken">
+            <summary>
+            Get the auth token for my queries since a user isn't authenticating it 
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

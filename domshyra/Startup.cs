@@ -3,18 +3,15 @@ using domshyra.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace domshyra
 {
     public class Startup
     {
-        private string _SecretClientID = null;
-        private string _SecretClientSecret = null;
-
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -22,6 +19,7 @@ namespace domshyra
                     optional: false,
                     reloadOnChange: true)
                 .AddEnvironmentVariables();
+
 
             if (env.IsDevelopment())
             {
@@ -43,21 +41,24 @@ namespace domshyra
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             #region Interfaces
             services.AddTransient<ISpotifyProivder, SpotifyProivder>();
 
             services.AddSingleton(Configuration);
             #endregion
 
-            _SecretClientID = Configuration["SecretValues:SecretClientID"];
-            _SecretClientSecret = Configuration["SecretValues:SecretClientSecret"];
+            services.AddRazorPages();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddMvc().AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = null;
+                o.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -72,12 +73,13 @@ namespace domshyra
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseRouting();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -38,7 +38,11 @@ namespace domshyra.Providers
             return playlists.OrderBy(x => x.Title).ToList();
         }
 
-        private void AddAppleMusicURL(PlaylistsModel model)
+        /// <summary>
+        /// Used to match the apple music urls to the spotify ones
+        /// </summary>
+        /// <param name="model"></param>
+        private static void AddAppleMusicURL(PlaylistsModel model)
         {
             switch (model.SpotifyId)
             {
@@ -60,41 +64,35 @@ namespace domshyra.Providers
         }
 
         
-        private async Task<List<string>> GetPlaylistIds(string authToken)
+        private static async Task<List<string>> GetPlaylistIds(string authToken)
         {
             string baseUrl = $"https://api.spotify.com/v1/users/domshyra/playlists?limit=40";
 
             try
             {
-                using (HttpClient client = new HttpClient())
+                using HttpClient client = new HttpClient();
+                //add the spotify auth 
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+
+                using HttpResponseMessage res = await client.GetAsync(baseUrl);
+                using HttpContent content = res.Content;
+                string data = await content.ReadAsStringAsync();
+
+                if (data != null)
                 {
-                    //add the spotify auth 
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+                    dynamic playlistHeader = JObject.Parse(data);
 
-                    using (HttpResponseMessage res = await client.GetAsync(baseUrl))
-                    {
-                        using (HttpContent content = res.Content)
-                        {
-                            var data = await content.ReadAsStringAsync();
+                    //lets get these items into a list I can parse
+                    SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
 
-                            if (data != null)
-                            {
-                                dynamic playlistHeader = JObject.Parse(data);
-
-                                //lets get these items into a list I can parse
-                                SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
-
-                                //I only want to display public playlists by me
-                                return playlists.items.ToList()
-                                    .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
-                                    .Select(x => x.id).ToList();
-                            }
-                            else
-                            {
-                                Console.WriteLine("NO Data----------");
-                            }
-                        }
-                    }
+                    //I only want to display public playlists by me
+                    return playlists.items.ToList()
+                        .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
+                        .Select(x => x.id).ToList();
+                }
+                else
+                {
+                    Console.WriteLine("NO Data----------");
                 }
             }
 
@@ -107,57 +105,52 @@ namespace domshyra.Providers
             return new List<string>();
         }
 
-        private async Task<List<PlaylistsModel>> GetPlaylists(string authToken)
+        private static async Task<List<PlaylistsModel>> GetPlaylists(string authToken)
         {
             string baseUrl = $"https://api.spotify.com/v1/users/domshyra/playlists?limit=40";
 
             try
             {
-                using (HttpClient client = new HttpClient())
+                using HttpClient client = new HttpClient();
+                //add the spotify auth 
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+
+                using HttpResponseMessage res = await client.GetAsync(baseUrl);
+                using HttpContent content = res.Content;
+                string data = await content.ReadAsStringAsync();
+
+                if (data != null)
                 {
-                    //add the spotify auth 
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+                    dynamic playlistHeader = JObject.Parse(data);
 
-                    using (HttpResponseMessage res = await client.GetAsync(baseUrl))
-                    {
-                        using (HttpContent content = res.Content)
+                    //lets get these items into a list I can parse
+                    //TODO query tracks for more info and get follower count
+                    SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
+
+                    //I only want to display public playlists by me
+                    List<PlaylistsModel> playlistsModels = playlists.items.ToList()
+                        .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
+                        .Select(playlist => new PlaylistsModel()
                         {
-                            var data = await content.ReadAsStringAsync();
+                            Description = playlist.description,
+                            ImageURL = playlist.images[0].url,
+                            SpotifyId = playlist.id,
+                            Title = playlist.name,
+                            TrackCount = playlist.tracks.total,
+                            SpotifyMusicLink = playlist.external_urls.spotify
+                        }).ToList();
 
-                            if (data != null)
-                            {
-                                dynamic playlistHeader = JObject.Parse(data);
-
-                                //lets get these items into a list I can parse
-                                //TODO query tracks for more info and get follower count
-                                SpotifyPlaylists playlists = JsonConvert.DeserializeObject<SpotifyPlaylists>(data);
-
-                                //I only want to display public playlists by me
-                                List<PlaylistsModel> playlistsModels = playlists.items.ToList()
-                                    .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
-                                    .Select(playlist => new PlaylistsModel() {
-                                        Description = playlist.description,
-                                        ImageURL = playlist.images[0].url,
-                                        SpotifyId = playlist.id,
-                                        Title = playlist.name,
-                                        TrackCount = playlist.tracks.total,
-                                        SpotifyMusicLink = playlist.external_urls.spotify
-                                    }).ToList();
-
-                                //decode the html
-                                foreach (PlaylistsModel playlistModel in playlistsModels)
-                                {
-                                    playlistModel.Description = HttpUtility.HtmlDecode(playlistModel.Description);
-                                }
-
-                                return playlistsModels;
-                            }
-                            else
-                            {
-                                Console.WriteLine("NO Data----------");
-                            }
-                        }
+                    //decode the html
+                    foreach (PlaylistsModel playlistModel in playlistsModels)
+                    {
+                        playlistModel.Description = HttpUtility.HtmlDecode(playlistModel.Description);
                     }
+
+                    return playlistsModels;
+                }
+                else
+                {
+                    Console.WriteLine("NO Data----------");
                 }
             }
 
@@ -187,14 +180,14 @@ namespace domshyra.Providers
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(authTokenURL);
             //endcode the clientId and client secret
-            var plainTextBytes = Encoding.UTF8.GetBytes($"{client_id}:{client_secret}");
+            byte[] plainTextBytes = Encoding.UTF8.GetBytes($"{client_id}:{client_secret}");
             string encodedAppInfo = Convert.ToBase64String(plainTextBytes);
 
             webRequest.Method = "POST";
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.Accept = "application/json";
             webRequest.Headers.Add($"Authorization: Basic {encodedAppInfo}");
-            var request = ("grant_type=client_credentials");
+            string request = ("grant_type=client_credentials");
             byte[] req_bytes = Encoding.ASCII.GetBytes(request);
             webRequest.ContentLength = req_bytes.Length;
 
@@ -203,65 +196,65 @@ namespace domshyra.Providers
             strm.Close();
 
 
-            HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
-
-            using (Stream respStr = resp.GetResponseStream())
+            try
             {
-                using (StreamReader rdr = new StreamReader(respStr, Encoding.UTF8))
+                HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
+
+                using (Stream respStr = resp.GetResponseStream())
                 {
+                    using StreamReader rdr = new StreamReader(respStr, Encoding.UTF8);
                     //should get back a string i can then turn to json and parse for accesstoken
-                    var json = rdr.ReadToEnd();
+                    string json = rdr.ReadToEnd();
 
                     authToken = JsonConvert.DeserializeObject<SpotifyAuth>(json).access_token;
 
                     rdr.Close();
                 }
-            }
 
-            return authToken;
+                return authToken;
+            }
+            catch (WebException e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
 
-        private async Task<PlaylistsModel> GetPlaylistInfoAsync(string playlistId, string authToken)
+        private static async Task<PlaylistsModel> GetPlaylistInfoAsync(string playlistId, string authToken)
         {
             //spotify api https://api.spotify.com/v1/playlists/{playlist_id}
             string baseUrl = $"https://api.spotify.com/v1/playlists/{playlistId}";
 
             try
             {
-                using (HttpClient client = new HttpClient())
+                using HttpClient client = new HttpClient();
+                //add the spotify auth 
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+
+                using HttpResponseMessage res = await client.GetAsync(baseUrl);
+                using HttpContent content = res.Content;
+                string data = await content.ReadAsStringAsync();
+
+                if (data != null)
                 {
-                    //add the spotify auth 
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
+                    dynamic playlistJSON = JObject.Parse(data);
 
-                    using (HttpResponseMessage res = await client.GetAsync(baseUrl))
+                    PlaylistsModel playlist = new PlaylistsModel()
                     {
-                        using (HttpContent content = res.Content)
-                        {
-                            var data = await content.ReadAsStringAsync();
+                        SpotifyMusicLink = playlistJSON.href,
+                        ImageURL = playlistJSON.images[0].url,
+                        Title = playlistJSON.name,
+                        Description = playlistJSON.description,
+                        SpotifyId = playlistJSON.id
+                    };
 
-                            if (data != null)
-                            {
-                                dynamic playlistJSON = JObject.Parse(data);
+                    playlist.Description = HttpUtility.HtmlDecode(playlist.Description);
 
-                                PlaylistsModel playlist = new PlaylistsModel()
-                                {
-                                    SpotifyMusicLink = playlistJSON.href,
-                                    ImageURL = playlistJSON.images[0].url,
-                                    Title = playlistJSON.name,
-                                    Description = playlistJSON.description,
-                                    SpotifyId = playlistJSON.id
-                                };
-
-                                playlist.Description = HttpUtility.HtmlDecode(playlist.Description);
-
-                                return playlist;
-                            }
-                            else
-                            {
-                                Console.WriteLine("NO Data----------");
-                            }
-                        }
-                    }
+                    return playlist;
+                }
+                else
+                {
+                    Console.WriteLine("NO Data----------");
                 }
             }
 
