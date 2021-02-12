@@ -29,10 +29,54 @@
 
   <ItemGroup>
     <Content Include=".babelrc" />
+    <Content Include="node_modules\react-dom\build-info.json" />
+    <Content Include="node_modules\react-dom\package.json" />
+    <Content Include="node_modules\react\build-info.json" />
+    <Content Include="node_modules\react\package.json" />
     <Content Include="webpack.config.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="node_modules\react-dom\cjs\react-dom-server.browser.development.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom-server.browser.production.min.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom-server.node.development.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom-server.node.production.min.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom-test-utils.development.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom-test-utils.production.min.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom.development.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom.production.min.js" />
+    <None Include="node_modules\react-dom\cjs\react-dom.profiling.min.js" />
+    <None Include="node_modules\react-dom\index.js" />
+    <None Include="node_modules\react-dom\LICENSE" />
+    <None Include="node_modules\react-dom\profiling.js" />
+    <None Include="node_modules\react-dom\README.md" />
+    <None Include="node_modules\react-dom\server.browser.js" />
+    <None Include="node_modules\react-dom\server.js" />
+    <None Include="node_modules\react-dom\server.node.js" />
+    <None Include="node_modules\react-dom\test-utils.js" />
+    <None Include="node_modules\react-dom\umd\react-dom-server.browser.development.js" />
+    <None Include="node_modules\react-dom\umd\react-dom-server.browser.production.min.js" />
+    <None Include="node_modules\react-dom\umd\react-dom-test-utils.development.js" />
+    <None Include="node_modules\react-dom\umd\react-dom-test-utils.production.min.js" />
+    <None Include="node_modules\react-dom\umd\react-dom.development.js" />
+    <None Include="node_modules\react-dom\umd\react-dom.production.min.js" />
+    <None Include="node_modules\react-dom\umd\react-dom.profiling.min.js" />
+    <None Include="node_modules\react\cjs\react-jsx-dev-runtime.development.js" />
+    <None Include="node_modules\react\cjs\react-jsx-dev-runtime.production.min.js" />
+    <None Include="node_modules\react\cjs\react-jsx-dev-runtime.profiling.min.js" />
+    <None Include="node_modules\react\cjs\react-jsx-runtime.development.js" />
+    <None Include="node_modules\react\cjs\react-jsx-runtime.production.min.js" />
+    <None Include="node_modules\react\cjs\react-jsx-runtime.profiling.min.js" />
+    <None Include="node_modules\react\cjs\react.development.js" />
+    <None Include="node_modules\react\cjs\react.production.min.js" />
+    <None Include="node_modules\react\index.js" />
+    <None Include="node_modules\react\jsx-dev-runtime.js" />
+    <None Include="node_modules\react\jsx-runtime.js" />
+    <None Include="node_modules\react\LICENSE" />
+    <None Include="node_modules\react\README.md" />
+    <None Include="node_modules\react\umd\react.development.js" />
+    <None Include="node_modules\react\umd\react.production.min.js" />
+    <None Include="node_modules\react\umd\react.profiling.min.js" />
     <None Include="wwwroot\src\index.jsx" />
   </ItemGroup>
 

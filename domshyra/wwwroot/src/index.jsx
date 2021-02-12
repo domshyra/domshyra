@@ -1,3 +1,2 @@
-﻿import * as React from "./react";
-import * as ReactDOM from "./react-dom";
-
+﻿import * as React from "../../node_modules/react";
+import * as ReactDOM from "../../node_modules/react-dom";
