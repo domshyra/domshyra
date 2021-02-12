@@ -7,8 +7,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     //entry: "./src/index.js", //react style
-    entry: "./src/index.jsx", //ms style //where react is getting is elemetns to load into the DOM
-    mode: "development",
+    entry: "./wwwroot/src/index.jsx", //ms style //where react is getting is elemetns to load into the DOM
     module: {
         rules: [
             //react source
@@ -42,10 +41,9 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "wwwroot"),
         publicPath: "/",
-        //filename: "bundle.js" //react style
-        filename: "[name].[chunkhash].js"
-    },
+        filename: "bundle.js" //react style
 
+    },
 //TODO: might need to change the port #
     devServer: {
         contentBase: path.join(__dirname, "public/"),
@@ -56,14 +54,11 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: "./src/index.html"
+            template: "./Views/_Layout.html"
         }),
         new MiniCssExtractPlugin({
-            filename: "css/[name].[chunkhash].css"
+            filename: "bundle.css"
         }),
-        new ESLintPlugin(
-            options: {
-            extensions: [".js", ".jsx", ".ts"]
-        })
+        new ESLintPlugin()
     ]
 };

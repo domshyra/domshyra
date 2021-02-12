@@ -1,0 +1,10 @@
+﻿{
+    "compilerOptions": {
+        //"outDir": "[PATH-TO-YOUR-wwwroot-FOLDER]/dist", // might need to fix this later but ms does't have it
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es6",
+        "jsx": "react"
+    }
+}
