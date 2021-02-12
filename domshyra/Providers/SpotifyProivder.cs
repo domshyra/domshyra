@@ -172,6 +172,7 @@ namespace domshyra.Providers
         /// <returns></returns>
         private string GetAuthToken()
         {
+            //https://developer.spotify.com/documentation/general/guides/authorization-guide/
             string authToken;
             string client_id = _configuration["SecretValues:SecretClientID"];
             string client_secret = _configuration["SecretValues:SecretClientSecret"];
@@ -201,7 +202,8 @@ namespace domshyra.Providers
 
             try
             {
-                HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
+                var responAsWeb = webRequest.GetResponse();
+                HttpWebResponse resp = (HttpWebResponse)responAsWeb;
 
                 using (Stream respStr = resp.GetResponseStream())
                 {

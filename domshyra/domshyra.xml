@@ -46,7 +46,7 @@
         </member>
         <member name="M:domshyra.Controllers.PlaylistsController.#ctor(domshyra.Interfaces.ISpotifyProivder)">
             <summary>
-            PlaylistContoller consturctor
+            PlaylistContoller constructor
             </summary>
             <param name="spotifyProivder"></param>
         </member>
@@ -66,6 +66,31 @@
             Gets playlists from Spotify
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:domshyra.Models.IntrestModel">
+            <summary>
+            Represents what I am interested in
+            </summary>
+        </member>
+        <member name="M:domshyra.Models.IntrestModel.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:domshyra.Models.IntrestModel.PianoYears">
+            <summary>
+            Years I have been playing piano
+            </summary>
+        </member>
+        <member name="P:domshyra.Models.IntrestModel.GuitarYears">
+            <summary>
+            Years I have been playing guitar
+            </summary>
+        </member>
+        <member name="P:domshyra.Models.IntrestModel.BassYears">
+            <summary>
+            Years I have been playing bass guitar
+            </summary>
         </member>
         <member name="T:domshyra.Providers.SpotifyProivder">
             <inheritdoc/>
