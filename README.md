@@ -1,4 +1,13 @@
 # domshyra
 personal website
 
-written in ASP.net core 2.1
+written in .Net 
+
+
+Spotify will only with a usersecrets file containing 
+
+`{
+  "SecretValues:SecretClientID": "SpotifyClientId",
+  "SecretValues:SecretClientSecret": "SpotifyClientSecret"
+}
+`
