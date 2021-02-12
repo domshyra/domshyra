@@ -14,7 +14,7 @@ namespace domshyra.Controllers
         private readonly ISpotifyProivder _spotifyProivder;
 
         /// <summary>
-        /// PlaylistContoller consturctor
+        /// PlaylistContoller constructor
         /// </summary>
         /// <param name="spotifyProivder"></param>
         public PlaylistsController(ISpotifyProivder spotifyProivder)

@@ -15,15 +15,18 @@ using System.Web;
 
 namespace domshyra.Providers
 {
+    /// <inheritdoc/>
     public class SpotifyProivder : ISpotifyProivder
     {
         private readonly IConfiguration _configuration;
 
+        /// <inheritdoc/>
         public SpotifyProivder(IConfiguration Configuration)
         {
             _configuration = Configuration;
         }
 
+        /// <inheritdoc/>
         public async Task<List<PlaylistsModel>> GetPlaylists()
         {
             string authToken = GetAuthToken();

@@ -39,6 +39,43 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:domshyra.Controllers.PlaylistsController">
+            <summary>
+            Controller for the playlist page
+            </summary>
+        </member>
+        <member name="M:domshyra.Controllers.PlaylistsController.#ctor(domshyra.Interfaces.ISpotifyProivder)">
+            <summary>
+            PlaylistContoller consturctor
+            </summary>
+            <param name="spotifyProivder"></param>
+        </member>
+        <member name="M:domshyra.Controllers.PlaylistsController.Index">
+            <summary>
+            Playlist page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:domshyra.Interfaces.ISpotifyProivder">
+            <summary>
+            Provides methods to query Spotify
+            </summary>
+        </member>
+        <member name="M:domshyra.Interfaces.ISpotifyProivder.GetPlaylists">
+            <summary>
+            Gets playlists from Spotify
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:domshyra.Providers.SpotifyProivder">
+            <inheritdoc/>
+        </member>
+        <member name="M:domshyra.Providers.SpotifyProivder.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <inheritdoc/>
+        </member>
+        <member name="M:domshyra.Providers.SpotifyProivder.GetPlaylists">
+            <inheritdoc/>
+        </member>
         <member name="M:domshyra.Providers.SpotifyProivder.AddAppleMusicURL(domshyra.Models.PlaylistsModel)">
             <summary>
             Used to match the apple music urls to the spotify ones
