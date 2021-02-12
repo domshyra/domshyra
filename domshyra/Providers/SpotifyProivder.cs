@@ -202,8 +202,11 @@ namespace domshyra.Providers
 
             try
             {
-                var responAsWeb = webRequest.GetResponse();
-                HttpWebResponse resp = (HttpWebResponse)responAsWeb;
+                if (string.IsNullOrEmpty(client_id) || string.IsNullOrEmpty(client_secret))
+                {
+                    throw new NullReferenceException($"{nameof(client_id)} is {client_id}, and {nameof(client_secret)} is {client_secret}. These both need to be populated. Make sure client secrets are updated.");
+                }
+                HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
 
                 using (Stream respStr = resp.GetResponseStream())
                 {
@@ -220,6 +223,7 @@ namespace domshyra.Providers
             }
             catch (WebException e)
             {
+                //Make sure clientId and Secrets are set
                 Console.WriteLine(e.Message);
                 throw;
             }
