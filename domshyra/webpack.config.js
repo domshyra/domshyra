@@ -39,8 +39,8 @@ module.exports = {
     },
     resolve: { extensions: ["*", ".js", ".jsx", ".ts"] },
     output: {
-        path: path.resolve(__dirname, "wwwroot"),
-        publicPath: "/",
+        path: path.resolve(__dirname, "wwwroot/dist"),
+        publicPath: "/dist",
         filename: "bundle.js" //react style
 
     },
@@ -54,10 +54,10 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: "./Views/_Layout.html"
+            template: "./wwwroot/dist/index.html"
         }),
         new MiniCssExtractPlugin({
-            filename: "bundle.css"
+            filename: "css/bundle.css" 
         }),
         new ESLintPlugin()
     ]
