@@ -25,11 +25,11 @@ module.exports = {
             //    use: ["style-loader", "css-loader"] // I think this i old
             //},
             //ms source
-            {
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                use: "ts-loader"
-            },
+            //{
+            //    test: /\.ts$/,
+            //    exclude: /node_modules/,
+            //    use: "ts-loader"
+            //},
             //ms source
             {
                 test: /\.css$/,
@@ -39,14 +39,14 @@ module.exports = {
                //TODO: add sass stuff here
         ]
     },
-    resolve: { extensions: ["*", ".js", ".jsx", ".ts"] },
+    resolve: { extensions: ["*", ".js", ".jsx"] },
     output: {
         path: path.resolve(__dirname, "wwwroot/dist"),
         publicPath: "/",
         filename: "bundle.js" //react style
 
     },
-//TODO: might need to change the port #
+    //TODO: might need to change the port #
     devServer: {
         contentBase: path.join(__dirname, "public/"),
         port: 3000,
@@ -61,8 +61,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/bundle.css" 
         }),
-        //new ESLintPlugin({ 
-        //    extensions: [".js", ".jsx", ".ts"] 
-        //})
+        new ESLintPlugin({ 
+            extensions: [".js", ".jsx"] 
+        })
     ]
 };

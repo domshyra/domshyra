@@ -20,15 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\src\tsconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="webpack.config.js" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include=".babelrc" />
+    <Content Include=".eslintrc" />
     <Content Include="node_modules\babel-loader\lib\schema.json" />
     <Content Include="node_modules\babel-loader\node_modules\json5\package.json" />
     <Content Include="node_modules\babel-loader\node_modules\loader-utils\package.json" />
@@ -157,7 +154,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\src\tsconfig.json" />
+    <TypeScriptCompile Include="tsconfig.json" />
   </ItemGroup>
 
   <ItemGroup>

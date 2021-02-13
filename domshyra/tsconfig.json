@@ -1,0 +1,17 @@
+﻿{
+  "compilerOptions": {
+    //"outDir": "./dist",
+    //"rootDir": "/src",
+    "outDir": "wwwroot/dist", // might need to fix this later but ms does't have it
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "target": "es6",
+    "jsx": "react"
+  }
+  //"include": [
+  //  "wwwroot/*"
+  //],
+  //"exclude": [
+  //  "node_modules"
+  //]
+}
