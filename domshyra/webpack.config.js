@@ -7,7 +7,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     //entry: "./src/index.js", //react style
-    entry: "./wwwroot/src/index.jsx", //ms style //where react is getting is elemetns to load into the DOM
+    entry: "./Components/index.jsx", //ms style //where react is getting is elemetns to load into the DOM
     devtool: 'source-map',
     module: {
         rules: [
@@ -41,23 +41,23 @@ module.exports = {
     },
     resolve: { extensions: ["*", ".js", ".jsx"] },
     output: {
-        path: path.resolve(__dirname, "wwwroot/dist"),
-        publicPath: "/",
-        filename: "bundle.js" //react style
+        path: path.resolve(__dirname, "wwwroot/js"),
+        publicPath: "js/",
+        filename: "[name].bundle.js" //react style
 
     },
     //TODO: might need to change the port #
-    devServer: {
-        contentBase: path.join(__dirname, "public/"),
-        port: 3000,
-        publicPath: "http://localhost:3000/dist/",
-        hotOnly: true
-    },
+    //devServer: {
+    //    contentBase: path.join(__dirname, "public/"),
+    //    port: 3000,
+    //    publicPath: "http://localhost:3000/dist/",
+    //    hotOnly: true
+    //},
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            template: "./wwwroot/src/index.html"
-        }),
+        //new HtmlWebpackPlugin({
+        //    template: "./Views/Playlists/_Layout.cshtml"
+        //}),
         new MiniCssExtractPlugin({
             filename: "css/bundle.css" 
         }),

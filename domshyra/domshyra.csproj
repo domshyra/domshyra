@@ -26,6 +26,8 @@
   <ItemGroup>
     <Content Include=".babelrc" />
     <Content Include=".eslintrc" />
+    <Content Include="Components\HelloReact.jsx" />
+    <Content Include="Components\index.jsx" />
     <Content Include="node_modules\babel-loader\lib\schema.json" />
     <Content Include="node_modules\babel-loader\node_modules\json5\package.json" />
     <Content Include="node_modules\babel-loader\node_modules\loader-utils\package.json" />
@@ -139,7 +141,6 @@
     <None Include="node_modules\react\umd\react.development.js" />
     <None Include="node_modules\react\umd\react.production.min.js" />
     <None Include="node_modules\react\umd\react.profiling.min.js" />
-    <None Include="wwwroot\src\index.jsx" />
   </ItemGroup>
 
   <ItemGroup>
