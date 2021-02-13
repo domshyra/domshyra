@@ -44,16 +44,16 @@
         </section>
     </div>
     <div class="d-xl-none">
-
         <h2 class="pb-2">Radio stations</h2>
     </div>
 
     <div class="row">
-
-        <div id="hello-react">
-
+        <div class="col-12">
+            <!--Adds HelloReact element here-->
+            <div id="hello-react"></div>
         </div>
-
+    </div>
+    <div class="row">
         @foreach (PlaylistsModel playlist in Model)
         {
             <div class="col-12 col-xl-6 mb-2" title="@playlist.Title" aria-label="@playlist.Title" id="@playlist.AnchorId">
@@ -62,6 +62,3 @@
         }
     </div>
 </div>
-
-
-<script src="~/js/main.bundle.js"></script>

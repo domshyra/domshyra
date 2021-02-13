@@ -1,17 +1,15 @@
 ﻿const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
-    //entry: "./src/index.js", //react style
-    entry: "./Components/index.jsx", //ms style //where react is getting is elemetns to load into the DOM
+    entry: "./Components/index.jsx", //where react is getting is elemetns to load into the DOM
     devtool: 'source-map',
     module: {
         rules: [
-            //react source                 use: ["babel-loader", "eslint-loader"],
+            //might need to have 'use: ["babel-loader", "eslint-loader"],' included but dunno yet
             {
                 test: /\.(js|jsx)$/,
                 exclude: /(node_modules)/,
@@ -19,45 +17,22 @@ module.exports = {
 
                 options: { presets: ["@babel/env"] }
             },
-            //react source
-            //{
-            //    test: /\.css$/,
-            //    use: ["style-loader", "css-loader"] // I think this i old
-            //},
-            //ms source
-            //{
-            //    test: /\.ts$/,
-            //    exclude: /node_modules/,
-            //    use: "ts-loader"
-            //},
-            //ms source
             {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader"]
             },
 
-               //TODO: add sass stuff here
+            //TODO: add sass stuff here
         ]
     },
     resolve: { extensions: ["*", ".js", ".jsx"] },
     output: {
         path: path.resolve(__dirname, "wwwroot/js"),
         publicPath: "js/",
-        filename: "[name].bundle.js" //react style
-
+        filename: "bundle.js" //todo: figure this out
     },
-    //TODO: might need to change the port #
-    //devServer: {
-    //    contentBase: path.join(__dirname, "public/"),
-    //    port: 3000,
-    //    publicPath: "http://localhost:3000/dist/",
-    //    hotOnly: true
-    //},
     plugins: [
         new CleanWebpackPlugin(),
-        //new HtmlWebpackPlugin({
-        //    template: "./Views/Playlists/_Layout.cshtml"
-        //}),
         new MiniCssExtractPlugin({
             filename: "css/bundle.css" 
         }),
