@@ -8,6 +8,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 module.exports = {
     //entry: "./src/index.js", //react style
     entry: "./wwwroot/src/index.jsx", //ms style //where react is getting is elemetns to load into the DOM
+    devtool: 'source-map',
     module: {
         rules: [
             //react source                 use: ["babel-loader", "eslint-loader"],
@@ -60,8 +61,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "css/bundle.css" 
         }),
-        new ESLintPlugin({ 
-            extensions: [".js", ".jsx", ".ts"] 
-        })
+        //new ESLintPlugin({ 
+        //    extensions: [".js", ".jsx", ".ts"] 
+        //})
     ]
 };
