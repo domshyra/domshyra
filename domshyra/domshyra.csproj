@@ -77,7 +77,7 @@
     <None Include="node_modules\react\umd\react.development.js" />
     <None Include="node_modules\react\umd\react.production.min.js" />
     <None Include="node_modules\react\umd\react.profiling.min.js" />
-    <None Include="wwwroot\src\index.js" />
+    <None Include="wwwroot\src\index.jsx" />
   </ItemGroup>
 
   <ItemGroup>

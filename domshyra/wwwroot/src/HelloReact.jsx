@@ -1,13 +1,9 @@
-﻿import React, { Component } from "react";
+﻿import React from "React";
 
-class HelloReact extends Component {
+export class HelloReact extends React.Component {
     render() {
         return (
-            <div>
-                <h1> Hello, World! </h1>
-            </div>
+            <div>Hello React</div>
         );
     }
 }
-
-export default HelloReact;
