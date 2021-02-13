@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
-    entry: "./Components/index.jsx", //where react is getting is elemetns to load into the DOM
+    entry: "./Components/index.jsx", //where react is getting is elements to load into the DOM
     devtool: 'source-map',
     module: {
         rules: [
