@@ -7,7 +7,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     //entry: "./src/index.js", //react style
-    entry: "./wwwroot/src/index.jsx", //ms style //where react is getting is elemetns to load into the DOM
+    entry: "./wwwroot/src/index.js", //ms style //where react is getting is elemetns to load into the DOM
     module: {
         rules: [
             //react source
@@ -40,7 +40,7 @@ module.exports = {
     resolve: { extensions: ["*", ".js", ".jsx", ".ts"] },
     output: {
         path: path.resolve(__dirname, "wwwroot/dist"),
-        publicPath: "/dist",
+        publicPath: "/",
         filename: "bundle.js" //react style
 
     },
