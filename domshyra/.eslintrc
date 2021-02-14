@@ -17,6 +17,7 @@
   ],
   "env": { "browser": true },
   "rules": {
+    "no-unused-vars": "warn",
     "linebreak-style": [ "error", "windows" ],
     "indent": [
       "warn",

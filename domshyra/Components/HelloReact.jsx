@@ -1,7 +1,9 @@
 ﻿import React from "react";
 
-function HelloReact() {
-    return (
-        <div>Hello React</div>
-    );   
+export default class HelloReact extends React.Component {
+    render() {
+        return (
+            <div>Hello React</div>
+        );
+    }
 }
