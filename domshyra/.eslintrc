@@ -4,12 +4,18 @@
     "react-hooks"
   ],
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended"
     //"plugin:prettier/recommended",
     //"prettier/react"
   ],
+  "env": { "browser": true },
   "rules": {
     "linebreak-style": [ "error", "windows" ],
     "indent": [
