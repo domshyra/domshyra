@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=development --watch",
     "release": "webpack --mode=production",
-    "publish": "npm run release && dotnet publish -c Release"
+    "publish": "npm run release && dotnet publish -c Release",
+    "fix": "eslint --fix"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
