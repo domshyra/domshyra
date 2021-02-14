@@ -51,7 +51,7 @@ var HelloReact = /*#__PURE__*/function (_React$Component) {
   _createClass(HelloReact, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Hello Andy");
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Hello React");
     }
   }]);
 
