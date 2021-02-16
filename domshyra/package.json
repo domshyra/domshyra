@@ -55,6 +55,9 @@
   },
   "homepage": "https://github.com/domshyra/domshyra#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "bootstrap": "^4.6.0",
     "core-js": "^3.8.3",
     "font-awesome": "^4.7.0",
