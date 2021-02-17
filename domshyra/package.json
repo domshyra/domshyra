@@ -60,7 +60,6 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "bootstrap": "^4.6.0",
     "core-js": "^3.8.3",
-    "font-awesome": "^4.7.0",
     "install-peerdeps": "^3.0.3",
     "jquery": "^3.5.1"
   },

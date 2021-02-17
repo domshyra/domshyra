@@ -27,7 +27,16 @@
         line-height: 1.2;
     }
 </style>
-
+<script>
+    if (window.jQuery) {
+        console.log("Yes there's jQuery!");
+    } else {
+        console.log("Nope, it's not on this site...");
+    };
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
 <div class="container">
     <div class="d-none d-xl-block">
         <section class="jumbotron text-center bg-light">

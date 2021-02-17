@@ -2,6 +2,7 @@
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
+const jquery = require('jquery');
 
 module.exports = {
     //where react is getting is elements to load into the DOM
@@ -50,8 +51,9 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
-            $: "./node_modules/jquery",
-            jQuery: "./node_modules/jquery",
+            $: "jquery",
+            jQuery: "jquery",
+            jquery: 'jquery'
         }),
         new ESLintPlugin({ 
             extensions: [".js", ".jsx"] 
