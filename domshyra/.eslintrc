@@ -1,4 +1,7 @@
 {
+  "globals": {
+    "$": true
+  },
   "plugins": [
     "react",
     "react-hooks"

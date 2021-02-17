@@ -1,38 +1,63 @@
 ﻿const path = require("path");
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
+const jquery = require('jquery');
 
 module.exports = {
-    entry: "./Components/index.jsx", //where react is getting is elements to load into the DOM
+    //where react is getting is elements to load into the DOM
+    entry: "./Components/index.jsx", 
     devtool: 'source-map',
     module: {
         rules: [
-            //might need to have 'use: ["babel-loader", "eslint-loader"],' included but dunno yet
             {
                 test: /\.(js|jsx)$/,
                 exclude: /(node_modules)/,
                 use: ["babel-loader", "eslint-loader"]
             },
             {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader"]
-            },
+                test: /\.(scss)$/,
+                use: [
+                    // inject CSS to page
+                    { loader: 'style-loader' },
+                    // translates CSS into CommonJS modules
+                    { loader: 'css-loader' },
 
-            //TODO: add sass stuff here
+                    // Run postcss actions
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            // `postcssOptions` is needed for postcss 8.x;
+                            postcssOptions: {
+                                // postcss plugins, can be exported to postcss.config.js
+                                plugins: function () {
+                                    return [ require('autoprefixer') ];
+                                }
+                            }
+                        }
+                    },
+                    // compiles Sass to CSS
+                    { loader: 'sass-loader' }
+                ]
+            },
+            {
+                test: /\.(svg|eot|woff|woff2|ttf)$/,
+                use: ['file-loader']
+            }
         ]
     },
     resolve: { extensions: ["*", ".js", ".jsx"] },
     output: {
         path: path.resolve(__dirname, "wwwroot/js"),
         publicPath: "js/",
-        filename: "bundle.js" //todo: figure this out
+        filename: "bundle.js"
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new MiniCssExtractPlugin({
-            filename: "css/bundle.css" 
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            jquery: 'jquery'
         }),
         new ESLintPlugin({ 
             extensions: [".js", ".jsx"] 

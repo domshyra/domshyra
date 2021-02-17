@@ -13,13 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\lib\font-awesome\**" />
-    <Content Remove="wwwroot\lib\font-awesome\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\**" />
-    <None Remove="wwwroot\lib\font-awesome\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="prettierrc.ts" />
     <None Remove="webpack.config.js" />
   </ItemGroup>
@@ -46,6 +39,19 @@
     <Content Update="wwwroot\images\aboutMe.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Styles\fontawesome\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\webfonts\fa-solid-900.woff2" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
