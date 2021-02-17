@@ -1,13 +1,14 @@
 ﻿import React from "react";
 import ReactDOM from "react-dom";
 
-//css
+//js
 import "bootstrap"
+import "@popperjs/core"
+
+//styles
 import "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/react-fontawesome";
-
-//styles
 import "../Styles/scss/main.scss"
 
 //components

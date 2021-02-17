@@ -27,7 +27,7 @@
     </environment>*@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-
+    <script src="~/js/bundle.js"></script>
 </head>
 <body>
     <header class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -107,8 +107,13 @@
     </div>
 </body>
 </html>
-<script src="~/js/bundle.js"></script>
+
 <script>
+    if (window.jQuery) {
+        console.log("Yes there's jQuery!");
+    } else {
+        console.log("Nope, it's not on this site...");
+    };
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
