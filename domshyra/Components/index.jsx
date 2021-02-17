@@ -15,6 +15,6 @@ import "@fortawesome/react-fontawesome";
 import "../Styles/scss/main.scss"
 
 //components
-import HelloReact from "./HelloReact";
+//import HelloReact from "./HelloReact";
 
 

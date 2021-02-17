@@ -2,6 +2,7 @@
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
+const jquery = require('jquery');
 
 module.exports = {
     //where react is getting is elements to load into the DOM
