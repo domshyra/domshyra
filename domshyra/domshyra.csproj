@@ -20,8 +20,7 @@
   <ItemGroup>
     <Content Include=".babelrc" />
     <Content Include=".eslintrc" />
-    <Content Include="Components\HelloReact.jsx" />
-    <Content Include="Components\index.jsx" />
+    <Content Include="Components\main.jsx" />
     <Content Include="webpack.config.js" />
   </ItemGroup>
 
