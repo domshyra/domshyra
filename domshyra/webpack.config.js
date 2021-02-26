@@ -58,9 +58,9 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery",
-            jquery: 'jquery'
+            $: jquery,
+            jQuery: jquery,
+            jquery: jquery
         }),
         new ESLintPlugin({ 
             extensions: [".js", ".jsx"] 
