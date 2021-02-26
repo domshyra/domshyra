@@ -6,7 +6,10 @@ const jquery = require('jquery');
 
 module.exports = {
     //where react is getting is elements to load into the DOM
-    entry: "./Components/index.jsx", 
+    entry: {
+        main: './Components/main.jsx',
+        radio: './Components/radio.jsx',
+    },
     devtool: 'source-map',
     module: {
         rules: [
@@ -50,7 +53,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "wwwroot/js"),
         publicPath: "js/",
-        filename: "bundle.js"
+        filename: "[name].bundle.js"
     },
     plugins: [
         new CleanWebpackPlugin(),
