@@ -38,6 +38,7 @@ CardElementDesktop.propTypes = {
     ImageURL: PropTypes.string,
     radio: PropTypes.object
 };
+
 const CardElementMobile = (props) => {
     const radio = props.radio;
     return (
@@ -78,15 +79,23 @@ CardBody.propTypes = {
     CrossFadeText: PropTypes.string
 };
 
-
-const ShowAppleMusic = (props) => {
-    const showAppleMusic = props.info.AppleMusicLink != null;
-    if (showAppleMusic) {
-        return (<MusicFooterLink direction="right" title="Apple Music" icon="fa-itunes-note" link={props.info.AppleMusicLink} />);
-    }
+const CardFooter = (props) => {
+    const details = props.details;
+    return (
+        <div className="card-footer">
+            <div className="row">
+                <div className="col-6">
+                    <MusicFooterLink direction="left" title="Spotify" icon="fa-spotify" link={details.SpotifyMusicLink} />
+                </div>
+                <div className="col-6">
+                    <ShowAppleMusic info={details} />
+                </div>
+            </div>
+        </div>
+    );
 }
-ShowAppleMusic.propTypes = {
-    AppleMusicLink: PropTypes.string
+CardFooter.propTypes = {
+    details: PropTypes.object
 };
 
 const MusicFooterLink = (props) => {
@@ -107,24 +116,16 @@ MusicFooterLink.propTypes = {
     direction: PropTypes.string,
 };
 
-const CardFooter = (props) => {
-    const details = props.details;
-    return (
-        <div className="card-footer">
-            <div className="row">
-                <div className="col-6">
-                    <MusicFooterLink direction="left" title="Spotify" icon="fa-spotify" link={details.SpotifyMusicLink} />
-                </div>
-                <div className="col-6">
-                    <ShowAppleMusic info={details} />
-                </div>
-            </div>
-        </div>
-    );
+const ShowAppleMusic = (props) => {
+    const showAppleMusic = props.info.AppleMusicLink != null;
+    if (showAppleMusic) {
+        return (<MusicFooterLink direction="right" title="Apple Music" icon="fa-itunes-note" link={props.info.AppleMusicLink} />);
+    }
 }
-CardFooter.propTypes = {
-    details: PropTypes.object
+ShowAppleMusic.propTypes = {
+    AppleMusicLink: PropTypes.string
 };
+
 const CrossFadeMessage = () => {
     const crossFadeText = "For best radio experience use ";
     const crossFadeLabel = "Crossfade recommend at 6 seconds or more";

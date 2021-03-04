@@ -104,21 +104,28 @@ CardBody.propTypes = {
   CrossFadeText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
 };
 
-var ShowAppleMusic = function ShowAppleMusic(props) {
-  var showAppleMusic = props.info.AppleMusicLink != null;
-
-  if (showAppleMusic) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MusicFooterLink, {
-      direction: "right",
-      title: "Apple Music",
-      icon: "fa-itunes-note",
-      link: props.info.AppleMusicLink
-    });
-  }
+var CardFooter = function CardFooter(props) {
+  var details = props.details;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "card-footer"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MusicFooterLink, {
+    direction: "left",
+    title: "Spotify",
+    icon: "fa-spotify",
+    link: details.SpotifyMusicLink
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ShowAppleMusic, {
+    info: details
+  }))));
 };
 
-ShowAppleMusic.propTypes = {
-  AppleMusicLink: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
+CardFooter.propTypes = {
+  details: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
 };
 
 var MusicFooterLink = function MusicFooterLink(props) {
@@ -144,28 +151,21 @@ MusicFooterLink.propTypes = {
   direction: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
 };
 
-var CardFooter = function CardFooter(props) {
-  var details = props.details;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "card-footer"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "col-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MusicFooterLink, {
-    direction: "left",
-    title: "Spotify",
-    icon: "fa-spotify",
-    link: details.SpotifyMusicLink
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "col-6"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ShowAppleMusic, {
-    info: details
-  }))));
+var ShowAppleMusic = function ShowAppleMusic(props) {
+  var showAppleMusic = props.info.AppleMusicLink != null;
+
+  if (showAppleMusic) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MusicFooterLink, {
+      direction: "right",
+      title: "Apple Music",
+      icon: "fa-itunes-note",
+      link: props.info.AppleMusicLink
+    });
+  }
 };
 
-CardFooter.propTypes = {
-  details: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
+ShowAppleMusic.propTypes = {
+  AppleMusicLink: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
 };
 
 var CrossFadeMessage = function CrossFadeMessage() {
