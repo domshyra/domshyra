@@ -40,16 +40,18 @@ var CardElementDesktop = function CardElementDesktop(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "row no-gutters"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "col-6"
+    className: "col-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
     src: radio.ImageURL,
     className: "card-img px-2 py-2 playlist-img",
     alt: "..."
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "col-6"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
     details: radio
-  }))));
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardFooter, {
+    details: radio
+  })));
 };
 
 CardElementDesktop.propTypes = {
@@ -68,6 +70,8 @@ var CardElementMobile = function CardElementMobile(props) {
     className: "card-img-top px-3 pt-3",
     alt: "..."
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
+    details: radio
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardFooter, {
     details: radio
   })));
 };
@@ -89,7 +93,7 @@ var CardBody = function CardBody(props) {
     className: "mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     className: "mb-0 font-weight-light"
-  }, details.TrackAndFollowerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioFooter, null)));
+  }, details.TrackAndFollowerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFadeMessage, null)));
 };
 
 CardBody.propTypes = {
@@ -100,10 +104,74 @@ CardBody.propTypes = {
   CrossFadeText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
 };
 
-var RadioFooter = function RadioFooter() {
+var ShowAppleMusic = function ShowAppleMusic(props) {
+  var showAppleMusic = props.info.AppleMusicLink != null;
+
+  if (showAppleMusic) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MusicFooterLink, {
+      direction: "right",
+      title: "Apple Music",
+      icon: "fa-itunes-note",
+      link: props.info.AppleMusicLink
+    });
+  }
+};
+
+ShowAppleMusic.propTypes = {
+  AppleMusicLink: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
+};
+
+var MusicFooterLink = function MusicFooterLink(props) {
+  var titleText = "Open in ".concat(props.title);
+  var imgClassName = "card-icon fab ".concat(props.icon);
+  var direction = "float-".concat(props.direction);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+    className: direction,
+    href: props.link,
+    title: titleText,
+    "aria-label": titleText,
+    "data-toggle": "tooltip",
+    "data-placement": "bottom"
+  }, props.title, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+    className: imgClassName
+  }));
+};
+
+MusicFooterLink.propTypes = {
+  title: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
+  icon: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
+  link: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
+  direction: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
+};
+
+var CardFooter = function CardFooter(props) {
+  var details = props.details;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "card-footer"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MusicFooterLink, {
+    direction: "left",
+    title: "Spotify",
+    icon: "fa-spotify",
+    link: details.SpotifyMusicLink
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ShowAppleMusic, {
+    info: details
+  }))));
+};
+
+CardFooter.propTypes = {
+  details: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
+};
+
+var CrossFadeMessage = function CrossFadeMessage() {
   var crossFadeText = "For best radio experience use ";
   var crossFadeLabel = "Crossfade recommend at 6 seconds or more";
-  var spotifyText = "Spotiy's crossfade feature";
+  var spotifyText = "Spotify's crossfade feature";
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
     className: "text-muted font-weight-light"
   }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {

@@ -50,16 +50,14 @@
         <h2 class="pb-2">Radio stations</h2>
     </div>
 
-    <div class="row">
-        <div id="radio-content"></div>
-    </div>
+    <div id="radio-content"></div>
 
-    @*<div class="row">
+    <div class="row">
         @foreach (PlaylistsModel playlist in Model)
         {
             <div class="col-12 col-xl-6 mb-2" title="@playlist.Title" aria-label="@playlist.Title" id="@playlist.AnchorId">
                 <partial name="_PlaylistCardPartial" model="playlist" />
             </div>
         }
-    </div>*@
+    </div>
 </div>
