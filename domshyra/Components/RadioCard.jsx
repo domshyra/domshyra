@@ -12,6 +12,25 @@ const RadioCard = (props) => {
 
 export default RadioCard;
 
+
+
+const CrossFade = () => {
+    const crossFadeText = "For best radio experience use "
+    return (
+        <footer><small className="text-muted font-weight-light">
+            {crossFadeText} 
+            <a href='https://support.spotify.com/us/article/crossfade-feature/'
+                title='Crossfade recommened at 6 seconds or more'
+                aria-label='Crossfade from spotify recommened at 6 seconds or more'
+                data-toggle='tooltip' data-placement='bottom'>
+                Spotiy's crossfade feature
+            </a>.
+        </small>
+        </footer>
+          
+    )
+}
+
 const CardElementDesktop = (props) => {
     const radio = props.radio.radio;
     return (
@@ -58,7 +77,7 @@ const CardBody = (props) => {
             <p className="card-text">{details.Description}</p>
             <blockquote className="mb-0">
                 <p className="mb-0 font-weight-light">{details.TrackAndFollowerText}</p>
-                <footer><small className="text-muted font-weight-light">{details.CrossFadeText}</small></footer>
+                <CrossFade />
             </blockquote>
 
         </div>

@@ -28,6 +28,19 @@ var RadioCard = function RadioCard(props) {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RadioCard);
 
+var CrossFade = function CrossFade() {
+  var crossFadeText = "For best radio experience use ";
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
+    className: "text-muted font-weight-light"
+  }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+    href: "https://support.spotify.com/us/article/crossfade-feature/",
+    title: "Crossfade recommened at 6 seconds or more",
+    "aria-label": "Crossfade from spotify recommened at 6 seconds or more",
+    "data-toggle": "tooltip",
+    "data-placement": "bottom"
+  }, "Spotiy's crossfade feature"), "."));
+};
+
 var CardElementDesktop = function CardElementDesktop(props) {
   var radio = props.radio.radio;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -86,9 +99,7 @@ var CardBody = function CardBody(props) {
     className: "mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     className: "mb-0 font-weight-light"
-  }, details.TrackAndFollowerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
-    className: "text-muted font-weight-light"
-  }, details.CrossFadeText))));
+  }, details.TrackAndFollowerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFade, null)));
 };
 
 CardBody.propTypes = {
