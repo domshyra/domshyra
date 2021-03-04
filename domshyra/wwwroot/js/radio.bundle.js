@@ -29,7 +29,7 @@ var RadioCard = function RadioCard(props) {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RadioCard);
 
 var CardElementDesktop = function CardElementDesktop(props) {
-  var radio = props.radio;
+  var radio = props.radio.radio;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-none d-xl-block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -45,7 +45,7 @@ var CardElementDesktop = function CardElementDesktop(props) {
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "col-md-8 col-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
-    details: props
+    details: radio
   }))));
 };
 
@@ -55,6 +55,7 @@ CardElementDesktop.propTypes = {
 };
 
 var CardElementMobile = function CardElementMobile(props) {
+  var radio = props.radio.radio;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-xl-none"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -69,7 +70,8 @@ var CardElementMobile = function CardElementMobile(props) {
 };
 
 CardElementMobile.propTypes = {
-  ImageURL: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
+  ImageURL: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
+  radio: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
 };
 
 var CardBody = function CardBody(props) {

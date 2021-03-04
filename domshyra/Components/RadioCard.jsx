@@ -13,7 +13,7 @@ const RadioCard = (props) => {
 export default RadioCard;
 
 const CardElementDesktop = (props) => {
-    const radio = props.radio;
+    const radio = props.radio.radio;
     return (
         <div className="d-none d-xl-block">
             <div className="card mb-2">
@@ -23,7 +23,7 @@ const CardElementDesktop = (props) => {
                     </div>
                 </div>
                 <div className="col-md-8 col-6">
-                    <CardBody details={props} />
+                    <CardBody details={radio} />
                 </div>
             </div>
         </div>
@@ -34,6 +34,7 @@ CardElementDesktop.propTypes = {
     radio: PropTypes.object
 };
 const CardElementMobile = (props) => {
+    const radio = props.radio.radio;
     return (
         <div className="d-xl-none">
             <div className="card mb-3 ">
@@ -44,7 +45,8 @@ const CardElementMobile = (props) => {
     );
 }
 CardElementMobile.propTypes = {
-    ImageURL: PropTypes.string
+    ImageURL: PropTypes.string,
+    radio: PropTypes.object
 };
 
 
