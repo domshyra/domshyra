@@ -28,6 +28,9 @@
         line-height: 1.2;
     }
 </style>
+<script>
+    const radioURL = '@Url.Action("GetRadios", "Playlists")';
+</script>
 <div class="container">
     <div class="d-none d-xl-block">
         <section class="jumbotron text-center bg-light">
@@ -48,17 +51,15 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
-            <!--Adds HelloReact element here-->
-            <div id="radio-content"></div>
-        </div>
+        <div id="radio-content"></div>
     </div>
-    <div class="row">
+
+    @*<div class="row">
         @foreach (PlaylistsModel playlist in Model)
         {
             <div class="col-12 col-xl-6 mb-2" title="@playlist.Title" aria-label="@playlist.Title" id="@playlist.AnchorId">
                 <partial name="_PlaylistCardPartial" model="playlist" />
             </div>
         }
-    </div>
+    </div>*@
 </div>
