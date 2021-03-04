@@ -1,6 +1,8 @@
 ﻿import React from "react";
 import ReactDOM from "react-dom";
 import RadioCard from "./RadioCard.jsx"
+import PropTypes from "prop-types";
+
 
 const testData = [{
     AnchorId: "ambient-album-radio",
@@ -17,15 +19,24 @@ const testData = [{
 }];
 
 const Radios = (props) => {
-
-
-    const radioItems = props.playlists.map((radio) =>
-        <RadioCard radio={radio} key={radio.AnchorId} />
+    const playlists = props.playlists;
+    const radioItems = playlists.map((radio) =>
+        <div className="col-12 col-xl-6 mb-2" title={radio.Title} aria-label={radio.Title} id={radio.AnchorId} key={radio.Title}>
+            <RadioCard radio={radio}  />
+        </div>
     );
     
 
-    return (radioItems);
+    return (
+        <div className="row">
+            {radioItems}
+        </div>
+    );
 };
+Radios.propTypes = {
+    playlists: PropTypes.array
+};
+
 
 ReactDOM.render(<Radios playlists={testData} />, document.getElementById("radio-content"));
 

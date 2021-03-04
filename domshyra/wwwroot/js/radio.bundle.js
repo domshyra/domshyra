@@ -20,29 +20,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var RadioCard = function RadioCard(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardElementDesktop, {
-    radio: props
+    radio: props.radio
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardElementMobile, {
-    radio: props
+    radio: props.radio
   }));
 };
 
+RadioCard.propTypes = {
+  radio: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RadioCard);
 
-var CrossFade = function CrossFade() {
-  var crossFadeText = "For best radio experience use ";
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
-    className: "text-muted font-weight-light"
-  }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
-    href: "https://support.spotify.com/us/article/crossfade-feature/",
-    title: "Crossfade recommened at 6 seconds or more",
-    "aria-label": "Crossfade from spotify recommened at 6 seconds or more",
-    "data-toggle": "tooltip",
-    "data-placement": "bottom"
-  }, "Spotiy's crossfade feature"), "."));
-};
-
 var CardElementDesktop = function CardElementDesktop(props) {
-  var radio = props.radio.radio;
+  var radio = props.radio;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-none d-xl-block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -56,7 +46,7 @@ var CardElementDesktop = function CardElementDesktop(props) {
     className: "card-img px-2 py-2 playlist-img",
     alt: "..."
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "col-md-8 col-6"
+    className: "col-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
     details: radio
   }))));
@@ -68,17 +58,17 @@ CardElementDesktop.propTypes = {
 };
 
 var CardElementMobile = function CardElementMobile(props) {
-  var radio = props.radio.radio;
+  var radio = props.radio;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-xl-none"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "card mb-3 "
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-    src: props.ImageURL,
+    src: radio.ImageURL,
     className: "card-img-top px-3 pt-3",
     alt: "..."
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
-    details: props
+    details: radio
   })));
 };
 
@@ -99,7 +89,7 @@ var CardBody = function CardBody(props) {
     className: "mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     className: "mb-0 font-weight-light"
-  }, details.TrackAndFollowerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFade, null)));
+  }, details.TrackAndFollowerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioFooter, null)));
 };
 
 CardBody.propTypes = {
@@ -108,6 +98,21 @@ CardBody.propTypes = {
   Title: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
   TrackAndFollowerText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
   CrossFadeText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
+};
+
+var RadioFooter = function RadioFooter() {
+  var crossFadeText = "For best radio experience use ";
+  var crossFadeLabel = "Crossfade recommend at 6 seconds or more";
+  var spotifyText = "Spotiy's crossfade feature";
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
+    className: "text-muted font-weight-light"
+  }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+    href: "https://support.spotify.com/us/article/crossfade-feature/",
+    title: crossFadeLabel,
+    "aria-label": crossFadeLabel,
+    "data-toggle": "tooltip",
+    "data-placement": "bottom"
+  }, spotifyText), "."));
 };
 
 /***/ }),
@@ -31179,6 +31184,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var _RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RadioCard.jsx */ "./Components/RadioCard.jsx");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -31197,18 +31205,59 @@ var testData = [{
 }];
 
 var Radios = function Radios(props) {
-  var radioItems = props.playlists.map(function (radio) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
-      radio: radio,
-      key: radio.AnchorId
-    });
+  var playlists = props.playlists;
+  var radioItems = playlists.map(function (radio) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "col-12 col-xl-6 mb-2",
+      title: radio.Title,
+      "aria-label": radio.Title,
+      id: radio.AnchorId,
+      key: radio.Title
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+      radio: radio
+    }));
   });
-  return radioItems;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "row"
+  }, radioItems);
 };
 
+Radios.propTypes = {
+  playlists: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().array)
+};
 react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
   playlists: testData
 }), document.getElementById("radio-content"));
+/*
+ 
+ import React from "react";
+import ReactDOM from "react-dom";
+import RadioCard from "./RadioCard.jsx"
+
+
+
+const Radios = (props) => {
+    global radioURL 
+eslint no-undef: "error"
+
+
+
+
+return (
+    fetch(radioURL)
+        .then(response => response.json())
+        .then(spotifyPlaylists =>
+            spotifyPlaylists.map((radio) =>
+                console.log(radio)
+            )
+        )
+);
+};
+
+ReactDOM.render(<Radios />, document.getElementById("radio-content"));
+
+
+ */
 })();
 
 /******/ })()
