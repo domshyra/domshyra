@@ -1,6 +1,7 @@
 ﻿using domshyra.Interfaces;
 using domshyra.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,5 +42,9 @@ namespace domshyra.Controllers
         //    return View(playlists);
         //}
 
+        public async Task<string> GetRadios()
+        {
+            return JsonConvert.SerializeObject(await _spotifyProivder.GetPlaylists());
+        }
     }
 }
