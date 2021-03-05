@@ -30,6 +30,8 @@
 </style>
 <script>
     const radioURL = '@Url.Action("GetRadios", "Playlists")';
+    const spotifyData = JSON.parse('@Html.Raw(Json.Serialize(Model))');
+
 </script>
 <div class="container">
     <div class="d-none d-xl-block">
@@ -52,12 +54,12 @@
 
     <div id="radio-content"></div>
 
-    <div class="row">
+    @*<div class="row">
         @foreach (PlaylistsModel playlist in Model)
         {
             <div class="col-12 col-xl-6 mb-2" title="@playlist.Title" aria-label="@playlist.Title" id="@playlist.AnchorId">
                 <partial name="_PlaylistCardPartial" model="playlist" />
             </div>
         }
-    </div>
+    </div>*@
 </div>

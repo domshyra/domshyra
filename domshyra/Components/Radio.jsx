@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import RadioCard from "./RadioCard.jsx"
 import PropTypes from "prop-types";
@@ -37,39 +37,29 @@ Radios.propTypes = {
     playlists: PropTypes.array
 };
 
+/*TODO get this to work as a promise too*/
+const App = (props) => {
+    const [playlists, setplaylists] = useState(null);
 
-ReactDOM.render(<Radios playlists={testData} />, document.getElementById("radio-content"));
+    async function fetchPlaylistData() {
+        /*global radioURL*/
+        /*eslint no-undef: "error"*/
+        const response = await fetch(radioURL);
+        setplaylists(await response.json());
+    }
 
+    useEffect(() => {
+        fetchPlaylistData(props);
+    }, [props]);
 
+    if (!playlists) {
+        return "loading...";
+    }
 
+    
+    return (<Radios playlists={playlists} />);
+}
 
-/*
- 
- import React from "react";
-import ReactDOM from "react-dom";
-import RadioCard from "./RadioCard.jsx"
-
-
-
-const Radios = (props) => {
-    global radioURL 
-eslint no-undef: "error"
-
-
-
-
-return (
-    fetch(radioURL)
-        .then(response => response.json())
-        .then(spotifyPlaylists =>
-            spotifyPlaylists.map((radio) =>
-                console.log(radio)
-            )
-        )
-);
-};
-
-ReactDOM.render(<Radios />, document.getElementById("radio-content"));
-
-
- */
+/*global spotifyData*/
+/*eslint no-undef: "error"*/
+ReactDOM.render(<Radios playlists={spotifyData} />, document.getElementById("radio-content"));

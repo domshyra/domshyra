@@ -121,9 +121,10 @@ const ShowAppleMusic = (props) => {
     if (showAppleMusic) {
         return (<MusicFooterLink direction="right" title="Apple Music" icon="fa-itunes-note" link={props.info.AppleMusicLink} />);
     }
+    return (null);
 }
 ShowAppleMusic.propTypes = {
-    AppleMusicLink: PropTypes.string
+    info: PropTypes.object
 };
 
 const CrossFadeMessage = () => {

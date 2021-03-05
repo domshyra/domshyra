@@ -162,10 +162,12 @@ var ShowAppleMusic = function ShowAppleMusic(props) {
       link: props.info.AppleMusicLink
     });
   }
+
+  return null;
 };
 
 ShowAppleMusic.propTypes = {
-  AppleMusicLink: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
+  info: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
 };
 
 var CrossFadeMessage = function CrossFadeMessage() {
@@ -31254,6 +31256,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RadioCard.jsx */ "./Components/RadioCard.jsx");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -31293,39 +31311,68 @@ var Radios = function Radios(props) {
 Radios.propTypes = {
   playlists: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().array)
 };
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
-  playlists: testData
-}), document.getElementById("radio-content"));
-/*
- 
- import React from "react";
-import ReactDOM from "react-dom";
-import RadioCard from "./RadioCard.jsx"
+/*TODO get this to work as a promise too*/
 
+var App = function App(props) {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      playlists = _useState2[0],
+      setplaylists = _useState2[1];
 
+  function fetchPlaylistData() {
+    return _fetchPlaylistData.apply(this, arguments);
+  }
 
-const Radios = (props) => {
-    global radioURL 
-eslint no-undef: "error"
+  function _fetchPlaylistData() {
+    _fetchPlaylistData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var response;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch(radioURL);
 
+            case 2:
+              response = _context.sent;
+              _context.t0 = setplaylists;
+              _context.next = 6;
+              return response.json();
 
+            case 6:
+              _context.t1 = _context.sent;
+              (0, _context.t0)(_context.t1);
 
+            case 8:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _fetchPlaylistData.apply(this, arguments);
+  }
 
-return (
-    fetch(radioURL)
-        .then(response => response.json())
-        .then(spotifyPlaylists =>
-            spotifyPlaylists.map((radio) =>
-                console.log(radio)
-            )
-        )
-);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    fetchPlaylistData(props);
+  }, [props]);
+
+  if (!playlists) {
+    return "loading...";
+  }
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
+    playlists: playlists
+  });
 };
+/*global spotifyData*/
 
-ReactDOM.render(<Radios />, document.getElementById("radio-content"));
+/*eslint no-undef: "error"*/
 
 
- */
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
+  playlists: spotifyData
+}), document.getElementById("radio-content"));
 })();
 
 /******/ })()
