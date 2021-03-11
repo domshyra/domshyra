@@ -22,8 +22,7 @@ Radios.propTypes = {
     playlists: PropTypes.array
 };
 
-/*TODO get this to work as a promise too*/
-const App = (props) => {
+const RadioList = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [playlists, setplaylists] = useState([]);
@@ -55,6 +54,4 @@ const App = (props) => {
     }
 }
 
-/*global spotifyData*/
-/*eslint no-undef: "error"*/
-ReactDOM.render(<App />, document.getElementById("radio-content"));
+ReactDOM.render(<RadioList />, document.getElementById("radio-content"));

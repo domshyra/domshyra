@@ -31294,9 +31294,8 @@ var Radios = function Radios(props) {
 Radios.propTypes = {
   playlists: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().array)
 };
-/*TODO get this to work as a promise too*/
 
-var App = function App(props) {
+var RadioList = function RadioList() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
       error = _useState2[0],
@@ -31338,12 +31337,8 @@ var App = function App(props) {
     });
   }
 };
-/*global spotifyData*/
 
-/*eslint no-undef: "error"*/
-
-
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(App, null), document.getElementById("radio-content"));
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioList, null), document.getElementById("radio-content"));
 })();
 
 /******/ })()
