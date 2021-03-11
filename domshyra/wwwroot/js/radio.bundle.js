@@ -31256,10 +31256,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RadioCard.jsx */ "./Components/RadioCard.jsx");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -31303,63 +31299,51 @@ Radios.propTypes = {
 var App = function App(props) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
-      playlists = _useState2[0],
-      setplaylists = _useState2[1];
+      error = _useState2[0],
+      setError = _useState2[1];
 
-  function fetchPlaylistData() {
-    return _fetchPlaylistData.apply(this, arguments);
-  }
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      isLoaded = _useState4[0],
+      setIsLoaded = _useState4[1];
 
-  function _fetchPlaylistData() {
-    _fetchPlaylistData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var response;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return fetch(radioURL);
-
-            case 2:
-              response = _context.sent;
-              _context.t0 = setplaylists;
-              _context.next = 6;
-              return response.json();
-
-            case 6:
-              _context.t1 = _context.sent;
-              (0, _context.t0)(_context.t1);
-
-            case 8:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-    return _fetchPlaylistData.apply(this, arguments);
-  }
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      playlists = _useState6[0],
+      setplaylists = _useState6[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    fetchPlaylistData(props);
-  }, [props]);
+    /*global radioURL*/
 
-  if (!playlists) {
-    return "loading...";
+    /*eslint no-undef: "error"*/
+    fetch(radioURL).then(function (res) {
+      return res.json();
+    }).then(function (result) {
+      setIsLoaded(true);
+      setplaylists(result);
+      console.log(playlists);
+    }, function (error) {
+      setIsLoaded(true);
+      setError(error);
+    });
+  }, []);
+
+  if (error) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Error: ", error.message);
+  } else if (!isLoaded) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Loading...");
+  } else {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
+      playlists: playlists
+    });
   }
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
-    playlists: playlists
-  });
 };
 /*global spotifyData*/
 
 /*eslint no-undef: "error"*/
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
-  playlists: spotifyData
-}), document.getElementById("radio-content"));
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(App, null), document.getElementById("radio-content"));
 })();
 
 /******/ })()

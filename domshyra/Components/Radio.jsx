@@ -24,28 +24,37 @@ Radios.propTypes = {
 
 /*TODO get this to work as a promise too*/
 const App = (props) => {
-    const [playlists, setplaylists] = useState(null);
-
-    async function fetchPlaylistData() {
-        /*global radioURL*/
-        /*eslint no-undef: "error"*/
-        const response = await fetch(radioURL);
-        setplaylists(await response.json());
-    }
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [playlists, setplaylists] = useState([]);
 
     useEffect(() => {
-        fetchPlaylistData(props);
-    }, [props]);
+        /*global radioURL*/
+        /*eslint no-undef: "error"*/
+        fetch(radioURL)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setIsLoaded(true);
+                    setplaylists(result);
+                    console.log(playlists);
+                },
+                (error) => {
+                    setIsLoaded(true);
+                    setError(error);
+                }
+            )
+    }, [])
 
-    if (!playlists) {
-        //TODO: have a blank loading react page with test data be gray fields
-        return "loading...";
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+        return <div>Loading...</div>;
+    } else {
+        return <Radios playlists={playlists} />;
     }
-
-    
-    return (<Radios playlists={playlists} />);
 }
 
 /*global spotifyData*/
 /*eslint no-undef: "error"*/
-ReactDOM.render(<Radios playlists={spotifyData} />, document.getElementById("radio-content"));
+ReactDOM.render(<App />, document.getElementById("radio-content"));

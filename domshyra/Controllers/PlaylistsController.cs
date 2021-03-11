@@ -1,8 +1,6 @@
 ﻿using domshyra.Interfaces;
-using domshyra.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace domshyra.Controllers
@@ -27,21 +25,14 @@ namespace domshyra.Controllers
         /// Playlist page
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<PlaylistsModel> playlists = await _spotifyProivder.GetPlaylists();
-
-            return View(playlists);
+            return View();
         }
-        //TODO
-        //[Route("Radio")]
-        //public async Task<IActionResult> Radio()
-        //{
-        //    List<PlaylistsModel> playlists = await _spotifyProivder.GetPlaylists();
-
-        //    return View(playlists);
-        //}
-
+        /// <summary>
+        /// API call to get the playlist data
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> GetRadios()
         {
             return JsonConvert.SerializeObject(await _spotifyProivder.GetPlaylists());
