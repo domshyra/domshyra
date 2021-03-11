@@ -38,6 +38,7 @@ const App = (props) => {
     }, [props]);
 
     if (!playlists) {
+        //TODO: have a blank loading react page with test data be gray fields
         return "loading...";
     }
 
