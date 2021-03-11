@@ -64,7 +64,8 @@
     "core-js": "^3.8.3",
     "file-loader": "^6.2.0",
     "install-peerdeps": "^3.0.3",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "react-loading-skeleton": "^2.2.0"
   },
   "keywords": []
 }

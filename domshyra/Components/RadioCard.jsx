@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import PropTypes from "prop-types";
+import Skeleton from "react-loading-skeleton";
 
 
 const RadioCard = (props) => {
@@ -61,8 +62,8 @@ const CardBody = (props) => {
     const details = props.details;
     return (
         <div className="card-body">
-            <h5 className="card-title font-weight-bold">{details.Title}</h5>
-            <p className="card-text">{details.Description}</p>
+            <h5 className="card-title font-weight-bold">{details.Title || <Skeleton />}</h5>
+            <p className="card-text">{details.Description || <Skeleton count={3} /> }</p>
             <blockquote className="mb-0">
                 <p className="mb-0 font-weight-light">{details.TrackAndFollowerText}</p>
                 <CrossFadeMessage />
