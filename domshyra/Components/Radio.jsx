@@ -49,7 +49,11 @@ const RadioList = () => {
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return <Skeleton count={3} />
+        return (
+            <div className="col-12 col-xl-6 mb-2">
+                <RadioCard radio={null} />
+            </div>
+        );
     } else {
         return <Radios playlists={playlists} />;
     }

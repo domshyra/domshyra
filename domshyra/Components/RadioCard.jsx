@@ -19,12 +19,15 @@ export default RadioCard;
 
 const CardElementDesktop = (props) => {
     const radio = props.radio;
+
+    const image = radio != null ? <img src={radio.ImageURL} className="card-img px-2 py-2 playlist-img" alt="..." /> : <Skeleton className="card-img px-2 py-2 playlist-img" height={100} />;
+
     return (
         <div className="d-none d-xl-block">
             <div className="card mb-2">
                 <div className="row no-gutters">
                     <div className="col-4">
-                        <img src={radio.ImageURL} className="card-img px-2 py-2 playlist-img" alt="..." />
+                        {image}
                     </div>
                     <div className="col-8">
                         <CardBody details={radio} />
@@ -42,10 +45,12 @@ CardElementDesktop.propTypes = {
 
 const CardElementMobile = (props) => {
     const radio = props.radio;
+    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top px-3 pt-3" alt="..." /> : <Skeleton className="card-img-top px-3 pt-3" height={100} />;
+
     return (
         <div className="d-xl-none">
             <div className="card mb-3 ">
-                <img src={radio.ImageURL} className="card-img-top px-3 pt-3" alt="..." />
+                {image}
                 <CardBody details={radio} />
                 <CardFooter details={radio} />
             </div>
@@ -60,12 +65,16 @@ CardElementMobile.propTypes = {
 
 const CardBody = (props) => {
     const details = props.details;
+    const title = details != null ? details.Title : <Skeleton />;
+    const description = details != null ? details.Description : <Skeleton count={3} />;
+    const followerText = details != null ? details.TrackAndFollowerText : <Skeleton width={50} />;
+
     return (
         <div className="card-body">
-            <h5 className="card-title font-weight-bold">{details.Title || <Skeleton />}</h5>
-            <p className="card-text">{details.Description || <Skeleton count={3} /> }</p>
+            <h5 className="card-title font-weight-bold">{title}</h5>
+            <p className="card-text">{description}</p>
             <blockquote className="mb-0">
-                <p className="mb-0 font-weight-light">{details.TrackAndFollowerText}</p>
+                <p className="mb-0 font-weight-light">{followerText}</p>
                 <CrossFadeMessage />
             </blockquote>
         </div>
@@ -82,6 +91,9 @@ CardBody.propTypes = {
 
 const CardFooter = (props) => {
     const details = props.details;
+    if (details == null) {
+        return (null);
+    }
     return (
         <div className="card-footer">
             <div className="row">

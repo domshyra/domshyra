@@ -2176,6 +2176,14 @@ RadioCard.propTypes = {
 
 var CardElementDesktop = function CardElementDesktop(props) {
   var radio = props.radio;
+  var image = radio != null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+    src: radio.ImageURL,
+    className: "card-img px-2 py-2 playlist-img",
+    alt: "..."
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+    className: "card-img px-2 py-2 playlist-img",
+    height: 100
+  });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-none d-xl-block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2184,11 +2192,7 @@ var CardElementDesktop = function CardElementDesktop(props) {
     className: "row no-gutters"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "col-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-    src: radio.ImageURL,
-    className: "card-img px-2 py-2 playlist-img",
-    alt: "..."
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+  }, image), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "col-8"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
     details: radio
@@ -2204,15 +2208,19 @@ CardElementDesktop.propTypes = {
 
 var CardElementMobile = function CardElementMobile(props) {
   var radio = props.radio;
+  var image = radio != null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+    src: radio.ImageURL,
+    className: "card-img-top px-3 pt-3",
+    alt: "..."
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+    className: "card-img-top px-3 pt-3",
+    height: 100
+  });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-xl-none"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "card mb-3 "
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-    src: radio.ImageURL,
-    className: "card-img-top px-3 pt-3",
-    alt: "..."
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
+  }, image, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
     details: radio
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardFooter, {
     details: radio
@@ -2226,19 +2234,24 @@ CardElementMobile.propTypes = {
 
 var CardBody = function CardBody(props) {
   var details = props.details;
+  var title = details != null ? details.Title : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, null);
+  var description = details != null ? details.Description : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+    count: 3
+  });
+  var followerText = details != null ? details.TrackAndFollowerText : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+    width: 50
+  });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", {
     className: "card-title font-weight-bold"
-  }, details.Title || /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     className: "card-text"
-  }, details.Description || /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
-    count: 3
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
+  }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
     className: "mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     className: "mb-0 font-weight-light"
-  }, details.TrackAndFollowerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFadeMessage, null)));
+  }, followerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFadeMessage, null)));
 };
 
 CardBody.propTypes = {
@@ -2251,6 +2264,11 @@ CardBody.propTypes = {
 
 var CardFooter = function CardFooter(props) {
   var details = props.details;
+
+  if (details == null) {
+    return null;
+  }
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "card-footer"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -33633,7 +33651,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RadioCard.jsx */ "./Components/RadioCard.jsx");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_loading_skeleton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-loading-skeleton */ "./node_modules/react-loading-skeleton/lib/index.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -33708,9 +33725,11 @@ var RadioList = function RadioList() {
   if (error) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Error: ", error.message);
   } else if (!isLoaded) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_4__.default, {
-      count: 3
-    });
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      className: "col-12 col-xl-6 mb-2"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+      radio: null
+    }));
   } else {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
       playlists: playlists
