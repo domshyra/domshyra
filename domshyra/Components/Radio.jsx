@@ -2,8 +2,6 @@
 import ReactDOM from "react-dom";
 import RadioCard from "./RadioCard.jsx"
 import PropTypes from "prop-types";
-import Skeleton from "react-loading-skeleton";
-
 
 const Radios = (props) => {
     const playlists = props.playlists;
@@ -36,8 +34,10 @@ const RadioList = () => {
             .then(res => res.json())
             .then(
                 (result) => {
-                    setIsLoaded(true);
-                    setplaylists(result);
+                    setTimeout(function () {
+                        setIsLoaded(true);
+                        setplaylists(result);
+                    }, 2000);
                 },
                 (error) => {
                     setIsLoaded(true);
@@ -50,8 +50,10 @@ const RadioList = () => {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
         return (
-            <div className="col-12 col-xl-6 mb-2">
-                <RadioCard radio={null} />
+            <div className="row">
+                <div className="col-12 col-xl-6 mb-2">
+                    <RadioCard radio={null} />
+                </div>
             </div>
         );
     } else {

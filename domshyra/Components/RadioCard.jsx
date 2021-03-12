@@ -2,6 +2,7 @@
 import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 
+const cardHeight = "18vh";
 
 const RadioCard = (props) => {
     return (
@@ -19,17 +20,18 @@ export default RadioCard;
 
 const CardElementDesktop = (props) => {
     const radio = props.radio;
-
-    const image = radio != null ? <img src={radio.ImageURL} className="card-img px-2 py-2 playlist-img" alt="..." /> : <Skeleton className="card-img px-2 py-2 playlist-img" height={100} />;
+    const image = radio != null ? <img src={radio.ImageURL} className="card-img playlist-img" alt="..." /> : <Skeleton height={"18vh"} />;
 
     return (
         <div className="d-none d-xl-block">
-            <div className="card mb-2">
+            <div className="card mb-2 shadow-sm">
                 <div className="row no-gutters">
                     <div className="col-4">
-                        {image}
+                        <div className="px-2 py-2" style={{ height: "20vh" } }>
+                            {image}
+                        </div>
                     </div>
-                    <div className="col-8">
+                    <div className="col-8" style={{ height: "20vh"}}>
                         <CardBody details={radio} />
                     </div>
                 </div>
@@ -45,12 +47,14 @@ CardElementDesktop.propTypes = {
 
 const CardElementMobile = (props) => {
     const radio = props.radio;
-    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top px-3 pt-3" alt="..." /> : <Skeleton className="card-img-top px-3 pt-3" height={100} />;
+    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top" alt="..." /> : <Skeleton height={cardHeight} />;
 
     return (
         <div className="d-xl-none">
-            <div className="card mb-3 ">
-                {image}
+            <div className="card mb-3 shadow-sm">
+                <div className="px-3 pt-3" style={{ height: { cardHeight } }}>
+                    {image}
+                </div>
                 <CardBody details={radio} />
                 <CardFooter details={radio} />
             </div>
@@ -72,7 +76,7 @@ const CardBody = (props) => {
     return (
         <div className="card-body">
             <h5 className="card-title font-weight-bold">{title}</h5>
-            <p className="card-text">{description}</p>
+            <p className="card-text text-truncate my-auto">{description}</p>
             <blockquote className="mb-0">
                 <p className="mb-0 font-weight-light">{followerText}</p>
                 <CrossFadeMessage />
