@@ -2308,16 +2308,16 @@ CardFooter.propTypes = {
 var MusicFooterLink = function MusicFooterLink(props) {
   var titleText = "Open in ".concat(props.title);
   var imgClassName = "card-icon fab ".concat(props.icon);
-  var direction = "float-".concat(props.direction);
+  var linkClassName = "float-".concat(props.direction, " text-decoration-none");
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
-    className: direction,
+    className: linkClassName,
     href: props.link,
     title: titleText,
     "aria-label": titleText,
     "data-toggle": "tooltip",
     "data-placement": "bottom"
   }, props.title, " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
-    className: imgClassName
+    className: "".concat(imgClassName)
   }));
 };
 
@@ -2354,6 +2354,7 @@ var CrossFadeMessage = function CrossFadeMessage() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
     className: "text-muted font-weight-light"
   }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+    className: "text-decoration-none",
     href: "https://support.spotify.com/us/article/crossfade-feature/",
     title: crossFadeLabel,
     "aria-label": crossFadeLabel,
@@ -33704,6 +33705,20 @@ Radios.propTypes = {
   playlists: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().array)
 };
 
+var RadioSkeleton = function RadioSkeleton() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-12 col-xl-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+    radio: null
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-12 col-xl-6"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
+    radio: null
+  })));
+};
+
 var RadioList = function RadioList() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
@@ -33727,10 +33742,8 @@ var RadioList = function RadioList() {
     fetch(radioURL).then(function (res) {
       return res.json();
     }).then(function (result) {
-      setTimeout(function () {
-        setIsLoaded(true);
-        setplaylists(result);
-      }, 2000);
+      setIsLoaded(true);
+      setplaylists(result);
     }, function (error) {
       setIsLoaded(true);
       setError(error);
@@ -33740,13 +33753,7 @@ var RadioList = function RadioList() {
   if (error) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Error: ", error.message);
   } else if (!isLoaded) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-      className: "row"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-      className: "col-12 col-xl-6 mb-2"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__.default, {
-      radio: null
-    })));
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioSkeleton, null);
   } else {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Radios, {
       playlists: playlists

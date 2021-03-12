@@ -118,11 +118,11 @@ CardFooter.propTypes = {
 const MusicFooterLink = (props) => {
     const titleText = `Open in ${props.title}`;
     const imgClassName = `card-icon fab ${props.icon}`;
-    const direction = `float-${props.direction}`;
+    const linkClassName = `float-${props.direction} text-decoration-none`;
     return (
-        <a className={direction} href={props.link} title={titleText}
+        <a className={linkClassName} href={props.link} title={titleText}
             aria-label={titleText} data-toggle="tooltip" data-placement="bottom">
-            {props.title} <i className={imgClassName}></i>
+            {props.title} <i className={`${imgClassName}`}></i>
         </a>
     );
 }
@@ -152,7 +152,8 @@ const CrossFadeMessage = () => {
         <footer>
             <small className="text-muted font-weight-light">
                 {crossFadeText}
-                <a href='https://support.spotify.com/us/article/crossfade-feature/'
+                <a className="text-decoration-none"
+                    href='https://support.spotify.com/us/article/crossfade-feature/'
                     title={crossFadeLabel}
                     aria-label={crossFadeLabel}
                     data-toggle='tooltip'

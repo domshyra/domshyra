@@ -22,6 +22,21 @@ Radios.propTypes = {
     playlists: PropTypes.array
 };
 
+
+const RadioSkeleton = () => {
+    return (
+        <div className="row">
+            <div className="col-12 col-xl-6">
+                <RadioCard radio={null} />
+            </div>
+            <div className="col-12 col-xl-6">
+                <RadioCard radio={null} />
+            </div>
+        </div>
+    );
+
+}
+
 const RadioList = () => {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -34,10 +49,8 @@ const RadioList = () => {
             .then(res => res.json())
             .then(
                 (result) => {
-                    setTimeout(function () {
-                        setIsLoaded(true);
-                        setplaylists(result);
-                    }, 2000);
+                    setIsLoaded(true);
+                    setplaylists(result);
                 },
                 (error) => {
                     setIsLoaded(true);
@@ -49,13 +62,7 @@ const RadioList = () => {
     if (error) {
         return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-        return (
-            <div className="row">
-                <div className="col-12 col-xl-6 mb-2">
-                    <RadioCard radio={null} />
-                </div>
-            </div>
-        );
+        return <RadioSkeleton />;
     } else {
         return <Radios playlists={playlists} />;
     }
