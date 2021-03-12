@@ -2,7 +2,9 @@
 import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 
-const cardHeight = "18vh";
+const cardHeight = 20;
+const imgSkeletonHeight = `${cardHeight - 2}vh`;
+const descriptionHeight = `${cardHeight - (cardHeight / 2)}vh`;
 
 const RadioCard = (props) => {
     return (
@@ -20,18 +22,18 @@ export default RadioCard;
 
 const CardElementDesktop = (props) => {
     const radio = props.radio;
-    const image = radio != null ? <img src={radio.ImageURL} className="card-img playlist-img" alt="..." /> : <Skeleton height={"18vh"} />;
+    const image = radio != null ? <img src={radio.ImageURL} className="card-img playlist-img" alt="..." /> : <Skeleton height={imgSkeletonHeight} />;
 
     return (
         <div className="d-none d-xl-block">
             <div className="card mb-2 shadow-sm">
                 <div className="row no-gutters">
                     <div className="col-4">
-                        <div className="px-2 py-2" style={{ height: "20vh" } }>
+                        <div className="px-2 py-2" style={{ height: `${cardHeight}vh` } }>
                             {image}
                         </div>
                     </div>
-                    <div className="col-8" style={{ height: "20vh"}}>
+                    <div className="col-8" style={{ height: `${cardHeight}vh`}}>
                         <CardBody details={radio} />
                     </div>
                 </div>
@@ -47,12 +49,12 @@ CardElementDesktop.propTypes = {
 
 const CardElementMobile = (props) => {
     const radio = props.radio;
-    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top" alt="..." /> : <Skeleton height={cardHeight} />;
+    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top" alt="..." /> : <Skeleton height={imgSkeletonHeight} />;
 
     return (
         <div className="d-xl-none">
             <div className="card mb-3 shadow-sm">
-                <div className="px-3 pt-3" style={{ height: { cardHeight } }}>
+                <div className="px-3 pt-3" style={{ height: { imgSkeletonHeight } }}>
                     {image}
                 </div>
                 <CardBody details={radio} />
@@ -74,13 +76,14 @@ const CardBody = (props) => {
     const followerText = details != null ? details.TrackAndFollowerText : <Skeleton width={50} />;
 
     return (
-        <div className="card-body">
+        <div className="card-body" style={{ height: "auto" } }>
             <h5 className="card-title font-weight-bold">{title}</h5>
-            <p className="card-text text-truncate my-auto">{description}</p>
+            <p className="card-text">{description}</p>
             <blockquote className="mb-0">
-                <p className="mb-0 font-weight-light">{followerText}</p>
+                <p className="mb-0 font-weight-light ">{followerText}</p>
                 <CrossFadeMessage />
             </blockquote>
+
         </div>
     );
 }

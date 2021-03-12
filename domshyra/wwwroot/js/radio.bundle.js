@@ -2160,7 +2160,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var cardHeight = "18vh";
+var cardHeight = 20;
+var imgSkeletonHeight = "".concat(cardHeight - 2, "vh");
+var descriptionHeight = "".concat(cardHeight - cardHeight / 2, "vh");
 
 var RadioCard = function RadioCard(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardElementDesktop, {
@@ -2182,7 +2184,7 @@ var CardElementDesktop = function CardElementDesktop(props) {
     className: "card-img playlist-img",
     alt: "..."
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
-    height: "18vh"
+    height: imgSkeletonHeight
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-none d-xl-block"
@@ -2195,12 +2197,12 @@ var CardElementDesktop = function CardElementDesktop(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "px-2 py-2",
     style: {
-      height: "20vh"
+      height: "".concat(cardHeight, "vh")
     }
   }, image)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "col-8",
     style: {
-      height: "20vh"
+      height: "".concat(cardHeight, "vh")
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
     details: radio
@@ -2221,7 +2223,7 @@ var CardElementMobile = function CardElementMobile(props) {
     className: "card-img-top",
     alt: "..."
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
-    height: cardHeight
+    height: imgSkeletonHeight
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-xl-none"
@@ -2231,7 +2233,7 @@ var CardElementMobile = function CardElementMobile(props) {
     className: "px-3 pt-3",
     style: {
       height: {
-        cardHeight: cardHeight
+        imgSkeletonHeight: imgSkeletonHeight
       }
     }
   }, image), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
@@ -2256,15 +2258,18 @@ var CardBody = function CardBody(props) {
     width: 50
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "card-body"
+    className: "card-body",
+    style: {
+      height: "auto"
+    }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", {
     className: "card-title font-weight-bold"
   }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    className: "card-text text-truncate my-auto"
+    className: "card-text"
   }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
     className: "mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    className: "mb-0 font-weight-light"
+    className: "mb-0 font-weight-light "
   }, followerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFadeMessage, null)));
 };
 
