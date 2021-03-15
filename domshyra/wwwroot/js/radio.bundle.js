@@ -2263,9 +2263,9 @@ var CardBody = function CardBody(props) {
       height: "auto"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", {
-    className: "card-title font-weight-bold"
+    className: "card-title font-weight-bold text-truncate pb-1 mb-1"
   }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    className: "card-text"
+    className: "card-text card-description"
   }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
     className: "mb-0"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {

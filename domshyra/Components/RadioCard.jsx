@@ -77,8 +77,8 @@ const CardBody = (props) => {
 
     return (
         <div className="card-body" style={{ height: "auto" } }>
-            <h5 className="card-title font-weight-bold">{title}</h5>
-            <p className="card-text">{description}</p>
+            <h5 className="card-title font-weight-bold text-truncate pb-1 mb-1">{title}</h5>
+            <p className="card-text card-description">{description}</p>
             <blockquote className="mb-0">
                 <p className="mb-0 font-weight-light ">{followerText}</p>
                 <CrossFadeMessage />
