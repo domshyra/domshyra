@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import RadioCard from "./RadioCard.jsx"
+import RadioCard from "./RadioCard.jsx";
 import PropTypes from "prop-types";
 import CrossFadeMessage from "./CrossFadeMessage.jsx";
 
@@ -36,7 +36,7 @@ const RadioSkeleton = () => {
         </div>
     );
 
-}
+};
 
 const RadioList = () => {
     const [error, setError] = useState(null);
@@ -57,8 +57,8 @@ const RadioList = () => {
                     setIsLoaded(true);
                     setError(error);
                 }
-            )
-    }, [])
+            );
+    }, []);
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -67,7 +67,7 @@ const RadioList = () => {
     } else {
         return <Radios playlists={playlists} />;
     }
-}
+};
 
 
 const pageTitle = "Radio stations";
@@ -91,7 +91,7 @@ const RadiosTitleDesktop = () => {
             </section>
         </div>
     );
-}
+};
 
 
 const RadiosTitleMobile = () => {
@@ -107,7 +107,7 @@ const RadiosTitleMobile = () => {
             </div>
         </div>
     );
-}
+};
 
 
 const RadioPage = () => {
@@ -119,6 +119,6 @@ const RadioPage = () => {
         <RadioList />
         </>
     );
-}
+};
 
 ReactDOM.render(<RadioPage />, document.getElementById("radio-content"));

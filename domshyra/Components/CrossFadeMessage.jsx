@@ -20,6 +20,6 @@ const CrossFadeMessage = () => {
                 </a>.
             </small>
         </footer>
-    )
-}
+    );
+};
 export default CrossFadeMessage;
