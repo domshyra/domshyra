@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
+import CrossFadeMessage from "./CrossFadeMessage.jsx";
 
 const cardHeight = 20;
 const cardHeightMobile = 40;
@@ -75,8 +76,8 @@ const TrackCount = (props) => {
     const crossFade = props.mobileView ? "" : <CrossFadeMessage />;
     const marginClass = props.mobileView ? "" : "mb-0";
     return (
-        <blockquote className={`pt-2 ${marginClass} `}>
-            <p className={"font-weight-light card-track-count mb-0"}>{followerText}</p>
+        <blockquote className={`pt-2 ${marginClass} card-track-count`}>
+            <p className={"font-weight-light mb-0"}>{followerText}</p>
             {crossFade}
         </blockquote>
     );
@@ -109,7 +110,9 @@ const CardBody = (props) => {
         if (mobileView) {
             return <a className="text-decoration-none"
                 href={details.SpotifyMusicLink}
-                title={`View ${details.Title} on Spotify`}
+                /*global spotify*/
+                /*eslint no-undef: "error"*/
+                title={`View ${details.Title} on ${spotify}`}
                 aria-label={details.Title}
                 data-toggle='tooltip'
                 data-placement='bottom'
@@ -148,7 +151,7 @@ const CardFooter = (props) => {
         <div className="card-footer">
             <div className="row">
                 <div className="col-6">
-                    <MusicFooterLink direction="left" title="Spotify" icon="fa-spotify" link={details.SpotifyMusicLink} />
+                    <MusicFooterLink direction="left" title={spotify} icon="fa-spotify" link={details.SpotifyMusicLink} />
                 </div>
                 <div className="col-6">
                     <ShowAppleMusic info={details} />
@@ -189,24 +192,3 @@ const ShowAppleMusic = (props) => {
 ShowAppleMusic.propTypes = {
     info: PropTypes.object
 };
-
-const CrossFadeMessage = () => {
-    const crossFadeText = "For best radio experience use ";
-    const crossFadeLabel = "Crossfade recommend at 6 seconds or more";
-    const spotifyText = "Spotify's crossfade feature";
-    return (
-        <footer className="mt-1">
-            <small className="text-muted font-weight-light card-track-count">
-                {crossFadeText}
-                <a className="text-decoration-none"
-                    href='https://support.spotify.com/us/article/crossfade-feature/'
-                    title={crossFadeLabel}
-                    aria-label={crossFadeLabel}
-                    data-toggle='tooltip'
-                    data-placement='bottom'>
-                    {spotifyText}
-                </a>.
-            </small>
-        </footer>
-    )
-}

@@ -2142,6 +2142,46 @@ var weakMemoize = function weakMemoize(func) {
 
 /***/ }),
 
+/***/ "./Components/CrossFadeMessage.jsx":
+/*!*****************************************!*\
+  !*** ./Components/CrossFadeMessage.jsx ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+
+var CrossFadeMessage = function CrossFadeMessage() {
+  var crossFadeText = "For best radio experience use ";
+  var crossFadeLabel = "Crossfade recommend at 6 seconds or more";
+  /*global spotify*/
+
+  /*eslint no-undef: "error"*/
+
+  var spotifyText = "".concat(spotify, "'s crossfade feature");
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", {
+    className: "mt-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
+    className: "text-muted font-weight-light"
+  }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+    className: "text-decoration-none",
+    href: "https://support.spotify.com/us/article/crossfade-feature/",
+    title: crossFadeLabel,
+    "aria-label": crossFadeLabel,
+    "data-toggle": "tooltip",
+    "data-placement": "bottom"
+  }, spotifyText), "."));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CrossFadeMessage);
+
+/***/ }),
+
 /***/ "./Components/RadioCard.jsx":
 /*!**********************************!*\
   !*** ./Components/RadioCard.jsx ***!
@@ -2156,7 +2196,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-loading-skeleton */ "./node_modules/react-loading-skeleton/lib/index.js");
+/* harmony import */ var react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-loading-skeleton */ "./node_modules/react-loading-skeleton/lib/index.js");
+/* harmony import */ var _CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CrossFadeMessage.jsx */ "./Components/CrossFadeMessage.jsx");
+
 
 
 
@@ -2184,7 +2226,7 @@ var CardElementDesktop = function CardElementDesktop(props) {
     src: radio.ImageURL,
     className: "card-img playlist-img",
     alt: "..."
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__.default, {
     height: imgSkeletonHeight
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2227,7 +2269,7 @@ var CardElementMobile = function CardElementMobile(props) {
     src: radio.ImageURL,
     className: "card-img-top playlist-img",
     alt: "..."
-  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__.default, {
     height: imgSkeletonHeightMobile
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2255,15 +2297,15 @@ CardElementMobile.propTypes = {
 
 var TrackCount = function TrackCount(props) {
   var details = props.details;
-  var followerText = details != null ? details.TrackAndFollowerText : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+  var followerText = details != null ? details.TrackAndFollowerText : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__.default, {
     width: 50
   });
-  var crossFade = props.mobileView ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFadeMessage, null);
+  var crossFade = props.mobileView ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null);
   var marginClass = props.mobileView ? "" : "mb-0";
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
-    className: "pt-2 ".concat(marginClass, " ")
+    className: "pt-2 ".concat(marginClass, " card-track-count")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    className: "font-weight-light card-track-count mb-0"
+    className: "font-weight-light mb-0"
   }, followerText), crossFade);
 };
 
@@ -2280,7 +2322,7 @@ var CardBody = function CardBody(props) {
 
   var description = function description() {
     if (details == null) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__.default, {
         count: 3
       });
     }
@@ -2290,14 +2332,18 @@ var CardBody = function CardBody(props) {
 
   var title = function title() {
     if (details == null) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, null);
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__.default, null);
     }
 
     if (mobileView) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
         className: "text-decoration-none",
-        href: details.SpotifyMusicLink,
-        title: "View ".concat(details.Title, " on Spotify"),
+        href: details.SpotifyMusicLink
+        /*global spotify*/
+
+        /*eslint no-undef: "error"*/
+        ,
+        title: "View ".concat(details.Title, " on ").concat(spotify),
         "aria-label": details.Title,
         "data-toggle": "tooltip",
         "data-placement": "bottom",
@@ -2345,7 +2391,7 @@ var CardFooter = function CardFooter(props) {
     className: "col-6"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(MusicFooterLink, {
     direction: "left",
-    title: "Spotify",
+    title: spotify,
     icon: "fa-spotify",
     link: details.SpotifyMusicLink
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2399,24 +2445,6 @@ var ShowAppleMusic = function ShowAppleMusic(props) {
 
 ShowAppleMusic.propTypes = {
   info: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
-};
-
-var CrossFadeMessage = function CrossFadeMessage() {
-  var crossFadeText = "For best radio experience use ";
-  var crossFadeLabel = "Crossfade recommend at 6 seconds or more";
-  var spotifyText = "Spotify's crossfade feature";
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", {
-    className: "mt-1"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
-    className: "text-muted font-weight-light card-track-count"
-  }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
-    className: "text-decoration-none",
-    href: "https://support.spotify.com/us/article/crossfade-feature/",
-    title: crossFadeLabel,
-    "aria-label": crossFadeLabel,
-    "data-toggle": "tooltip",
-    "data-placement": "bottom"
-  }, spotifyText), "."));
 };
 
 /***/ }),
@@ -33722,6 +33750,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RadioCard_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RadioCard.jsx */ "./Components/RadioCard.jsx");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CrossFadeMessage.jsx */ "./Components/CrossFadeMessage.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -33733,6 +33762,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -33817,7 +33847,50 @@ var RadioList = function RadioList() {
   }
 };
 
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioList, null), document.getElementById("radio-content"));
+var pageTitle = "Radio stations";
+
+var RadiosTitleDesktop = function RadiosTitleDesktop() {
+  /*global spotify*/
+
+  /*eslint no-undef: "error"*/
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "d-none d-xl-block"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("section", {
+    className: "jumbotron text-center bg-light"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "container"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", {
+    className: "jumbotron-heading"
+  }, pageTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+    className: "lead text-muted mb-0"
+  }, "Music is the oldest form of story telling and I've always loved a good story"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+    className: "text-muted font-weight-light"
+  }, spotify, " playlists curated like radio stations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
+    className: "text-center font-weight-light"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("b", null, "Note:"), " Apple music is deprecated and the most up to date playlists are on ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+    href: "https://open.spotify.com/user/domshyra"
+  }, spotify)))));
+};
+
+var RadiosTitleMobile = function RadiosTitleMobile() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "d-xl-none  mb-2 pb-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", {
+    className: "pb-2"
+  }, pageTitle), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "col-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "border bg-light rounded px-2 mb-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_4__.default, null)))));
+};
+
+var RadioPage = function RadioPage() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadiosTitleDesktop, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadiosTitleMobile, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioList, null));
+};
+
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioPage, null), document.getElementById("radio-content"));
 })();
 
 /******/ })()
