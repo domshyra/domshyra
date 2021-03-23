@@ -1,8 +1,8 @@
-﻿import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import RadioCard from "./RadioCard.jsx"
-import PropTypes from "prop-types";
-import CrossFadeMessage from "./CrossFadeMessage.jsx";
+﻿import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import RadioCard from './RadioCard.jsx'
+import PropTypes from 'prop-types';
+import CrossFadeMessage from './CrossFadeMessage.jsx';
 
 const Radios = (props) => {
     const playlists = props.playlists;
@@ -70,7 +70,7 @@ const RadioList = () => {
 }
 
 
-const pageTitle = "Radio stations";
+const pageTitle = 'Radio stations';
 
 const RadiosTitleDesktop = () => {
     /*global spotify*/

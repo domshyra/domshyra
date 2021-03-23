@@ -50,7 +50,7 @@
       "warn",
       { "extensions": [ ".js", ".jsx" ] }
     ],
-    "quotes": [ "error", "double" ],
+    "quotes": [ "error", "single" ],
     "unicode-bom": "off",
     "no-trailing-spaces": "off",
     "max-len": [

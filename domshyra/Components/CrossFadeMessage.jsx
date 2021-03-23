@@ -1,8 +1,8 @@
-﻿import React from "react";
+﻿import React from 'react';
 
 const CrossFadeMessage = () => {
-    const crossFadeText = "For best radio experience use ";
-    const crossFadeLabel = "Crossfade recommend at 6 seconds or more";
+    const crossFadeText = 'For best radio experience use ';
+    const crossFadeLabel = 'Crossfade recommend at 6 seconds or more';
     /*global spotify*/
     /*eslint no-undef: "error"*/
     const spotifyText = `${spotify}'s crossfade feature`;

@@ -1,7 +1,7 @@
-﻿import React from "react";
-import PropTypes from "prop-types";
-import Skeleton from "react-loading-skeleton";
-import CrossFadeMessage from "./CrossFadeMessage.jsx";
+﻿import React from 'react';
+import PropTypes from 'prop-types';
+import Skeleton from 'react-loading-skeleton';
+import CrossFadeMessage from './CrossFadeMessage.jsx';
 
 const cardHeight = 20;
 const cardHeightMobile = 40;
@@ -73,8 +73,8 @@ CardElementMobile.propTypes = {
 const TrackCount = (props) => {
     const details = props.details;
     const followerText = details != null ? details.TrackAndFollowerText : <Skeleton width={50} />;
-    const crossFade = props.mobileView ? "" : <CrossFadeMessage />;
-    const marginClass = props.mobileView ? "" : "mb-0";
+    const crossFade = props.mobileView ? '' : <CrossFadeMessage />;
+    const marginClass = props.mobileView ? '' : 'mb-0';
     return (
         <blockquote className={`pt-2 ${marginClass} card-track-count`}>
             <p className={"font-weight-light mb-0"}>{followerText}</p>
