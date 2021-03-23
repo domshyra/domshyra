@@ -1,37 +1,14 @@
-﻿@using domshyra.Models;
-@using System.Collections.Generic
-
-@{
+﻿@{
     Layout = "_Layout";
     ViewBag.Title = "Radio stations";
 }
 
-<style>
-    /*Clean this up with scss*/
-    .description-row {
-        height: 200px;
-        max-height: 200px;
-    }
-
-    .playlist-img {
-        height: 100%;
-        width: 100%;
-        max-height: 200px;
-    }    
-
-    .card-body-playlist {
-        min-height: 250px;
-    }
-    .card-icon {
-        font-size: 1.2rem;
-        line-height: 1.2;
-    }
-</style>
 <script>
     const radioURL = '@Url.Action("GetRadios", "Playlists")';
+    const spotify = "Spotify";
 </script>
 <div class="container">
-    <div class="d-none d-xl-block">
+    @*<div class="d-none d-xl-block">
         <section class="jumbotron text-center bg-light">
             <div class="container">
                 <h1 class="jumbotron-heading">Radio stations</h1>
@@ -47,7 +24,7 @@
     </div>
     <div class="d-xl-none">
         <h2 class="pb-2">Radio stations</h2>
-    </div>
+    </div>*@
 
     <div id="radio-content"></div>
 </div>
