@@ -2318,7 +2318,7 @@ TrackCount.propTypes = {
 var CardBody = function CardBody(props) {
   var details = props.details;
   var mobileView = props.mobileView;
-  var maxCharCount = mobileView ? 100 : 125;
+  var maxCharCount = mobileView ? 115 : 125;
 
   var description = function description() {
     if (details == null) {
@@ -33856,7 +33856,7 @@ var RadiosTitleDesktop = function RadiosTitleDesktop() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-none d-xl-block"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("section", {
-    className: "jumbotron text-center bg-light"
+    className: "jumbotron text-center bg-light  shadow-sm"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", {
@@ -33882,7 +33882,7 @@ var RadiosTitleMobile = function RadiosTitleMobile() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "col-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-    className: "border bg-light rounded px-2 mb-1"
+    className: "border bg-light rounded px-2 mb-1 shadow-sm"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_4__.default, null)))));
 };
 

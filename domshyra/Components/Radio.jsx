@@ -77,15 +77,15 @@ const RadiosTitleDesktop = () => {
     /*eslint no-undef: "error"*/
     return (
         <div className="d-none d-xl-block">
-            <section className="jumbotron text-center bg-light">
+            <section className="jumbotron text-center bg-light shadow-sm">
                 <div className="container">
                     <h1 className="jumbotron-heading">{pageTitle}</h1>
                     <p className="lead text-muted mb-0">
                         Music is the oldest form of story telling and I&apos;ve always loved a good story
-                </p>
+                    </p>
                     <p className="text-muted font-weight-light">
                         {spotify} playlists curated like radio stations
-                </p>
+                    </p>
                     <small className="text-center font-weight-light"><b>Note:</b> Apple music is deprecated and the most up to date playlists are on <a href="https://open.spotify.com/user/domshyra">{spotify}</a></small>
                 </div>
             </section>
@@ -100,7 +100,7 @@ const RadiosTitleMobile = () => {
             <h2 className="pb-2">{pageTitle}</h2>
             <div className="row">
                 <div className="col-12">
-                    <div className="border bg-light rounded px-2 mb-1">
+                    <div className="border bg-light rounded px-2 mb-1 shadow-sm">
                         <CrossFadeMessage />
                     </div>
                 </div>

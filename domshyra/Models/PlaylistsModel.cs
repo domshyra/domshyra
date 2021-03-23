@@ -34,12 +34,10 @@ namespace domshyra.Models
                 }
             }
         }
-        public string CrossFadeText { get; }
 
         public PlaylistsModel()
         {
-            string helpURL = "https://support.spotify.com/us/article/crossfade-feature/";
-            CrossFadeText = $"For best radio experience use <a href='{helpURL}' title='Crossfade recommened at 6 seconds or more' aria-label='Crossfade from spotify recommened at 6 seconds or more' data-toggle='tooltip' data-placement='bottom'>Spotiy's crossfade feature</a>";
+
         }
     }
 }
