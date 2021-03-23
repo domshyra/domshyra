@@ -2157,8 +2157,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var CrossFadeMessage = function CrossFadeMessage() {
-  var crossFadeText = 'For best radio experience use ';
-  var crossFadeLabel = 'Crossfade recommend at 6 seconds or more';
+  var crossFadeText = "For best radio experience use ";
+  var crossFadeLabel = "Crossfade recommend at 6 seconds or more";
   /*global spotify*/
 
   /*eslint no-undef: "error"*/
@@ -2300,8 +2300,8 @@ var TrackCount = function TrackCount(props) {
   var followerText = details != null ? details.TrackAndFollowerText : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__.default, {
     width: 50
   });
-  var crossFade = props.mobileView ? '' : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null);
-  var marginClass = props.mobileView ? '' : 'mb-0';
+  var crossFade = props.mobileView ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null);
+  var marginClass = props.mobileView ? "" : "mb-0";
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
     className: "pt-2 ".concat(marginClass, " card-track-count")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {

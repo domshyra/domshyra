@@ -10,7 +10,9 @@
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
   },
   "extends": [
     "eslint:recommended",
@@ -18,7 +20,10 @@
     //"plugin:prettier/recommended",
     //"prettier/react"
   ],
-  "env": { "browser": true },
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
   "rules": {
     "no-unused-vars": "warn",
     "linebreak-style": [ "error", "windows" ],
@@ -50,7 +55,7 @@
       "warn",
       { "extensions": [ ".js", ".jsx" ] }
     ],
-    "quotes": [ "error", "single" ],
+    "quotes": [ "error", "double" ],
     "unicode-bom": "off",
     "no-trailing-spaces": "off",
     "max-len": [
@@ -66,6 +71,10 @@
         "ignoreTemplateLiterals": true,
         "ignoreRegExpLiterals": true
       }
+    ],
+    "semi": [
+      "error",
+      "always"
     ]
   },
   "settings": {
