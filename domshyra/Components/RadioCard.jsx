@@ -76,7 +76,7 @@ const TrackCount = (props) => {
     const marginClass = props.mobileView ? "" : "mb-0";
     return (
         <blockquote className={`pt-2 ${marginClass} `}>
-            <p className={`font-weight-light card-track-count mb-0`}>{followerText}</p>
+            <p className={"font-weight-light card-track-count mb-0"}>{followerText}</p>
             {crossFade}
         </blockquote>
     );
@@ -109,11 +109,12 @@ const CardBody = (props) => {
         if (mobileView) {
             return <a className="text-decoration-none"
                 href={details.SpotifyMusicLink}
-                title={`View ${details.Title} on Spotify.`}
+                title={`View ${details.Title} on Spotify`}
                 aria-label={details.Title}
                 data-toggle='tooltip'
                 data-placement='bottom'
-                target='_blank'>
+                target='_blank'
+                rel="noreferrer">
                 {details.Title}
             </a>;
         }

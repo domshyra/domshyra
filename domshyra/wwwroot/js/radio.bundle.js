@@ -2297,11 +2297,12 @@ var CardBody = function CardBody(props) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
         className: "text-decoration-none",
         href: details.SpotifyMusicLink,
-        title: "View ".concat(details.Title, " on Spotify."),
+        title: "View ".concat(details.Title, " on Spotify"),
         "aria-label": details.Title,
         "data-toggle": "tooltip",
         "data-placement": "bottom",
-        target: "_blank"
+        target: "_blank",
+        rel: "noreferrer"
       }, details.Title);
     }
 
