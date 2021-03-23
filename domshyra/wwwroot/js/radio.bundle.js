@@ -2300,7 +2300,8 @@ var CardBody = function CardBody(props) {
         title: "View ".concat(details.Title, " on Spotify."),
         "aria-label": details.Title,
         "data-toggle": "tooltip",
-        "data-placement": "bottom"
+        "data-placement": "bottom",
+        target: "_blank"
       }, details.Title);
     }
 

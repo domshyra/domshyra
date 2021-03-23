@@ -112,7 +112,8 @@ const CardBody = (props) => {
                 title={`View ${details.Title} on Spotify.`}
                 aria-label={details.Title}
                 data-toggle='tooltip'
-                data-placement='bottom'>
+                data-placement='bottom'
+                target='_blank'>
                 {details.Title}
             </a>;
         }
