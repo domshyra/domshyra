@@ -16,9 +16,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
-    //"plugin:prettier/recommended",
-    //"prettier/react"
+    "plugin:react/recommended",
+    "prettier"
   ],
   "env": {
     "browser": true,
@@ -26,28 +25,6 @@
   },
   "rules": {
     "no-unused-vars": "warn",
-    "linebreak-style": [ "error", "windows" ],
-    "indent": [
-      "warn",
-      4,
-      {
-        "ignoredNodes": [
-          "JSXElement",
-          "JSXElement > *",
-          "JSXAttribute",
-          "JSXIdentifier",
-          "JSXNamespacedName",
-          "JSXMemberExpression",
-          "JSXSpreadAttribute",
-          "JSXExpressionContainer",
-          "JSXOpeningElement",
-          "JSXClosingElement",
-          "JSXText",
-          "JSXEmptyExpression",
-          "JSXSpreadChild"
-        ]
-      }
-    ],
     "react/jsx-uses-vars": "error",
     "react/jsx-uses-react": "error",
     "jsx-a11y/href-no-hash": [ "off" ],
@@ -55,27 +32,8 @@
       "warn",
       { "extensions": [ ".js", ".jsx" ] }
     ],
-    "quotes": [ "error", "double" ],
     "unicode-bom": "off",
-    "no-trailing-spaces": "off",
-    "max-len": [
-      "warn",
-      {
-        "code": 120,
-        "tabWidth": 2,
-        "comments": 120,
-        "ignoreComments": false,
-        "ignoreTrailingComments": true,
-        "ignoreUrls": true,
-        "ignoreStrings": true,
-        "ignoreTemplateLiterals": true,
-        "ignoreRegExpLiterals": true
-      }
-    ],
-    "semi": [
-      "error",
-      "always"
-    ]
+    "no-trailing-spaces": "off"
   },
   "settings": {
     "react": {
