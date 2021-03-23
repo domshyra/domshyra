@@ -2205,7 +2205,11 @@ var CardElementDesktop = function CardElementDesktop(props) {
       height: "".concat(cardHeight, "vh")
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
-    details: radio
+    details: radio,
+    mobileView: false
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(TrackCount, {
+    details: radio,
+    mobileView: false
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardFooter, {
     details: radio
   })));
@@ -2237,9 +2241,11 @@ var CardElementMobile = function CardElementMobile(props) {
       }
     }
   }, image), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
-    details: radio
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardFooter, {
-    details: radio
+    details: radio,
+    mobileView: true
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(TrackCount, {
+    details: radio,
+    mobileView: true
   })));
 };
 
@@ -2248,15 +2254,64 @@ CardElementMobile.propTypes = {
   radio: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object)
 };
 
-var CardBody = function CardBody(props) {
+var TrackCount = function TrackCount(props) {
   var details = props.details;
-  var title = details != null ? details.Title : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, null);
-  var description = details != null ? details.Description : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
-    count: 3
-  });
   var followerText = details != null ? details.TrackAndFollowerText : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
     width: 50
   });
+  var crossFade = props.mobileView ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFadeMessage, null);
+  var marginClass = props.mobileView ? "" : "mb-0";
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
+    className: "pt-2 ".concat(marginClass, " ")
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+    className: "font-weight-light card-track-count mb-0"
+  }, followerText), crossFade);
+};
+
+TrackCount.propTypes = {
+  details: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
+  TrackAndFollowerText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
+  mobileView: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().bool)
+};
+
+var CardBody = function CardBody(props) {
+  var details = props.details;
+  var mobileView = props.mobileView;
+  var maxCharCount = mobileView ? 100 : 125;
+
+  var description = function description() {
+    if (details == null) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
+        count: 3
+      });
+    }
+
+    if (details.Description.length > maxCharCount) {
+      return "".concat(details.Description.substring(0, maxCharCount), "...");
+    }
+
+    return details.Description;
+  };
+
+  var title = function title() {
+    if (details == null) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, null);
+    }
+
+    if (mobileView) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        className: "text-decoration-none",
+        href: details.SpotifyMusicLink,
+        title: "View ".concat(details.Title, " on Spotify."),
+        "aria-label": details.Title,
+        "data-toggle": "tooltip",
+        "data-placement": "bottom"
+      }, details.Title);
+    }
+
+    return details.Title;
+  };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "card-body",
     style: {
@@ -2264,13 +2319,9 @@ var CardBody = function CardBody(props) {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", {
     className: "card-title font-weight-bold text-truncate pb-1 mb-1"
-  }, title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+  }, title()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
     className: "card-text card-description"
-  }, description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
-    className: "mb-0"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    className: "mb-0 font-weight-light "
-  }, followerText), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CrossFadeMessage, null)));
+  }, description()));
 };
 
 CardBody.propTypes = {
@@ -2278,7 +2329,8 @@ CardBody.propTypes = {
   details: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().object),
   Title: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
   TrackAndFollowerText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
-  CrossFadeText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string)
+  CrossFadeText: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
+  mobileView: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().bool)
 };
 
 var CardFooter = function CardFooter(props) {
@@ -2356,8 +2408,10 @@ var CrossFadeMessage = function CrossFadeMessage() {
   var crossFadeText = "For best radio experience use ";
   var crossFadeLabel = "Crossfade recommend at 6 seconds or more";
   var spotifyText = "Spotify's crossfade feature";
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
-    className: "text-muted font-weight-light"
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("footer", {
+    className: "mt-1"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
+    className: "text-muted font-weight-light card-track-count"
   }, crossFadeText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
     className: "text-decoration-none",
     href: "https://support.spotify.com/us/article/crossfade-feature/",

@@ -26,11 +26,11 @@ namespace domshyra.Models
             {
                 if (FollowerCount == 0)
                 {
-                    return $"{TrackCount:N0} tracks";
+                    return $"{TrackCount:N0} songs";
                 }
                 else
                 {
-                    return $"{TrackCount:N0} tracks and {FollowerCount:N0} followers";
+                    return $"{TrackCount:N0} songs and {FollowerCount:N0} followers";
                 }
             }
         }

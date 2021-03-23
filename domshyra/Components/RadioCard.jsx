@@ -23,7 +23,6 @@ export default RadioCard;
 const CardElementDesktop = (props) => {
     const radio = props.radio;
     const image = radio != null ? <img src={radio.ImageURL} className="card-img playlist-img" alt="..." /> : <Skeleton height={imgSkeletonHeight} />;
-
     return (
         <div className="d-none d-xl-block">
             <div className="card mb-2 shadow-sm">
@@ -34,7 +33,8 @@ const CardElementDesktop = (props) => {
                         </div>
                     </div>
                     <div className="col-8" style={{ height: `${cardHeight}vh`}}>
-                        <CardBody details={radio} />
+                        <CardBody details={radio} mobileView={false} />
+                        <TrackCount details={radio} mobileView={false} />
                     </div>
                 </div>
                 <CardFooter details={radio} />
@@ -50,15 +50,14 @@ CardElementDesktop.propTypes = {
 const CardElementMobile = (props) => {
     const radio = props.radio;
     const image = radio != null ? <img src={radio.ImageURL} className="card-img-top" alt="..." /> : <Skeleton height={imgSkeletonHeight} />;
-
     return (
         <div className="d-xl-none">
             <div className="card mb-3 shadow-sm">
                 <div className="px-3 pt-3" style={{ height: { imgSkeletonHeight } }}>
                     {image}
                 </div>
-                <CardBody details={radio} />
-                <CardFooter details={radio} />
+                <CardBody details={radio} mobileView={true} />
+                <TrackCount details={radio} mobileView={true} />
             </div>
         </div>
     );
@@ -69,21 +68,63 @@ CardElementMobile.propTypes = {
 };
 
 
+const TrackCount = (props) => {
+    const details = props.details;
+    const followerText = details != null ? details.TrackAndFollowerText : <Skeleton width={50} />;
+    const crossFade = props.mobileView ? "" : <CrossFadeMessage />;
+    const marginClass = props.mobileView ? "" : "mb-0";
+    return (
+        <blockquote className={`pt-2 ${marginClass} `}>
+            <p className={`font-weight-light card-track-count mb-0`}>{followerText}</p>
+            {crossFade}
+        </blockquote>
+    );
+}
+TrackCount.propTypes = {
+    details: PropTypes.object,
+    TrackAndFollowerText: PropTypes.string,
+    mobileView: PropTypes.bool,
+};
+
 const CardBody = (props) => {
     const details = props.details;
-    const title = details != null ? details.Title : <Skeleton />;
-    const description = details != null ? details.Description : <Skeleton count={3} />;
-    const followerText = details != null ? details.TrackAndFollowerText : <Skeleton width={50} />;
+    const mobileView = props.mobileView;
+    const maxCharCount = mobileView ? 100 : 125;
+
+    const description = () => {
+        if (details == null) {
+            return <Skeleton count={3} />;
+        }
+
+        if (details.Description.length > maxCharCount) {
+            return `${details.Description.substring(0, maxCharCount)}...`;
+        }
+
+        return details.Description;
+    };
+
+    const title = () => {
+        if (details == null) {
+            return <Skeleton />;
+        }
+        if (mobileView) {
+            return <a className="text-decoration-none"
+                href={details.SpotifyMusicLink}
+                title={`View ${details.Title} on Spotify.`}
+                aria-label={details.Title}
+                data-toggle='tooltip'
+                data-placement='bottom'>
+                {details.Title}
+            </a>;
+        }
+
+        return details.Title;
+    };
 
     return (
         <div className="card-body" style={{ height: "auto" } }>
-            <h5 className="card-title font-weight-bold text-truncate pb-1 mb-1">{title}</h5>
-            <p className="card-text card-description">{description}</p>
-            <blockquote className="mb-0">
-                <p className="mb-0 font-weight-light ">{followerText}</p>
-                <CrossFadeMessage />
-            </blockquote>
-
+            <h5 className="card-title font-weight-bold text-truncate pb-1 mb-1">{title()}</h5>
+            <p className="card-text card-description">{description()}</p>
         </div>
     );
 }
@@ -93,7 +134,8 @@ CardBody.propTypes = {
     details: PropTypes.object,
     Title: PropTypes.string,
     TrackAndFollowerText: PropTypes.string,
-    CrossFadeText: PropTypes.string
+    CrossFadeText: PropTypes.string,
+    mobileView: PropTypes.bool
 };
 
 const CardFooter = (props) => {
@@ -152,8 +194,8 @@ const CrossFadeMessage = () => {
     const crossFadeLabel = "Crossfade recommend at 6 seconds or more";
     const spotifyText = "Spotify's crossfade feature";
     return (
-        <footer>
-            <small className="text-muted font-weight-light">
+        <footer className="mt-1">
+            <small className="text-muted font-weight-light card-track-count">
                 {crossFadeText}
                 <a className="text-decoration-none"
                     href='https://support.spotify.com/us/article/crossfade-feature/'
