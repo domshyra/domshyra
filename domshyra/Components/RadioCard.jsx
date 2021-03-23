@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import Skeleton from "react-loading-skeleton";
 
 const cardHeight = 20;
+const cardHeightMobile = 40;
 const imgSkeletonHeight = `${cardHeight - 2}vh`;
-const descriptionHeight = `${cardHeight - (cardHeight / 2)}vh`;
+const imgSkeletonHeightMobile = `${cardHeightMobile - 2}vh`;
 
 const RadioCard = (props) => {
     return (
@@ -49,11 +50,11 @@ CardElementDesktop.propTypes = {
 
 const CardElementMobile = (props) => {
     const radio = props.radio;
-    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top" alt="..." /> : <Skeleton height={imgSkeletonHeight} />;
+    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top playlist-img" alt="..." /> : <Skeleton height={imgSkeletonHeightMobile} />;
     return (
         <div className="d-xl-none">
             <div className="card mb-3 shadow-sm">
-                <div className="px-3 pt-3" style={{ height: { imgSkeletonHeight } }}>
+                <div className="px-3 pt-3" style={{ height: `${cardHeightMobile}vh` }}>
                     {image}
                 </div>
                 <CardBody details={radio} mobileView={true} />
@@ -96,11 +97,9 @@ const CardBody = (props) => {
             return <Skeleton count={3} />;
         }
 
-        if (details.Description.length > maxCharCount) {
-            return `${details.Description.substring(0, maxCharCount)}...`;
-        }
-
-        return details.Description;
+        return details.Description.length > maxCharCount ?
+            `${details.Description.substring(0, maxCharCount)}...` :
+            details.Description;
     };
 
     const title = () => {

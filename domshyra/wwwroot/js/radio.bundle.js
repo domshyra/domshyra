@@ -2161,8 +2161,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var cardHeight = 20;
+var cardHeightMobile = 40;
 var imgSkeletonHeight = "".concat(cardHeight - 2, "vh");
-var descriptionHeight = "".concat(cardHeight - cardHeight / 2, "vh");
+var imgSkeletonHeightMobile = "".concat(cardHeightMobile - 2, "vh");
 
 var RadioCard = function RadioCard(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardElementDesktop, {
@@ -2224,10 +2225,10 @@ var CardElementMobile = function CardElementMobile(props) {
   var radio = props.radio;
   var image = radio != null ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
     src: radio.ImageURL,
-    className: "card-img-top",
+    className: "card-img-top playlist-img",
     alt: "..."
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_2__.default, {
-    height: imgSkeletonHeight
+    height: imgSkeletonHeightMobile
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "d-xl-none"
@@ -2236,9 +2237,7 @@ var CardElementMobile = function CardElementMobile(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "px-3 pt-3",
     style: {
-      height: {
-        imgSkeletonHeight: imgSkeletonHeight
-      }
+      height: "".concat(cardHeightMobile, "vh")
     }
   }, image), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
     details: radio,
@@ -2286,11 +2285,7 @@ var CardBody = function CardBody(props) {
       });
     }
 
-    if (details.Description.length > maxCharCount) {
-      return "".concat(details.Description.substring(0, maxCharCount), "...");
-    }
-
-    return details.Description;
+    return details.Description.length > maxCharCount ? "".concat(details.Description.substring(0, maxCharCount), "...") : details.Description;
   };
 
   var title = function title() {
