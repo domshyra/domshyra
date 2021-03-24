@@ -2157,8 +2157,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var CrossFadeMessage = function CrossFadeMessage() {
-  var crossFadeText = "For best radio experience use ";
-  var crossFadeLabel = "Crossfade recommend at 6 seconds or more";
+  var crossFadeText = 'For best radio experience use ';
+  var crossFadeLabel = 'Crossfade recommend at 6 seconds or more';
   /*global spotify*/
 
   /*eslint no-undef: "error"*/
@@ -2300,12 +2300,12 @@ var TrackCount = function TrackCount(props) {
   var followerText = details != null ? details.TrackAndFollowerText : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_3__.default, {
     width: 50
   });
-  var crossFade = props.mobileView ? "" : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null);
-  var marginClass = props.mobileView ? "" : "mb-0";
+  var crossFade = props.mobileView ? '' : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_CrossFadeMessage_jsx__WEBPACK_IMPORTED_MODULE_2__.default, null);
+  var marginClass = props.mobileView ? '' : 'mb-0';
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("blockquote", {
     className: "pt-2 ".concat(marginClass, " card-track-count")
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    className: "font-weight-light mb-0"
+    className: 'font-weight-light mb-0'
   }, followerText), crossFade);
 };
 
@@ -2358,7 +2358,7 @@ var CardBody = function CardBody(props) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "card-body",
     style: {
-      height: "auto"
+      height: 'auto'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", {
     className: "card-title font-weight-bold text-truncate pb-1 mb-1"
@@ -33847,7 +33847,7 @@ var RadioList = function RadioList() {
   }
 };
 
-var pageTitle = "Radio stations";
+var pageTitle = 'Radio stations';
 
 var RadiosTitleDesktop = function RadiosTitleDesktop() {
   /*global spotify*/
@@ -33867,7 +33867,7 @@ var RadiosTitleDesktop = function RadiosTitleDesktop() {
     className: "text-muted font-weight-light"
   }, spotify, " playlists curated like radio stations"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("small", {
     className: "text-center font-weight-light"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("b", null, "Note:"), " Apple music is deprecated and the most up to date playlists are on ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("b", null, "Note:"), " Apple music is deprecated and the most up to date playlists are on", ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
     href: "https://open.spotify.com/user/domshyra"
   }, spotify)))));
 };
@@ -33890,7 +33890,7 @@ var RadioPage = function RadioPage() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadiosTitleDesktop, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadiosTitleMobile, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioList, null));
 };
 
-react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioPage, null), document.getElementById("radio-content"));
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(RadioPage, null), document.getElementById('radio-content'));
 })();
 
 /******/ })()

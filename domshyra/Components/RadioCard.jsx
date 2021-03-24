@@ -1,7 +1,7 @@
-﻿import React from "react";
-import PropTypes from "prop-types";
-import Skeleton from "react-loading-skeleton";
-import CrossFadeMessage from "./CrossFadeMessage.jsx";
+﻿import React from 'react';
+import PropTypes from 'prop-types';
+import Skeleton from 'react-loading-skeleton';
+import CrossFadeMessage from './CrossFadeMessage.jsx';
 
 const cardHeight = 20;
 const cardHeightMobile = 40;
@@ -17,24 +17,28 @@ const RadioCard = (props) => {
     );
 };
 RadioCard.propTypes = {
-    radio: PropTypes.object
+    radio: PropTypes.object,
 };
 export default RadioCard;
 
-
 const CardElementDesktop = (props) => {
     const radio = props.radio;
-    const image = radio != null ? <img src={radio.ImageURL} className="card-img playlist-img" alt="..." /> : <Skeleton height={imgSkeletonHeight} />;
+    const image =
+        radio != null ? (
+            <img src={radio.ImageURL} className="card-img playlist-img" alt="..." />
+        ) : (
+            <Skeleton height={imgSkeletonHeight} />
+        );
     return (
         <div className="d-none d-xl-block">
             <div className="card mb-2 shadow-sm">
                 <div className="row no-gutters">
                     <div className="col-4">
-                        <div className="px-2 py-2" style={{ height: `${cardHeight}vh` } }>
+                        <div className="px-2 py-2" style={{ height: `${cardHeight}vh` }}>
                             {image}
                         </div>
                     </div>
-                    <div className="col-8" style={{ height: `${cardHeight}vh`}}>
+                    <div className="col-8" style={{ height: `${cardHeight}vh` }}>
                         <CardBody details={radio} mobileView={false} />
                         <TrackCount details={radio} mobileView={false} />
                     </div>
@@ -46,12 +50,17 @@ const CardElementDesktop = (props) => {
 };
 CardElementDesktop.propTypes = {
     ImageURL: PropTypes.string,
-    radio: PropTypes.object
+    radio: PropTypes.object,
 };
 
 const CardElementMobile = (props) => {
     const radio = props.radio;
-    const image = radio != null ? <img src={radio.ImageURL} className="card-img-top playlist-img" alt="..." /> : <Skeleton height={imgSkeletonHeightMobile} />;
+    const image =
+        radio != null ? (
+            <img src={radio.ImageURL} className="card-img-top playlist-img" alt="..." />
+        ) : (
+            <Skeleton height={imgSkeletonHeightMobile} />
+        );
     return (
         <div className="d-xl-none">
             <div className="card mb-3 shadow-sm">
@@ -66,18 +75,17 @@ const CardElementMobile = (props) => {
 };
 CardElementMobile.propTypes = {
     ImageURL: PropTypes.string,
-    radio: PropTypes.object
+    radio: PropTypes.object,
 };
-
 
 const TrackCount = (props) => {
     const details = props.details;
     const followerText = details != null ? details.TrackAndFollowerText : <Skeleton width={50} />;
-    const crossFade = props.mobileView ? "" : <CrossFadeMessage />;
-    const marginClass = props.mobileView ? "" : "mb-0";
+    const crossFade = props.mobileView ? '' : <CrossFadeMessage />;
+    const marginClass = props.mobileView ? '' : 'mb-0';
     return (
         <blockquote className={`pt-2 ${marginClass} card-track-count`}>
-            <p className={"font-weight-light mb-0"}>{followerText}</p>
+            <p className={'font-weight-light mb-0'}>{followerText}</p>
             {crossFade}
         </blockquote>
     );
@@ -98,9 +106,9 @@ const CardBody = (props) => {
             return <Skeleton count={3} />;
         }
 
-        return details.Description.length > maxCharCount ?
-            `${details.Description.substring(0, maxCharCount)}...` :
-            details.Description;
+        return details.Description.length > maxCharCount
+            ? `${details.Description.substring(0, maxCharCount)}...`
+            : details.Description;
     };
 
     const title = () => {
@@ -108,25 +116,28 @@ const CardBody = (props) => {
             return <Skeleton />;
         }
         if (mobileView) {
-            return <a className="text-decoration-none"
-                href={details.SpotifyMusicLink}
-                /*global spotify*/
-                /*eslint no-undef: "error"*/
-                title={`View ${details.Title} on ${spotify}`}
-                aria-label={details.Title}
-                data-toggle='tooltip'
-                data-placement='bottom'
-                target='_blank'
-                rel="noreferrer">
-                {details.Title}
-            </a>;
+            return (
+                <a
+                    className="text-decoration-none"
+                    href={details.SpotifyMusicLink}
+                    /*global spotify*/
+                    /*eslint no-undef: "error"*/
+                    title={`View ${details.Title} on ${spotify}`}
+                    aria-label={details.Title}
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    target="_blank"
+                    rel="noreferrer">
+                    {details.Title}
+                </a>
+            );
         }
 
         return details.Title;
     };
 
     return (
-        <div className="card-body" style={{ height: "auto" } }>
+        <div className="card-body" style={{ height: 'auto' }}>
             <h5 className="card-title font-weight-bold text-truncate pb-1 mb-1">{title()}</h5>
             <p className="card-text card-description">{description()}</p>
         </div>
@@ -139,19 +150,24 @@ CardBody.propTypes = {
     Title: PropTypes.string,
     TrackAndFollowerText: PropTypes.string,
     CrossFadeText: PropTypes.string,
-    mobileView: PropTypes.bool
+    mobileView: PropTypes.bool,
 };
 
 const CardFooter = (props) => {
     const details = props.details;
     if (details == null) {
-        return (null);
+        return null;
     }
     return (
         <div className="card-footer">
             <div className="row">
                 <div className="col-6">
-                    <MusicFooterLink direction="left" title={spotify} icon="fa-spotify" link={details.SpotifyMusicLink} />
+                    <MusicFooterLink
+                        direction="left"
+                        title={spotify}
+                        icon="fa-spotify"
+                        link={details.SpotifyMusicLink}
+                    />
                 </div>
                 <div className="col-6">
                     <ShowAppleMusic info={details} />
@@ -161,7 +177,7 @@ const CardFooter = (props) => {
     );
 };
 CardFooter.propTypes = {
-    details: PropTypes.object
+    details: PropTypes.object,
 };
 
 const MusicFooterLink = (props) => {
@@ -169,8 +185,13 @@ const MusicFooterLink = (props) => {
     const imgClassName = `card-icon fab ${props.icon}`;
     const linkClassName = `float-${props.direction} text-decoration-none`;
     return (
-        <a className={linkClassName} href={props.link} title={titleText}
-            aria-label={titleText} data-toggle="tooltip" data-placement="bottom">
+        <a
+            className={linkClassName}
+            href={props.link}
+            title={titleText}
+            aria-label={titleText}
+            data-toggle="tooltip"
+            data-placement="bottom">
             {props.title} <i className={`${imgClassName}`}></i>
         </a>
     );
@@ -185,10 +206,17 @@ MusicFooterLink.propTypes = {
 const ShowAppleMusic = (props) => {
     const showAppleMusic = props.info.AppleMusicLink != null;
     if (showAppleMusic) {
-        return (<MusicFooterLink direction="right" title="Apple Music" icon="fa-itunes-note" link={props.info.AppleMusicLink} />);
+        return (
+            <MusicFooterLink
+                direction="right"
+                title="Apple Music"
+                icon="fa-itunes-note"
+                link={props.info.AppleMusicLink}
+            />
+        );
     }
-    return (null);
+    return null;
 };
 ShowAppleMusic.propTypes = {
-    info: PropTypes.object
+    info: PropTypes.object,
 };
