@@ -6,10 +6,12 @@
   "main": "main.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=development --watch && prettier --write",
-    "release": "webpack --mode=production && prettier --check",
+    "build": "npm run checkJS && webpack --mode=development --watch",
+    "release": "webpack --mode=production",
     "publish": "npm run release && dotnet publish -c Release",
-    "fix": "eslint Components/*.jsx --fix"
+    "fix": "eslint Components/*.jsx --fix",
+    "prettier": "npx prettier --write Components/*.jsx",
+    "checkJS": "npx prettier --check Components/*.jsx"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
