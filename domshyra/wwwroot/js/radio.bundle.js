@@ -2318,7 +2318,7 @@ TrackCount.propTypes = {
 var CardBody = function CardBody(props) {
   var details = props.details;
   var mobileView = props.mobileView;
-  var maxCharCount = mobileView ? 115 : 125;
+  var maxCharCount = mobileView ? 105 : 125;
 
   var description = function description() {
     if (details == null) {

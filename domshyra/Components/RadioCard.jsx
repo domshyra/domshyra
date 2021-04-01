@@ -99,7 +99,7 @@ TrackCount.propTypes = {
 const CardBody = (props) => {
     const details = props.details;
     const mobileView = props.mobileView;
-    const maxCharCount = mobileView ? 115 : 125;
+    const maxCharCount = mobileView ? 105 : 125;
 
     const description = () => {
         if (details == null) {
