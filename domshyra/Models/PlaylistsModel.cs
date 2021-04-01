@@ -26,20 +26,18 @@ namespace domshyra.Models
             {
                 if (FollowerCount == 0)
                 {
-                    return $"{TrackCount:N0} tracks";
+                    return $"{TrackCount:N0} songs";
                 }
                 else
                 {
-                    return $"{TrackCount:N0} tracks and {FollowerCount:N0} followers";
+                    return $"{TrackCount:N0} songs and {FollowerCount:N0} followers";
                 }
             }
         }
-        public string CrossFadeText { get; }
 
         public PlaylistsModel()
         {
-            string helpURL = "https://support.spotify.com/us/article/crossfade-feature/";
-            CrossFadeText = $"For best radio experience use <a href='{helpURL}' title='Crossfade recommened at 6 seconds or more' aria-label='Crossfade from spotify recommened at 6 seconds or more' data-toggle='tooltip' data-placement='bottom'>Spotiy's crossfade feature</a>";
+
         }
     }
 }

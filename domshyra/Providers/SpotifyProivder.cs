@@ -73,7 +73,7 @@ namespace domshyra.Providers
 
             try
             {
-                using HttpClient client = new HttpClient();
+                using HttpClient client = new();
                 //add the spotify auth 
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
 
@@ -114,7 +114,7 @@ namespace domshyra.Providers
 
             try
             {
-                using HttpClient client = new HttpClient();
+                using HttpClient client = new();
                 //add the spotify auth 
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
 
@@ -236,7 +236,7 @@ namespace domshyra.Providers
 
             try
             {
-                using HttpClient client = new HttpClient();
+                using HttpClient client = new();
                 //add the spotify auth 
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
 
@@ -248,7 +248,7 @@ namespace domshyra.Providers
                 {
                     dynamic playlistJSON = JObject.Parse(data);
 
-                    PlaylistsModel playlist = new PlaylistsModel()
+                    PlaylistsModel playlist = new()
                     {
                         SpotifyMusicLink = playlistJSON.href,
                         ImageURL = playlistJSON.images[0].url,
