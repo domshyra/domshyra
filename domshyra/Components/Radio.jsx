@@ -1,28 +1,27 @@
-﻿import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import RadioCard from "./RadioCard.jsx"
-import PropTypes from "prop-types";
-import CrossFadeMessage from "./CrossFadeMessage.jsx";
+﻿import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import RadioCard from './RadioCard.jsx';
+import PropTypes from 'prop-types';
+import CrossFadeMessage from './CrossFadeMessage.jsx';
 
 const Radios = (props) => {
     const playlists = props.playlists;
-    const radioItems = playlists.map((radio) =>
-        <div className="col-12 col-xl-6 mb-2" title={radio.Title} aria-label={radio.Title} id={radio.AnchorId} key={radio.Title}>
-            <RadioCard radio={radio}  />
+    const radioItems = playlists.map((radio) => (
+        <div
+            className="col-12 col-xl-6 mb-2"
+            title={radio.Title}
+            aria-label={radio.Title}
+            id={radio.AnchorId}
+            key={radio.Title}>
+            <RadioCard radio={radio} />
         </div>
-    );
-    
+    ));
 
-    return (
-        <div className="row">
-            {radioItems}
-        </div>
-    );
+    return <div className="row">{radioItems}</div>;
 };
 Radios.propTypes = {
-    playlists: PropTypes.array
+    playlists: PropTypes.array,
 };
-
 
 const RadioSkeleton = () => {
     return (
@@ -35,8 +34,7 @@ const RadioSkeleton = () => {
             </div>
         </div>
     );
-
-}
+};
 
 const RadioList = () => {
     const [error, setError] = useState(null);
@@ -47,7 +45,7 @@ const RadioList = () => {
         /*global radioURL*/
         /*eslint no-undef: "error"*/
         fetch(radioURL)
-            .then(res => res.json())
+            .then((res) => res.json())
             .then(
                 (result) => {
                     setIsLoaded(true);
@@ -57,8 +55,8 @@ const RadioList = () => {
                     setIsLoaded(true);
                     setError(error);
                 }
-            )
-    }, [])
+            );
+    }, []);
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -67,10 +65,9 @@ const RadioList = () => {
     } else {
         return <Radios playlists={playlists} />;
     }
-}
+};
 
-
-const pageTitle = "Radio stations";
+const pageTitle = 'Radio stations';
 
 const RadiosTitleDesktop = () => {
     /*global spotify*/
@@ -83,16 +80,16 @@ const RadiosTitleDesktop = () => {
                     <p className="lead text-muted mb-0">
                         Music is the oldest form of story telling and I&apos;ve always loved a good story
                     </p>
-                    <p className="text-muted font-weight-light">
-                        {spotify} playlists curated like radio stations
-                    </p>
-                    <small className="text-center font-weight-light"><b>Note:</b> Apple music is deprecated and the most up to date playlists are on <a href="https://open.spotify.com/user/domshyra">{spotify}</a></small>
+                    <p className="text-muted font-weight-light">{spotify} playlists curated like radio stations</p>
+                    <small className="text-center font-weight-light">
+                        <b>Note:</b> Apple music is deprecated and the most up to date playlists are on{' '}
+                        <a href="https://open.spotify.com/user/domshyra">{spotify}</a>
+                    </small>
                 </div>
             </section>
         </div>
     );
-}
-
+};
 
 const RadiosTitleMobile = () => {
     return (
@@ -107,18 +104,17 @@ const RadiosTitleMobile = () => {
             </div>
         </div>
     );
-}
-
+};
 
 const RadioPage = () => {
     return (
         <>
-        <RadiosTitleDesktop />
-        <RadiosTitleMobile />
+            <RadiosTitleDesktop />
+            <RadiosTitleMobile />
 
-        <RadioList />
+            <RadioList />
         </>
     );
-}
+};
 
-ReactDOM.render(<RadioPage />, document.getElementById("radio-content"));
+ReactDOM.render(<RadioPage />, document.getElementById('radio-content'));
