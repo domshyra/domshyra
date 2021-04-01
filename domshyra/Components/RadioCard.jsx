@@ -95,7 +95,7 @@ TrackCount.propTypes = {
     TrackAndFollowerText: PropTypes.string,
     mobileView: PropTypes.bool,
 };
-
+//TODO: This really needs to be a more sustainable way to calc the overflow. This works but not well. 
 const CardBody = (props) => {
     const details = props.details;
     const mobileView = props.mobileView;
