@@ -2202,9 +2202,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var cardHeight = 20;
+var cardHeight = 12;
 var cardHeightMobile = 40;
-var imgSkeletonHeight = "".concat(cardHeight - 2, "vh");
+var imgSkeletonHeight = "".concat(cardHeight - 2, "rem");
 var imgSkeletonHeightMobile = "".concat(cardHeightMobile - 2, "vh");
 
 var RadioCard = function RadioCard(props) {
@@ -2240,12 +2240,12 @@ var CardElementDesktop = function CardElementDesktop(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "px-2 py-2",
     style: {
-      height: "".concat(cardHeight, "vh")
+      height: "".concat(cardHeight, "rem")
     }
   }, image)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
     className: "col-8",
     style: {
-      height: "".concat(cardHeight, "vh")
+      height: "".concat(cardHeight, "rem")
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CardBody, {
     details: radio,
@@ -2318,7 +2318,6 @@ TrackCount.propTypes = {
 var CardBody = function CardBody(props) {
   var details = props.details;
   var mobileView = props.mobileView;
-  var maxCharCount = mobileView ? 105 : 125;
 
   var description = function description() {
     if (details == null) {
@@ -2327,7 +2326,7 @@ var CardBody = function CardBody(props) {
       });
     }
 
-    return details.Description.length > maxCharCount ? "".concat(details.Description.substring(0, maxCharCount), "...") : details.Description;
+    return details.Description;
   };
 
   var title = function title() {
@@ -2363,7 +2362,7 @@ var CardBody = function CardBody(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h5", {
     className: "card-title font-weight-bold text-truncate pb-1 mb-1"
   }, title()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-    className: "card-text card-description"
+    className: "card-text card-description radio-card-text"
   }, description()));
 };
 

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 import CrossFadeMessage from './CrossFadeMessage.jsx';
 
-const cardHeight = 20;
+const cardHeight = 12;
 const cardHeightMobile = 40;
-const imgSkeletonHeight = `${cardHeight - 2}vh`;
+const imgSkeletonHeight = `${cardHeight - 2}rem`;
 const imgSkeletonHeightMobile = `${cardHeightMobile - 2}vh`;
 
 const RadioCard = (props) => {
@@ -34,11 +34,11 @@ const CardElementDesktop = (props) => {
             <div className="card mb-2 shadow-sm">
                 <div className="row no-gutters">
                     <div className="col-4">
-                        <div className="px-2 py-2" style={{ height: `${cardHeight}vh` }}>
+                        <div className="px-2 py-2" style={{ height: `${cardHeight}rem` }}>
                             {image}
                         </div>
                     </div>
-                    <div className="col-8" style={{ height: `${cardHeight}vh` }}>
+                    <div className="col-8" style={{ height: `${cardHeight}rem` }}>
                         <CardBody details={radio} mobileView={false} />
                         <TrackCount details={radio} mobileView={false} />
                     </div>
@@ -95,20 +95,16 @@ TrackCount.propTypes = {
     TrackAndFollowerText: PropTypes.string,
     mobileView: PropTypes.bool,
 };
-//TODO: This really needs to be a more sustainable way to calc the overflow. This works but not well. 
 const CardBody = (props) => {
     const details = props.details;
     const mobileView = props.mobileView;
-    const maxCharCount = mobileView ? 105 : 125;
 
     const description = () => {
         if (details == null) {
             return <Skeleton count={3} />;
         }
 
-        return details.Description.length > maxCharCount
-            ? `${details.Description.substring(0, maxCharCount)}...`
-            : details.Description;
+        return details.Description;
     };
 
     const title = () => {
@@ -139,7 +135,7 @@ const CardBody = (props) => {
     return (
         <div className="card-body" style={{ height: 'auto' }}>
             <h5 className="card-title font-weight-bold text-truncate pb-1 mb-1">{title()}</h5>
-            <p className="card-text card-description">{description()}</p>
+            <p className="card-text card-description radio-card-text">{description()}</p>
         </div>
     );
 };
