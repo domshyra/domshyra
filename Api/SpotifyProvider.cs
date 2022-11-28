@@ -1,16 +1,9 @@
 using Interfaces;
 using Models;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Providers
@@ -33,39 +26,8 @@ namespace Providers
 
             List<PlaylistsModel> playlists = await GetPlaylists(authToken);
 
-            foreach (PlaylistsModel model in playlists)
-            {
-                AddAppleMusicURL(model);
-            }
-
             return playlists.OrderBy(x => x.Title).ToList();
         }
-
-        /// <summary>
-        /// Used to match the apple music urls to the spotify ones
-        /// </summary>
-        /// <param name="model"></param>
-        private static void AddAppleMusicURL(PlaylistsModel model)
-        {
-            switch (model.SpotifyId)
-            {
-                //silver spurs
-                case "3vaznYrm9fSPz3ENlcOR3e":
-                    model.AppleMusicLink = "https://music.apple.com/us/playlist/silver-spurs-radio/pl.u-xlKY2uXJ4jE0";
-                    break;                
-                //equ radio
-                case "5IUjuF00hzonDk6MzuanBs":
-                    model.AppleMusicLink = "https://music.apple.com/us/playlist/equanimity-radio/pl.u-GgN8RCbo4Mrl";
-                    break;
-                //sticky fingers radio
-                case "4WFRmZdZ5RfUvRDC9ijOjM":
-                    model.AppleMusicLink = "https://music.apple.com/us/playlist/sticky-fingers-radio/pl.u-8adAahNvzkZG";
-                    break;
-                default:
-                    break;
-            };
-        }
-
         
         private static async Task<List<string>> GetPlaylistIds(string authToken)
         {
@@ -155,7 +117,7 @@ namespace Providers
                             playlistModel.Description = descriptionAndGenre[0];
                         } 
                         else {
-                            playlistModel.Genre = "N/A";
+                            playlistModel.Genre = "Genreless";
                             playlistModel.Description = decodedDescription;
                         }
                     }
@@ -242,7 +204,6 @@ namespace Providers
 
         private static async Task<PlaylistsModel> GetPlaylistInfoAsync(string playlistId, string authToken)
         {
-            //spotify api https://api.spotify.com/v1/playlists/{playlist_id}
             string baseUrl = $"https://api.spotify.com/v1/playlists/{playlistId}";
 
             try

@@ -14,7 +14,6 @@ namespace Models
         }
         public string Description { get; set; }
         public string Genre { get; set; }
-        public string AppleMusicLink { get; set; }
         public string SpotifyMusicLink { get; set; }
         public string ImageURL { get; set; }
         public string SpotifyId { get; set; }
