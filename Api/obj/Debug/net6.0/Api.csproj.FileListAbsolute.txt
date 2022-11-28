@@ -25,3 +25,5 @@ C:\Users\Dominics\source\repos\domshyra\Api\obj\Debug\net6.0\refint\Api.dll
 C:\Users\Dominics\source\repos\domshyra\Api\obj\Debug\net6.0\Api.pdb
 C:\Users\Dominics\source\repos\domshyra\Api\obj\Debug\net6.0\Api.genruntimeconfig.cache
 C:\Users\Dominics\source\repos\domshyra\Api\obj\Debug\net6.0\ref\Api.dll
+C:\Users\Dominics\source\repos\domshyra\Api\bin\Debug\net6.0\Nuget.Config
+C:\Users\Dominics\source\repos\domshyra\Api\bin\Debug\net6.0\Newtonsoft.Json.dll
