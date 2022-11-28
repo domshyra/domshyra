@@ -174,8 +174,8 @@ namespace Providers
         {
             //https://developer.spotify.com/documentation/general/guides/authorization-guide/
             string authToken;
-            string client_id = _configuration["SecretValues:SecretClientID"];
-            string client_secret = _configuration["SecretValues:SecretClientSecret"];
+            string client_id = _configuration["Spotify:ClientId"];
+            string client_secret = _configuration["Spotify:ClientSecret"];
 
             //url to query
             string authTokenURL = "https://accounts.spotify.com/api/token";
