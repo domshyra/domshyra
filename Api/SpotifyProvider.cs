@@ -113,12 +113,12 @@ namespace Providers
                         var descriptionAndGenre = decodedDescription.Split('(', ')');
                         if (descriptionAndGenre.Length > 1)
                         {
-                            playlistModel.Genre = descriptionAndGenre[1];
-                            playlistModel.Description = descriptionAndGenre[0];
+                            playlistModel.Genre = descriptionAndGenre[1].Trim();
+                            playlistModel.Description = descriptionAndGenre[0].Trim();
                         } 
                         else {
                             playlistModel.Genre = "Genreless";
-                            playlistModel.Description = decodedDescription;
+                            playlistModel.Description = decodedDescription.Trim();
                         }
                     }
 
