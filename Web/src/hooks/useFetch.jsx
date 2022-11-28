@@ -35,17 +35,25 @@ export default function useFetch(url, defaultObject = {}) {
 			signal: signal,
 		})
 			.then((response) => {
+				debugger
 				if (!response.ok) {
+				debugger
+
 					let error = response.text();
 					return Promise.reject(error);
 				}
 				if (response.status === 204) {
+				debugger
+
 					return "";
 				}
+				debugger
+
 				return response.json();
 			})
 			.then(
 				(result) => {
+					
 					if (isMountedRef.current) {
 						if (Object.keys(result).length) {
 							setData(result);

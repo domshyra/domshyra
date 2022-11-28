@@ -143,10 +143,21 @@ namespace Providers
                             SpotifyMusicLink = playlist.external_urls.spotify
                         }).ToList();
 
-                    //decode the html
+                    
                     foreach (PlaylistsModel playlistModel in playlistsModels)
                     {
-                        playlistModel.Description = HttpUtility.HtmlDecode(playlistModel.Description);
+                        //decode the html
+                        string decodedDescription = HttpUtility.HtmlDecode(playlistModel.Description);
+                        var descriptionAndGenre = decodedDescription.Split('(', ')');
+                        if (descriptionAndGenre.Length > 1)
+                        {
+                            playlistModel.Genre = descriptionAndGenre[1];
+                            playlistModel.Description = descriptionAndGenre[0];
+                        } 
+                        else {
+                            playlistModel.Genre = "N/A";
+                            playlistModel.Description = decodedDescription;
+                        }
                     }
 
                     return playlistsModels;
