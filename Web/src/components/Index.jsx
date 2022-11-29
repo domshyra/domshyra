@@ -1,34 +1,22 @@
 import React, { useEffect, useState } from "react";
 
-import Config from "../config";
-import useFetch from "../hooks/useFetch";
+import { useGetPlaylistsQuery } from "../redux/services/spotifyApi";
 
 const Index = () => {
-	// const { data, loading, error } = useFetch("spotify", []);
-	const [displayRows, setDisplayRows] = useState(null)
+
+	const { data, isLoading } = useGetPlaylistsQuery();
 	const [playlists, setPlaylists] = useState([])
 
-	// useEffect(() => {
-	// 	console.log(data);
-	// 	if (!loading && data) {
-	// 		setDisplayRows(rows(data));
-	// 	}
-	// }, [data, loading]);
-
 	  useEffect(() => {
-			const fetchPlaylists = async () => {
-				const rsp = await fetch(`${Config.baseApiUrl}spotify`);
-				const playlists = await rsp.json();
-				setPlaylists(playlists);
-			};
-			fetchPlaylists();
-		}, []);
+			if (!isLoading && data) {
+				setPlaylists(data);
+			}
+		}, [data, isLoading]);
 
 	const rows = (data) => {
 		if (!data) {
 			return null;
 		}
-		debugger
 		return data.map((item) => (
 			<tr key={item.spotifyId}>
 				<td>{item.title}</td>
@@ -38,10 +26,6 @@ const Index = () => {
 			</tr>
 		));
 	};
-
-	// if (loading) {
-	// 	return <div>Loading...</div>;
-	// }
 
 	return (
 		<div>
