@@ -1,6 +1,6 @@
+import { Grid, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-import { Grid } from "@mui/material";
 import PlaylistCard from "./PlaylistCard";
 import { useGetPlaylistsQuery } from "../redux/services/spotifyApi";
 
@@ -56,7 +56,9 @@ const Index = () => {
 				</tbody>
 			</table>
 
+			<Grid container>
 			{!isLoading ? cards : null}
+			</Grid>
 		</Grid>
 	);
 };

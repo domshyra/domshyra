@@ -26,7 +26,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 					component="img"
 					//   height="140"
 					image={imageURL}
-                    // sx={{ width: 151 }}
+                    sx={{ width: 151 }}
 					alt={`${title} image`}
 				/>
 				<CardContent>
