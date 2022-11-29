@@ -1,80 +1,43 @@
 import * as React from "react";
 
-import { Box, Button, CardActionArea, CardActions, CardHeader, IconButton, Tooltip } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 
-import AspectRatio from '@mui/joy/AspectRatio';
+import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { PropTypes } from "prop-types";
-import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import Typography from "@mui/material/Typography";
 
 const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText }) => {
-	return (
-		<Card sx={{ display: "flex" }}>
-			<Box sx={{ display: "flex", flexDirection: "column", width: 215 }}>
-				<CardContent sx={{ flex: "1 0 auto" }}>
-					<Typography component="div" variant="h5">
-						{title}
-					</Typography>
-					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
-						{description}
-					</Typography>
+	const sectionWidth = 215;
+	const cardWidth = sectionWidth * 2;
 
-				</CardContent>
-				<Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-					<Tooltip title={genre}>
-					<IconButton aria-label="genre">
-						<QueueMusicIcon />
-					</IconButton>
-					</Tooltip>
-					<Typography variant="caption" color="text.secondary.light" noWrap>
-						{genre}
-					</Typography>
-				</Box>
-			</Box>
-			<Box sx={{ width: 215, overflow: "auto", p: 1, borderRadius: 'md' }}>
-				<AspectRatio ratio="4/3" minWidth={120} maxWidth={200} objectFit="contain">
-					<img src={imageURL} alt="" />
-				</AspectRatio>
-			</Box>
-			{/* <CardMedia component="img" sx={{ width: 200 }} image={imageURL} alt={`${title} image`} /> */}
-		</Card>
-	);
-};
-
-const PlaylistCardV2 = ({ title, imageURL, description, genre, trackAndFollowerText }) => {
 	return (
-		<Card sx={{ display: "flex", maxWidth: 430, minHeight: 150 }}>
+		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 150 }}>
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
-				<CardContent sx={{ flex: "1 0 auto", width:215 }}>
+				<CardContent sx={{ flex: "1 0 auto", width: 215 }}>
 					<Typography component="div" variant="h6">
 						{title}
 					</Typography>
 					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
 						{description}
 					</Typography>
-
 				</CardContent>
-				<Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1, maxWidth:215 }}>
-					<Tooltip title={genre}>
-					<IconButton aria-label="genre">
-						<QueueMusicIcon />
-					</IconButton>
+				<Box sx={{ display: "flex", alignItems: "center", pl: 1, maxWidth: sectionWidth }}>
+					<Tooltip title={genre} placement="bottom-end" arrow>
+						<Button aria-label="genre" color="secondary" size="small" startIcon={<MusicNoteIcon />}>
+							Genre
+						</Button>
 					</Tooltip>
-					<Typography variant="caption" color="text.secondary.light" noWrap>
-						{genre}
+					<Typography sx={{ flex: "1 0 auto" }}>{/*left blank for spacing*/}</Typography>
+					<Typography variant="caption" color="text.secondary.light" noWrap align="right">
+						{trackAndFollowerText}
 					</Typography>
 				</Box>
 			</Box>
-			{/* <Box sx={{ width: 215, overflow: "auto", p: 1, borderRadius: 'md' }}>
-				<AspectRatio ratio="4/3" minWidth={120} maxWidth={200} objectFit="contain">
-					<img src={imageURL} alt="" />
-				</AspectRatio>
-			</Box> */}
-			<CardMedia component={AspectRatio} ratio="4/3" objectFit="contain" sx={{ width: 215 }} image={imageURL} alt={`${title} image`} />
+			<CardMedia component={AspectRatio} ratio="4/3" objectFit="contain" sx={{ width: sectionWidth }} image={imageURL} alt={`${title} image`} />
 		</Card>
 	);
 };
@@ -88,16 +51,5 @@ PlaylistCard.propType = {
 	spotifyId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
-PlaylistCardV2.propType = {
-	title: PropTypes.string,
-	anchorId: PropTypes.string,
-	description: PropTypes.string,
-	genre: PropTypes.string,
-	spotifyMusicLink: PropTypes.string,
-	imageURL: PropTypes.string,
-	spotifyId: PropTypes.string,
-	trackAndFollowerText: PropTypes.string,
-};
 
 export default PlaylistCard;
-export { PlaylistCardV2 };
