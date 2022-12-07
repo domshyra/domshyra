@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();
 //TODO remove
 builder.Services.AddCors();
-builder.Services.AddDbContext<PlaylistDbContext>(options => 
+builder.Services.AddDbContext<PlaylistDbContext>(options =>
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
 builder.Services.AddScoped<ISpotifyProvider, SpotifyProvider>();
@@ -39,15 +39,27 @@ app.MapGet("/ratings/{spotifyId}", async (string spotifyId, IPlaylistRepo repo) 
 {
     var rating = await repo.GetRating(spotifyId);
     if (rating == null)
-        return Results.Problem($"Playlist rating with id {spotifyId} not found", statusCode: 404);
+        return Results.Problem($"Playlist rating for playlist id {spotifyId} not found", statusCode: 404);
     return Results.Ok(rating);
 }).ProducesProblem(404).Produces<PlaylistRatingDto>(StatusCodes.Status200OK);
 
-app.MapPost("/ratings", async ([FromBody]PlaylistRatingDto rating, IPlaylistRepo repo) =>
+app.MapPost("/ratings", async ([FromBody] PlaylistRatingDto rating, IPlaylistRepo repo) =>
 {
     var newRating = await repo.AddRating(rating);
     return Results.Created($"/ratings/{newRating.Id}", newRating);
 }).Produces<PlaylistRatingDto>(StatusCodes.Status201Created);
+
+app.MapPut("/ratings", async ([FromBody] PlaylistRatingDto rating, IPlaylistRepo repo) =>
+{
+    var existingRating = await repo.GetRating(rating.PlaylistId);
+    if (existingRating == null)
+        return Results.Problem($"Playlist rating for playlist id {rating.PlaylistId} not found", statusCode: 404);
+    var updatedRating = await repo.UpdateRating(rating);
+    return Results.Ok(updatedRating);
+}).ProducesProblem(404).Produces<PlaylistRatingDto>(StatusCodes.Status200OK);
+
+
+
 
 
 //TODO remove

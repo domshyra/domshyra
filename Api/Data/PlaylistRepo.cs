@@ -6,7 +6,7 @@ public interface IPlaylistRepo
     Task<List<PlaylistRatingDto>> GetRatings();
     Task<PlaylistRatingDto?> GetRating(string playlistId);
     Task<PlaylistRatingDto> AddRating(PlaylistRatingDto rating);
-    //Task<PlaylistRatingDto> UpdateRating(PlaylistRatingDto rating);
+    Task<PlaylistRatingDto> UpdateRating(PlaylistRatingDto rating);
     // Task DeleteRating(string playlistId);
 }
 
@@ -46,6 +46,17 @@ public class PlaylistRepo : IPlaylistRepo {
             PlaylistId = rating.PlaylistId
         };
         _context.Ratings.Add(entity);
+        await _context.SaveChangesAsync();
+        return EntityToDetailDto(entity);
+    }
+
+    public async Task<PlaylistRatingDto> UpdateRating(PlaylistRatingDto rating)
+    {
+        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.PlaylistId == rating.PlaylistId);
+        if (entity == null)
+            throw new Exception($"Playlist rating with id {rating.PlaylistId} not found");
+        entity.Rating = rating.Rating;
+        _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync();
         return EntityToDetailDto(entity);
     }
