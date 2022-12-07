@@ -5,7 +5,7 @@ public interface IPlaylistRepo
 {
     Task<List<PlaylistRatingDto>> GetRatings();
     Task<PlaylistRatingDto?> GetRating(string playlistId);
-    //Task<PlaylistRatingDto> AddRating(PlaylistRatingDto rating);
+    Task<PlaylistRatingDto> AddRating(PlaylistRatingDto rating);
     //Task<PlaylistRatingDto> UpdateRating(PlaylistRatingDto rating);
     // Task DeleteRating(string playlistId);
 }
@@ -32,8 +32,21 @@ public class PlaylistRepo : IPlaylistRepo {
         return EntityToDetailDto(entity);
     }
 
-    private PlaylistRatingDto? EntityToDetailDto(PlaylistRatingEntity entity)
+    private PlaylistRatingDto EntityToDetailDto(PlaylistRatingEntity entity)
     {
         return new PlaylistRatingDto(entity.Id, entity.Rating, entity.PlaylistId);
+    }
+
+    public async Task<PlaylistRatingDto> AddRating(PlaylistRatingDto rating)
+    {
+        var entity = new PlaylistRatingEntity
+        {
+            Id = Guid.NewGuid(),
+            Rating = rating.Rating,
+            PlaylistId = rating.PlaylistId
+        };
+        _context.Ratings.Add(entity);
+        await _context.SaveChangesAsync();
+        return EntityToDetailDto(entity);
     }
 }

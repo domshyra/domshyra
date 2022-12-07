@@ -1,6 +1,7 @@
 using Interfaces;
 using Providers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,12 @@ app.MapGet("/ratings/{spotifyId}", async (string spotifyId, IPlaylistRepo repo) 
         return Results.Problem($"Playlist rating with id {spotifyId} not found", statusCode: 404);
     return Results.Ok(rating);
 }).ProducesProblem(404).Produces<PlaylistRatingDto>(StatusCodes.Status200OK);
+
+app.MapPost("/ratings", async ([FromBody]PlaylistRatingDto rating, IPlaylistRepo repo) =>
+{
+    var newRating = await repo.AddRating(rating);
+    return Results.Created($"/ratings/{newRating.Id}", newRating);
+}).Produces<PlaylistRatingDto>(StatusCodes.Status201Created);
 
 
 //TODO remove
