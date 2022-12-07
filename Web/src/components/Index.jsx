@@ -29,9 +29,7 @@ const Index = () => {
 	};
 
 	return (
-		<Grid mt={4}>
-			<Grid container>{!isLoading ? cards : null}</Grid>
-		</Grid>
+		<Grid container>{!isLoading ? cards : null}</Grid>
 	);
 };
 
