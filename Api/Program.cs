@@ -15,6 +15,7 @@ builder.Services.AddDbContext<PlaylistDbContext>(options =>
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
 builder.Services.AddScoped<ISpotifyProvider, SpotifyProvider>();
+builder.Services.AddScoped<IPlaylistRepo, PlaylistRepo>();
 
 var app = builder.Build();
 
@@ -31,6 +32,16 @@ app.MapGet("/spotify", async (ISpotifyProvider _spotifyProvider) =>
 {
     return await _spotifyProvider.GetPlaylists();
 }).WithName("GetSpotifyPlaylists");
+
+app.MapGet("/ratings", (IPlaylistRepo repo) => repo.GetRatings()).Produces<PlaylistRatingDto[]>(StatusCodes.Status200OK);
+app.MapGet("/ratings/{spotifyId}", async (string spotifyId, IPlaylistRepo repo) =>
+{
+    var rating = await repo.GetRating(spotifyId);
+    if (rating == null)
+        return Results.Problem($"Playlist rating with id {spotifyId} not found", statusCode: 404);
+    return Results.Ok(rating);
+}).ProducesProblem(404).Produces<PlaylistRatingDto>(StatusCodes.Status200OK);
+
 
 //TODO remove
 app.UseCors(p => p.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
