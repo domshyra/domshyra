@@ -21,12 +21,12 @@ public class PlaylistRepo : IPlaylistRepo {
 
     public async Task<List<PlaylistRatingDto>> GetRatings()
     {
-        return await _context.Ratings.Select(e => new PlaylistRatingDto(e.Id, e.Rating, e.PlaylistId)).ToListAsync();
+        return await _context.Ratings.Select(e => new PlaylistRatingDto(e.Id, e.Rating, e.SpotifyId)).ToListAsync();
     }
 
     public async Task<PlaylistRatingDto?> GetRating(string playlistId)
     {
-        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.PlaylistId == playlistId);
+        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.SpotifyId == playlistId);
         if (entity == null)
             return null;
         return EntityToDetailDto(entity);
@@ -34,7 +34,7 @@ public class PlaylistRepo : IPlaylistRepo {
 
     private PlaylistRatingDto EntityToDetailDto(PlaylistRatingEntity entity)
     {
-        return new PlaylistRatingDto(entity.Id, entity.Rating, entity.PlaylistId);
+        return new PlaylistRatingDto(entity.Id, entity.Rating, entity.SpotifyId);
     }
 
     public async Task<PlaylistRatingDto> AddRating(PlaylistRatingDto rating)
@@ -43,7 +43,7 @@ public class PlaylistRepo : IPlaylistRepo {
         {
             Id = Guid.NewGuid(),
             Rating = rating.Rating,
-            PlaylistId = rating.PlaylistId
+            SpotifyId = rating.SpotifyId
         };
         _context.Ratings.Add(entity);
         await _context.SaveChangesAsync();
@@ -52,9 +52,9 @@ public class PlaylistRepo : IPlaylistRepo {
 
     public async Task<PlaylistRatingDto> UpdateRating(PlaylistRatingDto rating)
     {
-        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.PlaylistId == rating.PlaylistId);
+        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.SpotifyId == rating.SpotifyId);
         if (entity == null)
-            throw new Exception($"Playlist rating with id {rating.PlaylistId} not found");
+            throw new Exception($"Playlist rating with id {rating.SpotifyId} not found");
         entity.Rating = rating.Rating;
         _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Grid } from "@mui/material";
-import PlaylistCard from "./PlaylistCard";
+import PlaylistCard from "./PlaylistCardFromQueryState";
 import { useGetPlaylistsQuery } from "../redux/services/spotifyApi";
 import { useGetRatingsQuery } from "../redux/services/playlistRatingApi";
 

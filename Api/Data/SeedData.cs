@@ -8,7 +8,7 @@ public static class SeedData
             new PlaylistRatingEntity {
                 Id = new Guid("cc89279a-1ebb-49c3-9a0d-f704c61b5d0a"),
                 Rating = 5,
-                PlaylistId = "4wPdda9xSZy2ffI47Bo696"
+                SpotifyId = "4wPdda9xSZy2ffI47Bo696"
             },
         });
     }

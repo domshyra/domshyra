@@ -51,7 +51,7 @@ app.MapPost("/ratings", async ([FromBody] PlaylistRatingDto rating, IPlaylistRep
 
 app.MapPut("/ratings", async ([FromBody] PlaylistRatingDto rating, IPlaylistRepo repo) =>
 {
-    var existingRating = await repo.GetRating(rating.PlaylistId);
+    var existingRating = await repo.GetRating(rating.SpotifyId);
     if (existingRating == null)
         return Results.NoContent();
     var updatedRating = await repo.UpdateRating(rating);

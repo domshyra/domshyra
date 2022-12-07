@@ -10,13 +10,10 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { PropTypes } from "prop-types";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
-import { useGetRatingQuery } from "../redux/services/playlistRatingApi";
 
-const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, spotifyId }) => {
+const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating }) => {
 	const sectionWidth = 215;
 	const cardWidth = sectionWidth * 2;
-
-	const {data: playlistRating, isLoading: ratingIsLoading} = useGetRatingQuery(spotifyId);
 
 	return (
 		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 150 }}>
@@ -29,7 +26,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 						{description}
 					</Typography>
 					{!ratingIsLoading ? (
-						<Rating name={`${title}-rating`} defaultValue={0} value={playlistRating?.rating ?? 0} />
+						<Rating name={`${title}-rating`} defaultValue={0} value={playlistRating?.rating ?? 0} size="small" />
 					) : (
 						<Skeleton variant="rectangular" width={100} height={20} />
 					)}
