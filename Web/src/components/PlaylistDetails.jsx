@@ -27,6 +27,6 @@ const PlaylistDetails = () => {
       }
     }, [playlists, playlistsIsLoading, spotifyId])
     
-	return <PlaylistCardDetails {...playlist} ratingIsLoading={ratingIsLoading} playlistRating={rating} />;
+	return <PlaylistCardDetails {...playlist} ratingIsLoading={ratingIsLoading} playlistRating={rating} spotifyId={spotifyId} />;
 };
 export default PlaylistDetails;

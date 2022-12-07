@@ -43,22 +43,27 @@ app.MapGet("/ratings/{spotifyId}", async (string spotifyId, IPlaylistRepo repo) 
     return Results.Ok(rating);
 }).Produces<PlaylistRatingDto>(StatusCodes.Status200OK).Produces(StatusCodes.Status204NoContent);
 
-app.MapPost("/ratings", async ([FromBody] PlaylistRatingDto rating, IPlaylistRepo repo) =>
+app.MapPost("/ratings/{spotifyId}", async (string spotifyId, [FromBody] int rating, IPlaylistRepo repo) =>
 {
-    var newRating = await repo.AddRating(rating);
+    var newRating = await repo.AddRating(spotifyId, rating);
     return Results.Created($"/ratings/{newRating.Id}", newRating);
 }).Produces<PlaylistRatingDto>(StatusCodes.Status201Created);
 
-app.MapPut("/ratings", async ([FromBody] PlaylistRatingDto rating, IPlaylistRepo repo) =>
+app.MapPut("/ratings/{spotifyId}", async (string spotifyId, [FromBody] int rating, IPlaylistRepo repo) =>
 {
-    var existingRating = await repo.GetRating(rating.SpotifyId);
+    var existingRating = await repo.GetRating(spotifyId);
     if (existingRating == null)
         return Results.NoContent();
-    var updatedRating = await repo.UpdateRating(rating);
+    var updatedRating = await repo.UpdateRating(spotifyId, rating);
     return Results.Ok(updatedRating);
 }).Produces<PlaylistRatingDto>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status204NoContent);
 
+app.MapDelete("/ratings/{id}", async (string id, IPlaylistRepo repo) =>
+{
+    await repo.DeleteRating(id);
+    return Results.Ok();
+}).Produces(StatusCodes.Status200OK);
 
 
 //TODO remove

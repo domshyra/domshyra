@@ -11,6 +11,7 @@ export const spotifyApi = createApi({
 	endpoints: (build) => ({
 		getPlaylists: build.query({
 			query: () => ``,
+			providesTags: ['Playlists'],
 		}),
 	}),
 });

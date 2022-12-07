@@ -29,7 +29,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 						{description}
 					</Typography>
 					{!ratingIsLoading ? (
-						<HeartRatings title={title} rating={playlistRating?.rating ?? 0} />
+						<HeartRatings title={title} rating={playlistRating?.rating ?? 0} spotifyId={spotifyId} ratingId={playlistRating?.id} />
 					) : (
 						<Skeleton variant="rectangular" width={100} height={20} />
 					)}

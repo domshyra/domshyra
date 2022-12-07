@@ -5,9 +5,9 @@ public interface IPlaylistRepo
 {
     Task<List<PlaylistRatingDto>> GetRatings();
     Task<PlaylistRatingDto?> GetRating(string playlistId);
-    Task<PlaylistRatingDto> AddRating(PlaylistRatingDto rating);
-    Task<PlaylistRatingDto> UpdateRating(PlaylistRatingDto rating);
-    // Task DeleteRating(string playlistId);
+    Task<PlaylistRatingDto> AddRating(string spotifyId, int rating);
+    Task<PlaylistRatingDto> UpdateRating(string spotifyId, int rating);
+    Task DeleteRating(string playlistId);
 }
 
 
@@ -37,27 +37,36 @@ public class PlaylistRepo : IPlaylistRepo {
         return new PlaylistRatingDto(entity.Id, entity.Rating, entity.SpotifyId);
     }
 
-    public async Task<PlaylistRatingDto> AddRating(PlaylistRatingDto rating)
+    public async Task<PlaylistRatingDto> AddRating(string spotifyId, int rating)
     {
         var entity = new PlaylistRatingEntity
         {
             Id = Guid.NewGuid(),
-            Rating = rating.Rating,
-            SpotifyId = rating.SpotifyId
+            Rating = rating,
+            SpotifyId = spotifyId
         };
         _context.Ratings.Add(entity);
         await _context.SaveChangesAsync();
         return EntityToDetailDto(entity);
     }
 
-    public async Task<PlaylistRatingDto> UpdateRating(PlaylistRatingDto rating)
+    public async Task<PlaylistRatingDto> UpdateRating(string spotifyId, int rating)
     {
-        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.SpotifyId == rating.SpotifyId);
+        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.SpotifyId == spotifyId);
         if (entity == null)
-            throw new Exception($"Playlist rating with id {rating.SpotifyId} not found");
-        entity.Rating = rating.Rating;
+            throw new Exception($"Playlist rating with id {spotifyId} not found");
+        entity.Rating = rating;
         _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync();
         return EntityToDetailDto(entity);
+    }
+
+    public async Task DeleteRating(string playlistId) {
+        Guid id = Guid.Parse(playlistId);
+        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.Id == id);
+        if (entity == null)
+            throw new Exception($"Playlist rating with id {playlistId} not found");
+        _context.Ratings.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 }
