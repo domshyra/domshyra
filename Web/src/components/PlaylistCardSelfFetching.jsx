@@ -1,20 +1,13 @@
 import * as React from "react";
 
-import { playlistRatingApi, useGetRatingQuery } from "../redux/services/playlistRatingApi";
-
 import PlaylistCard from "./PlaylistCard";
 import { PropTypes } from "prop-types";
-import { useEffect } from "react";
+import { useGetRatingQuery } from "../redux/services/playlistRatingApi";
 
 const PlaylistCardSelfFetching = (props) => {
 
 	//? This is a way to get this to work on a record by record bases, but lets pull from the cache instead.
 	const {data: playlistRating, isLoading: ratingIsLoading} = useGetRatingQuery(props.spotifyId);
-	// const {data: playlistRating, isLoading: ratingIsLoading} = playlistRatingApi.endpoints.getRating.useQuery(spotifyId);
-
-	useEffect(() => {
-		console.log(playlistRating);
-	}, [playlistRating]);
 
 	return (
 		<PlaylistCard {...props} playlistRating={playlistRating} ratingIsLoading={ratingIsLoading} />

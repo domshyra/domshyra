@@ -11,16 +11,18 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { PropTypes } from "prop-types";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
-const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating }) => {
+const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, spotifyId }) => {
 	const sectionWidth = 215;
 	const cardWidth = sectionWidth * 2;
+    const nav = useNavigate();
 
 	return (
 		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 150 }}>
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
 				<CardContent sx={{ flex: "1 0 auto", width: 215 }}>
-					<Typography component="div" variant="h6">
+					<Typography component="div" variant="h6" onClick={() => nav(`/playlist/${spotifyId}`)}>
 						{title}
 					</Typography>
 					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
