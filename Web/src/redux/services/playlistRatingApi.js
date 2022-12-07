@@ -50,8 +50,18 @@ export const playlistRatingApi = createApi({
 			},
 			invalidatesTags: (result, error, arg) => [{ type: "Rating", spotifyId: arg.spotifyId }],
 		}),
+		deleteRating: build.mutation({
+			query(data) {
+				const { id } = data;
+				return {
+					url: `/${id}`,
+					method: "DELETE",
+				};
+			},
+			invalidatesTags: (result, error, arg) => [{ type: "Rating", spotifyId: arg.spotifyId }],
+		}),
 	}),
 	tagTypes: ["Rating"],
 });
 
-export const { useGetRatingsQuery, useGetRatingQuery, useUpdateRatingMutation, useAddRatingMutation } = playlistRatingApi;
+export const { useGetRatingsQuery, useGetRatingQuery, useUpdateRatingMutation, useAddRatingMutation, useDeleteRatingMutation} = playlistRatingApi;
