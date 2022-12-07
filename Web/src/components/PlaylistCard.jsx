@@ -1,11 +1,12 @@
 import * as React from "react";
 
-import { Box, Button, Rating, Tooltip } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import HeartRatings from "./HeartRatings";
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { PropTypes } from "prop-types";
 import Skeleton from "@mui/material/Skeleton";
@@ -26,7 +27,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 						{description}
 					</Typography>
 					{!ratingIsLoading ? (
-						<Rating name={`${title}-rating`} defaultValue={0} value={playlistRating?.rating ?? 0} size="small" />
+						<HeartRatings title={title} rating={playlistRating?.rating ?? 0} />
 					) : (
 						<Skeleton variant="rectangular" width={100} height={20} />
 					)}
@@ -57,5 +58,7 @@ PlaylistCard.propType = {
 	spotifyId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
+
+
 
 export default PlaylistCard;

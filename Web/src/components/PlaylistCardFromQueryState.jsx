@@ -14,7 +14,6 @@ const PlaylistCardFromQueryState = (props) => {
 	const { data: ratings, isLoading: ratingIsLoading } = playlistRatingApi.endpoints.getRatings.useQueryState();
 
 	useEffect(() => {
-		console.log(ratings);
 		if (!ratingIsLoading) {
 			const rating = ratings.find((rating) => rating.spotifyId === spotifyId);
 			setPlaylistRating(rating);
