@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import PlaylistCard from "./PlaylistCard";
 import { useGetPlaylistsQuery } from "../redux/services/spotifyApi";
+import { useGetRatingsQuery } from "../redux/services/playlistRatingApi";
 
 const Index = () => {
 	const { data, isLoading } = useGetPlaylistsQuery();
 	const [cards, setCards] = useState([]);
+	
+	useGetRatingsQuery();
 
 	useEffect(() => {
 		if (!isLoading && data) {

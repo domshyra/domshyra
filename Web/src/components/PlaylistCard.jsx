@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Box, Button, Tooltip } from "@mui/material";
+import { Box, Button, Rating, Tooltip } from "@mui/material";
 
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/material/Card";
@@ -8,11 +8,15 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { PropTypes } from "prop-types";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
+import { useGetRatingQuery } from "../redux/services/playlistRatingApi";
 
-const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText }) => {
+const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, spotifyId }) => {
 	const sectionWidth = 215;
 	const cardWidth = sectionWidth * 2;
+
+	const {data: playlistRating, isLoading: ratingIsLoading} = useGetRatingQuery(spotifyId);
 
 	return (
 		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 150 }}>
@@ -24,6 +28,11 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
 						{description}
 					</Typography>
+					{!ratingIsLoading ? (
+						<Rating name={`${title}-rating`} defaultValue={0} value={playlistRating?.rating ?? 0} />
+					) : (
+						<Skeleton variant="rectangular" width={100} height={20} />
+					)}
 				</CardContent>
 				<Box sx={{ display: "flex", alignItems: "center", pl: 1, maxWidth: sectionWidth }}>
 					<Tooltip title={genre} placement="bottom-end" arrow>
