@@ -1,5 +1,6 @@
 using Interfaces;
 using Providers;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();
 //TODO remove
 builder.Services.AddCors();
-
+builder.Services.AddDbContext<PlaylistDbContext>(options => 
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
 builder.Services.AddScoped<ISpotifyProvider, SpotifyProvider>();
 
