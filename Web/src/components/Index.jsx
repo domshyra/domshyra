@@ -21,7 +21,7 @@ const Index = () => {
 	const renderCards = (data) => {
 		return data.map((item) => (
 			<React.Fragment key={item.spotifyId}>
-				<Grid item xs={12} lg={4} xl={3} pb={2} px={1}>
+				<Grid item xs={12} md={6} lg={4} xl={3} pb={2} px={1}>
 					<PlaylistCard {...item} />
 				</Grid>
 			</React.Fragment>
