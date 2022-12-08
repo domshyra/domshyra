@@ -19,7 +19,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
     const nav = useNavigate();
 
 	return (
-		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 150 }}>
+		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 200 }} className="Cardbk">
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
 				<CardContent sx={{ flex: "1 0 auto", width: 215 }}>
 					<Typography component="div" variant="h6" color="primary" onClick={() => nav(`/playlist/${spotifyId}`)}>
