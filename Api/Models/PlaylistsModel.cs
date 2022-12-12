@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web;
-using Newtonsoft.Json;
 
 namespace Models
 {
@@ -42,6 +41,7 @@ namespace Models
         {
 
         }
+        //This doesn't work on the singleton for whatever reasos httpUtility is busted 
         public PlaylistsModel(dynamic playlist)
         {
             //href from singleton and external_urls.spotify from array

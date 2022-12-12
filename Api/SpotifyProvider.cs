@@ -102,8 +102,21 @@ namespace Providers
                     //I only want to display public playlists by me
                     List<PlaylistsModel> playlistsModels = playlists.items.ToList()
                         .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
-                        .Select(playlist => new PlaylistsModel(playlist))
-                        .ToList();
+                        .Select(playlist => new PlaylistsModel()
+                        {
+                            Description = playlist.description,
+                            ImageURL = playlist.images[0].url,
+                            SpotifyId = playlist.id,
+                            Title = playlist.name,
+                            TrackCount = playlist.tracks.total,
+                            SpotifyMusicLink = playlist.external_urls.spotify
+                        }).ToList();
+
+                    
+                    foreach (PlaylistsModel playlistModel in playlistsModels)
+                    {
+                        SetDescriptionAndGenre(playlistModel);
+                    }
 
                     return playlistsModels;
                 }
@@ -122,7 +135,22 @@ namespace Providers
             return new List<PlaylistsModel>();
         }
 
-
+        private static void SetDescriptionAndGenre(PlaylistsModel playlistModel)
+        {
+            //decode the html
+            string decodedDescription = HttpUtility.HtmlDecode(playlistModel.Description);
+            var descriptionAndGenre = decodedDescription.Split('(', ')');
+            if (descriptionAndGenre.Length > 1)
+            {
+                playlistModel.Genre = descriptionAndGenre[1].Trim();
+                playlistModel.Description = descriptionAndGenre[0].Trim();
+            }
+            else
+            {
+                playlistModel.Genre = "Genreless";
+                playlistModel.Description = decodedDescription.Trim();
+            }
+        }
 
         /// <summary>
         /// Get the auth token for my queries since a user isn't authenticating it 
@@ -204,7 +232,21 @@ namespace Providers
                 if (data != null)
                 {
                     dynamic playlistJSON = JObject.Parse(data);
-                    return new PlaylistsModel(playlistJSON);
+
+                    PlaylistsModel playlist = new()
+                    {
+                        SpotifyMusicLink = playlistJSON.href,
+                        ImageURL = playlistJSON.images[0].url,
+                        Title = playlistJSON.name,
+                        Description = playlistJSON.description,
+                        SpotifyId = playlistJSON.id,
+                        TrackCount = playlistJSON.tracks.total,
+                        FollowerCount = playlistJSON.followers.total
+                    };
+
+                    SetDescriptionAndGenre(playlist);
+
+                    return playlist;
                 }
                 else
                 {

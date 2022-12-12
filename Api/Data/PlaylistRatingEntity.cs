@@ -4,4 +4,5 @@ public class PlaylistRatingEntity
     public string SpotifyId { get; set; }
     
     public int Rating { get; set; }
+    public string? Comment { get; set; }
 }

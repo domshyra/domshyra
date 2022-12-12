@@ -21,7 +21,7 @@ public class PlaylistRepo : IPlaylistRepo {
 
     public async Task<List<PlaylistRatingDto>> GetRatings()
     {
-        return await _context.Ratings.Select(e => new PlaylistRatingDto(e.Id, e.Rating, e.SpotifyId)).ToListAsync();
+        return await _context.Ratings.Select(e => new PlaylistRatingDto(e.Id, e.Rating, e.SpotifyId, e.Comment)).ToListAsync();
     }
 
     public async Task<PlaylistRatingDto?> GetRating(string playlistId)
@@ -34,7 +34,7 @@ public class PlaylistRepo : IPlaylistRepo {
 
     private PlaylistRatingDto EntityToDetailDto(PlaylistRatingEntity entity)
     {
-        return new PlaylistRatingDto(entity.Id, entity.Rating, entity.SpotifyId);
+        return new PlaylistRatingDto(entity.Id, entity.Rating, entity.SpotifyId, entity.Comment);
     }
 
     public async Task<PlaylistRatingDto> AddRating(string spotifyId, int rating)
