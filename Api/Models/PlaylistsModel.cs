@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Web;
+using Newtonsoft.Json;
 
 namespace Models
 {
@@ -30,7 +32,7 @@ namespace Models
                 }
                 else
                 {
-                    return $"{TrackCount:N0} songs and {FollowerCount:N0} followers";
+                    return $"{TrackCount:N0} songs, {FollowerCount:N0} followers";
                 }
             }
         }
@@ -40,5 +42,45 @@ namespace Models
         {
 
         }
+        public PlaylistsModel(dynamic playlist)
+        {
+            //href from singleton and external_urls.spotify from array
+            if (PropertyExists(playlist, "href"))
+            {
+                SpotifyMusicLink = playlist?.href;
+            }
+            else if (PropertyExists(playlist, "external_urls.spotify")) {
+                SpotifyMusicLink = playlist?.external_urls.spotify;
+            }
+            ImageURL = playlist.images[0].url;
+            Title = playlist.name;
+            SpotifyId = playlist.id;
+            TrackCount = playlist?.tracks?.total ?? 0;
+            if (PropertyExists(playlist, "followers"))
+            {
+                SpotifyMusicLink = playlist?.followers?.total ?? 0;
+            }
+
+            string decodedDescription = HttpUtility.HtmlDecode(playlist?.description);
+            var descriptionAndGenre = decodedDescription.Split('(', ')');
+            if (descriptionAndGenre.Length > 1)
+            {
+                Genre = descriptionAndGenre[1].Trim();
+                Description = descriptionAndGenre[0].Trim();
+            }
+            else
+            {
+                Genre = "Genreless";
+                Description = decodedDescription.Trim();
+            }
+        }
+
+        private static bool PropertyExists(dynamic obj, string name) {
+        if (obj == null) return false;
+        if (obj is IDictionary<string, object> dict) {
+            return dict.ContainsKey(name);
+        }
+        return obj.GetType().GetProperty(name) != null;
+    }
     }
 }

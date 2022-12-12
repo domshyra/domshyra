@@ -34,6 +34,11 @@ app.MapGet("/spotify", async (ISpotifyProvider _spotifyProvider) =>
     return await _spotifyProvider.GetPlaylists();
 }).WithName("GetSpotifyPlaylists");
 
+app.MapGet("/spotify/{spotifyId}", async (string spotifyId, ISpotifyProvider _spotifyProvider) =>
+{
+    return await _spotifyProvider.GetPlaylist(spotifyId);
+}).WithName("GetSpotifyPlaylist");
+
 app.MapGet("/ratings", (IPlaylistRepo repo) => repo.GetRatings()).Produces<PlaylistRatingDto[]>(StatusCodes.Status200OK);
 app.MapGet("/ratings/{spotifyId}", async (string spotifyId, IPlaylistRepo repo) =>
 {

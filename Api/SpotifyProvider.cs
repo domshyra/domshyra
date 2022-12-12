@@ -28,6 +28,13 @@ namespace Providers
 
             return playlists.OrderBy(x => x.Title).ToList();
         }
+
+        public async Task<PlaylistsModel> GetPlaylist(string playlistId)
+        {
+            string authToken = GetAuthToken();
+
+            return await GetPlaylistInfoAsync(playlistId, authToken);
+        }
         
         private static async Task<List<string>> GetPlaylistIds(string authToken)
         {
@@ -95,32 +102,8 @@ namespace Providers
                     //I only want to display public playlists by me
                     List<PlaylistsModel> playlistsModels = playlists.items.ToList()
                         .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
-                        .Select(playlist => new PlaylistsModel()
-                        {
-                            Description = playlist.description,
-                            ImageURL = playlist.images[0].url,
-                            SpotifyId = playlist.id,
-                            Title = playlist.name,
-                            TrackCount = playlist.tracks.total,
-                            SpotifyMusicLink = playlist.external_urls.spotify
-                        }).ToList();
-
-                    
-                    foreach (PlaylistsModel playlistModel in playlistsModels)
-                    {
-                        //decode the html
-                        string decodedDescription = HttpUtility.HtmlDecode(playlistModel.Description);
-                        var descriptionAndGenre = decodedDescription.Split('(', ')');
-                        if (descriptionAndGenre.Length > 1)
-                        {
-                            playlistModel.Genre = descriptionAndGenre[1].Trim();
-                            playlistModel.Description = descriptionAndGenre[0].Trim();
-                        } 
-                        else {
-                            playlistModel.Genre = "Genreless";
-                            playlistModel.Description = decodedDescription.Trim();
-                        }
-                    }
+                        .Select(playlist => new PlaylistsModel(playlist))
+                        .ToList();
 
                     return playlistsModels;
                 }
@@ -138,6 +121,8 @@ namespace Providers
 
             return new List<PlaylistsModel>();
         }
+
+
 
         /// <summary>
         /// Get the auth token for my queries since a user isn't authenticating it 
@@ -219,19 +204,7 @@ namespace Providers
                 if (data != null)
                 {
                     dynamic playlistJSON = JObject.Parse(data);
-
-                    PlaylistsModel playlist = new()
-                    {
-                        SpotifyMusicLink = playlistJSON.href,
-                        ImageURL = playlistJSON.images[0].url,
-                        Title = playlistJSON.name,
-                        Description = playlistJSON.description,
-                        SpotifyId = playlistJSON.id
-                    };
-
-                    playlist.Description = HttpUtility.HtmlDecode(playlist.Description);
-
-                    return playlist;
+                    return new PlaylistsModel(playlistJSON);
                 }
                 else
                 {
