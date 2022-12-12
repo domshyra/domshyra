@@ -49,7 +49,8 @@ namespace Models
             {
                 SpotifyMusicLink = playlist?.href;
             }
-            else if (PropertyExists(playlist, "external_urls.spotify")) {
+            else if (PropertyExists(playlist, "external_urls.spotify"))
+            {
                 SpotifyMusicLink = playlist?.external_urls.spotify;
             }
             ImageURL = playlist.images[0].url;
@@ -75,12 +76,14 @@ namespace Models
             }
         }
 
-        private static bool PropertyExists(dynamic obj, string name) {
-        if (obj == null) return false;
-        if (obj is IDictionary<string, object> dict) {
-            return dict.ContainsKey(name);
+        private static bool PropertyExists(dynamic obj, string name)
+        {
+            if (obj == null) return false;
+            if (obj is IDictionary<string, object> dict)
+            {
+                return dict.ContainsKey(name);
+            }
+            return obj.GetType().GetProperty(name) != null;
         }
-        return obj.GetType().GetProperty(name) != null;
-    }
     }
 }
