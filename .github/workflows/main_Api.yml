@@ -8,6 +8,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  
+env:
+  proj: ${{env.DOTNET_ROOT}}/Api/Api.csproj
 
 jobs:
   build:
@@ -26,13 +29,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{ env.proj }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/Api/Api.csproj
+          path: ${{ env.proj }}
 
   deploy:
     runs-on: windows-latest
