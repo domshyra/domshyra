@@ -6,24 +6,33 @@ import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import HeartRatings from "./HeartRatings";
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import { PropTypes } from "prop-types";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 
-const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText }) => {
+const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, spotifyId }) => {
 	const sectionWidth = 215;
 	const cardWidth = sectionWidth * 2;
+    const nav = useNavigate();
 
 	return (
-		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 150 }}>
+		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 200 }} className="Cardbk">
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
 				<CardContent sx={{ flex: "1 0 auto", width: 215 }}>
-					<Typography component="div" variant="h6">
+					<Typography component="div" variant="h6" color="primary" onClick={() => nav(`/playlist/${spotifyId}`)}>
 						{title}
 					</Typography>
 					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
 						{description}
 					</Typography>
+					{!ratingIsLoading ? (
+						<HeartRatings title={title} rating={playlistRating?.rating ?? 0} spotifyId={spotifyId} ratingId={playlistRating?.id} />
+					) : (
+						<Skeleton variant="rectangular" width={100} height={20} />
+					)}
 				</CardContent>
 				<Box sx={{ display: "flex", alignItems: "center", pl: 1, maxWidth: sectionWidth }}>
 					<Tooltip title={genre} placement="bottom-end" arrow>
@@ -51,5 +60,7 @@ PlaylistCard.propType = {
 	spotifyId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
+
+
 
 export default PlaylistCard;

@@ -28,6 +28,13 @@ namespace Providers
 
             return playlists.OrderBy(x => x.Title).ToList();
         }
+
+        public async Task<PlaylistsModel> GetPlaylist(string playlistId)
+        {
+            string authToken = GetAuthToken();
+
+            return await GetPlaylistInfoAsync(playlistId, authToken);
+        }
         
         private static async Task<List<string>> GetPlaylistIds(string authToken)
         {
@@ -108,18 +115,7 @@ namespace Providers
                     
                     foreach (PlaylistsModel playlistModel in playlistsModels)
                     {
-                        //decode the html
-                        string decodedDescription = HttpUtility.HtmlDecode(playlistModel.Description);
-                        var descriptionAndGenre = decodedDescription.Split('(', ')');
-                        if (descriptionAndGenre.Length > 1)
-                        {
-                            playlistModel.Genre = descriptionAndGenre[1].Trim();
-                            playlistModel.Description = descriptionAndGenre[0].Trim();
-                        } 
-                        else {
-                            playlistModel.Genre = "Genreless";
-                            playlistModel.Description = decodedDescription.Trim();
-                        }
+                        SetDescriptionAndGenre(playlistModel);
                     }
 
                     return playlistsModels;
@@ -137,6 +133,23 @@ namespace Providers
             }
 
             return new List<PlaylistsModel>();
+        }
+
+        private static void SetDescriptionAndGenre(PlaylistsModel playlistModel)
+        {
+            //decode the html
+            string decodedDescription = HttpUtility.HtmlDecode(playlistModel.Description);
+            var descriptionAndGenre = decodedDescription.Split('(', ')');
+            if (descriptionAndGenre.Length > 1)
+            {
+                playlistModel.Genre = descriptionAndGenre[1].Trim();
+                playlistModel.Description = descriptionAndGenre[0].Trim();
+            }
+            else
+            {
+                playlistModel.Genre = "Genreless";
+                playlistModel.Description = decodedDescription.Trim();
+            }
         }
 
         /// <summary>
@@ -226,10 +239,12 @@ namespace Providers
                         ImageURL = playlistJSON.images[0].url,
                         Title = playlistJSON.name,
                         Description = playlistJSON.description,
-                        SpotifyId = playlistJSON.id
+                        SpotifyId = playlistJSON.id,
+                        TrackCount = playlistJSON.tracks.total,
+                        FollowerCount = playlistJSON.followers.total
                     };
 
-                    playlist.Description = HttpUtility.HtmlDecode(playlist.Description);
+                    SetDescriptionAndGenre(playlist);
 
                     return playlist;
                 }

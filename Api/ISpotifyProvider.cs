@@ -14,5 +14,12 @@ namespace Interfaces
         /// </summary>
         /// <returns></returns>
         Task<List<PlaylistsModel>> GetPlaylists();
+
+        /// <summary>
+        /// Gets information about a playlist from Spotify
+        /// </summary>
+        /// <param name="playlistId"></param>
+        /// <returns></returns>
+        Task<PlaylistsModel> GetPlaylist(string playlistId);
     }
 }

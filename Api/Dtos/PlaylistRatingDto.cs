@@ -1,0 +1,1 @@
+public record PlaylistRatingDto(Guid Id, int Rating, string SpotifyId, string Comment);
