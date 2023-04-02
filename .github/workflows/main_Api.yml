@@ -4,7 +4,7 @@
 name: Api
 
 env:
-  DOTNET_ROOT: Api/Api.csproj
+  DOTNET_ROOT: ./Api/Api.csproj
 
 on:
   push:
