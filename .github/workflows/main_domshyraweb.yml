@@ -54,9 +54,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-          
+      - name: Create folder
+        run: mkdir -p ParentFolder/Server
+        
       - name: unzip artifact for deployment
-        run: unzip release.zip
+        run: unzip -d Server release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
