@@ -24,6 +24,14 @@ run the following commands to add secrets.
 
 `dotnet user-secrets set "Spotify:ClientSecret" "SpotifyClientSecret"`
 
+inorder to use the rating features on play list run `dotnet ef database update`
+
+in vscode use ".NET core launch"
+
+
+### Web
+run `npm install`
+in vscode use "Launch Chrome against localhost" or run `npm start` 
 
 
 
