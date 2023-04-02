@@ -2,6 +2,7 @@ using Interfaces;
 using Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PlaylistDbContext>(options =>
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
+builder.Services.AddApplicationInsightsTelemetry(); 
+
 builder.Services.AddScoped<ISpotifyProvider, SpotifyProvider>();
 builder.Services.AddScoped<IPlaylistRepo, PlaylistRepo>();
 
@@ -25,6 +28,7 @@ var app = builder.Build();
 // {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 // }
 app.UseStaticFiles();
 app.UseHttpsRedirection();
@@ -47,11 +51,13 @@ static void UseSpotifyPlaylistRoutes(WebApplication app)
 {
     app.MapGet("/spotify", async (ISpotifyProvider _spotifyProvider) =>
     {
+        app.Logger.LogInformation("Getting playlists");
         return await _spotifyProvider.GetPlaylists();
     }).WithName("GetSpotifyPlaylists");
 
     app.MapGet("/spotify/{playlistId}", async (string playlistId, ISpotifyProvider _spotifyProvider) =>
     {
+        app.Logger.LogInformation($"Getting playlist with id {playlistId}");
         return await _spotifyProvider.GetPlaylist(playlistId);
     }).WithName("GetSpotifyPlaylist");
 }
