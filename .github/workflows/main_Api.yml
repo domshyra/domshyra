@@ -3,14 +3,16 @@
 
 name: Api
 
+env:
+  proj: ${{env.DOTNET_ROOT}}/Api/Api.csproj
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
   
-env:
-  proj: ${{env.DOTNET_ROOT}}/Api/Api.csproj
+
 
 jobs:
   build:
