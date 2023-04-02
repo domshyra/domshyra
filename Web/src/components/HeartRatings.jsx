@@ -1,4 +1,4 @@
-import { IconButton, Rating } from "@mui/material";
+import { IconButton, Rating, Skeleton } from "@mui/material";
 import { useAddRatingMutation, useDeleteRatingMutation, useUpdateRatingMutation } from "../redux/services/playlistRatingApi";
 
 import { Box } from "@mui/system";
@@ -87,4 +87,22 @@ HeartRatings.propType = {
 	title: PropTypes.string.isRequired,
 	playlistId: PropTypes.string.isRequired,
 };
+
+function renderHeart(ratingIsLoading, title, playlistRating, playlistId) {
+	return () => {
+		if (process.env.NODE_ENV !== 'development') {
+			return null;
+		}
+
+		if (!ratingIsLoading) {
+			return (
+				<HeartRatings title={title} rating={playlistRating?.rating ?? 0} playlistId={playlistId} ratingId={playlistRating?.id} />
+			);
+		}
+		return (
+			<Skeleton variant="rectangular" width={100} height={20} />
+		);
+	};
+}
 export default HeartRatings;
+export { HeartRatings, renderHeart}
