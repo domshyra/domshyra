@@ -7,11 +7,18 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'package*.json'
+      - 'Web'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+    
+    defaults:
+      run:
+        working-directory: Web
 
     steps:
       - uses: actions/checkout@v2
@@ -21,6 +28,8 @@ jobs:
         with:
           node-version: '18.x'
 
+      - run: ls
+      
       - name: npm install, build, and test
         run: |
           npm install
