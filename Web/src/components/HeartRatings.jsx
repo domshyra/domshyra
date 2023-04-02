@@ -6,6 +6,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import { PropTypes } from "prop-types";
+import { isProdEnv } from "../config";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 
@@ -90,7 +91,7 @@ HeartRatings.propType = {
 
 function renderHeart(ratingIsLoading, title, playlistRating, playlistId) {
 	return () => {
-		if (process.env.NODE_ENV !== 'development') {
+		if (isProdEnv()) {
 			return null;
 		}
 
