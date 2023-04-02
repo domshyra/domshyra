@@ -26,8 +26,13 @@ jobs:
           
       - name: Build with dotnet
         run: dotnet build --configuration Release
+        
+      - run: ls ${{env.DOTNET_ROOT}}
 
-      - run: ls -ld ${{env.DOTNET_ROOT}}
+      - run: cd ${{env.DOTNET_ROOT}}
+      
+      - run: ls
+      
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Api/Api
