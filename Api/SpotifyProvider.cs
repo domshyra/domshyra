@@ -12,11 +12,13 @@ namespace Providers
     public class SpotifyProvider : ISpotifyProvider
     {
         private readonly IConfiguration _configuration;
+        private readonly string _username;
 
         /// <inheritdoc/>
         public SpotifyProvider(IConfiguration Configuration)
         {
             _configuration = Configuration;
+            _username = _configuration["Spotify:Username"];
         }
 
         /// <inheritdoc/>
@@ -36,9 +38,9 @@ namespace Providers
             return await GetPlaylistInfoAsync(playlistId, authToken);
         }
         
-        private static async Task<List<string>> GetPlaylistIds(string authToken)
+        private async Task<List<string>> GetPlaylistIds(string authToken)
         {
-            string baseUrl = $"https://api.spotify.com/v1/users/domshyra/playlists?limit=40";
+            string baseUrl = $"https://api.spotify.com/v1/users/{_username}/playlists?limit=40";
 
             try
             {
@@ -59,7 +61,7 @@ namespace Providers
 
                     //I only want to display public playlists by me
                     return playlists.items.ToList()
-                        .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
+                        .Where(x => string.Equals(x.owner.display_name, _username, StringComparison.OrdinalIgnoreCase) && x.@public)
                         .Select(x => x.id).ToList();
                 }
                 else
@@ -77,9 +79,9 @@ namespace Providers
             return new List<string>();
         }
 
-        private static async Task<List<PlaylistsModel>> GetPlaylists(string authToken)
+        private async Task<List<PlaylistsModel>> GetPlaylists(string authToken)
         {
-            string baseUrl = $"https://api.spotify.com/v1/users/domshyra/playlists?limit=40";
+            string baseUrl = $"https://api.spotify.com/v1/users/{_username}/playlists?limit=40";
 
             try
             {
@@ -101,7 +103,7 @@ namespace Providers
 
                     //I only want to display public playlists by me
                     List<PlaylistsModel> playlistsModels = playlists.items.ToList()
-                        .Where(x => string.Equals(x.owner.display_name, "domshyra", StringComparison.OrdinalIgnoreCase) && x.@public)
+                        .Where(x => string.Equals(x.owner.display_name, _username, StringComparison.OrdinalIgnoreCase) && x.@public)
                         .Select(playlist => new PlaylistsModel()
                         {
                             Description = playlist.description,
