@@ -16,27 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - run: ls
-      
-      - name: Create annotation for build error
-        run: echo "${{env.DOTNET_ROOT}}"      
+      - run: ls -ld /Api
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
-
-      - run: ls
-      
-      - name: Create annotation for build error
-        run: echo "${{env.DOTNET_ROOT}}"      
-        
-      - name: Create annotation for build error
-        run: echo "${{env.DOTNET_ROOT}}"
           
       - name: Build with dotnet
         run: dotnet build --configuration Release
+
+      - run: ls -ld ${{env.DOTNET_ROOT}}
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Api/Api
