@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/Api
+          path: ${{env.DOTNET_ROOT}}/Api/Api.csproj
 
   deploy:
     runs-on: windows-latest
