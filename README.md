@@ -1,5 +1,5 @@
-# RTK Query Demo
-A demo using RTK Query and some learning from React Router Nav
+# domshyra
+personal website written in .Net and react
 
 
 ## Getting Started
