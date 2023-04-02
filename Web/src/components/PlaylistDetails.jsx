@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import PlaylistCardDetails from "./PlaylistCardDetails";
 import { spotifyApi } from "../redux/services/spotifyApi";
+import { useGetPlaylistQuery } from "../redux/services/spotifyApi";
 import { useGetRatingQuery } from "../redux/services/playlistRatingApi";
 import { useParams } from "react-router-dom";
 
@@ -14,6 +15,7 @@ const PlaylistDetails = () => {
 	const { data: playlists, isLoading: playlistsIsLoading } = spotifyApi.endpoints.getPlaylists.useQuery();
 
 	const { data: rating, isLoading: ratingIsLoading } = useGetRatingQuery(playlistId);
+	const { data: playlistDetails, isLoading: playlistDetailsIsLoading } = useGetPlaylistQuery(playlistId);
 
     const [playlist, setPlaylist] = useState(null)
 
@@ -21,11 +23,14 @@ const PlaylistDetails = () => {
         if (!playlistsIsLoading) {
             const spotifyPlaylist = playlists.find((playlist) => playlist.playlistId === playlistId);
             setPlaylist({...spotifyPlaylist})
+            if (!playlistDetailsIsLoading) {
+                setPlaylist({...spotifyPlaylist, ...playlistDetails})
+            }
         }
       return () => {
         
       }
-    }, [playlists, playlistsIsLoading, playlistId])
+    }, [playlists, playlistsIsLoading, playlistDetails, playlistDetailsIsLoading, playlistId])
     
 	return <PlaylistCardDetails {...playlist} ratingIsLoading={ratingIsLoading} playlistRating={rating} playlistId={playlistId} />;
 };

@@ -13,7 +13,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-const PlaylistCardDetails = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, playlistId }) => {
+const PlaylistCardDetails = ({ title, imageURL, description, genre, trackCount, followerCount, ratingIsLoading, playlistRating, playlistId }) => {
 	const sectionWidth = 350;
 	const cardWidth = sectionWidth * 2;
 	const nav = useNavigate();
@@ -49,7 +49,7 @@ const PlaylistCardDetails = ({ title, imageURL, description, genre, trackAndFoll
 							{genre}
 						</Typography>
 						<Typography variant="caption" color="text.secondary.light" noWrap align="right">
-							{trackAndFollowerText}
+							{trackCount} tracks{followerCount ? <>, {followerCount} followers</> : null}
 						</Typography>
 					</CardContent>
 				</Card>

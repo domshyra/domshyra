@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Config from "../../config";
 
 const fetchUrl = `${Config.baseApiUrl}ratings`;
+const tagType = "Rating";
 
 //?https://redux-toolkit.js.org/rtk-query/usage/queries
 export const playlistRatingApi = createApi({
@@ -20,11 +21,11 @@ export const playlistRatingApi = createApi({
 		getRatings: build.query({
 			query: () => ``,
 			providesTags: (result, error, arg) =>
-				result ? [...result.map(({ playlistId }) => ({ type: "Rating", playlistId })), "Rating"] : ["Rating"],
+				result ? [...result.map(({ playlistId }) => ({ type: tagType, playlistId })), tagType] : [tagType],
 		}),
 		getRating: build.query({
 			query: (playlistId) => `/${playlistId}`,
-			providesTags: (_result, _err, playlistId) => [{ type: "Rating", playlistId }],
+			providesTags: (_result, _err, playlistId) => [{ type: tagType, playlistId }],
 		}),
 		addRating: build.mutation({
 			query(data) {
@@ -36,7 +37,7 @@ export const playlistRatingApi = createApi({
 					body:  JSON.stringify(rating),
 				};
 			},
-			invalidatesTags: (result, error, arg) => [{ type: "Rating", playlistId: arg.playlistId }],
+			invalidatesTags: (result, error, arg) => [{ type: tagType, playlistId: arg.playlistId }],
 		}),
 		updateRating: build.mutation({
 			query(data) {
@@ -48,7 +49,7 @@ export const playlistRatingApi = createApi({
 					body:  JSON.stringify(rating),
 				};
 			},
-			invalidatesTags: (result, error, arg) => [{ type: "Rating", playlistId: arg.playlistId }],
+			invalidatesTags: (result, error, arg) => [{ type: tagType, playlistId: arg.playlistId }],
 		}),
 		deleteRating: build.mutation({
 			query(data) {
@@ -58,10 +59,10 @@ export const playlistRatingApi = createApi({
 					method: "DELETE",
 				};
 			},
-			invalidatesTags: (result, error, arg) => [{ type: "Rating", playlistId: arg.playlistId }],
+			invalidatesTags: (result, error, arg) => [{ type: tagType, playlistId: arg.playlistId }],
 		}),
 	}),
-	tagTypes: ["Rating"],
+	tagTypes: [tagType],
 });
 
 export const { useGetRatingsQuery, useGetRatingQuery, useUpdateRatingMutation, useAddRatingMutation, useDeleteRatingMutation} = playlistRatingApi;

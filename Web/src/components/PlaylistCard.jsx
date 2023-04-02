@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import HeartRatings from "./HeartRatings";
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import { PropTypes } from "prop-types";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, playlistId }) => {
 	const sectionWidth = 215;
 	const cardWidth = sectionWidth * 2;
-    const nav = useNavigate();
+	const nav = useNavigate();
 
 	return (
 		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 200 }} className="Cardbk">
@@ -60,7 +60,5 @@ PlaylistCard.propType = {
 	playlistId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
-
-
 
 export default PlaylistCard;
