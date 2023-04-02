@@ -4,7 +4,7 @@
 name: Api
 
 env:
-  proj: /Api/Api.csproj
+  DOTNET_ROOT: Api/Api.csproj
 
 on:
   push:
@@ -31,13 +31,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}${{ env.proj }}
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}${{ env.proj }}
+          path: ${{env.DOTNET_ROOT}}
 
   deploy:
     runs-on: windows-latest
