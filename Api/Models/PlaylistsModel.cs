@@ -17,7 +17,7 @@ namespace Models
         public string Genre { get; set; }
         public string SpotifyMusicLink { get; set; }
         public string ImageURL { get; set; }
-        public string SpotifyId { get; set; }
+        public string PlaylistId { get; set; }
         [DisplayFormat(DataFormatString = "{0:n0}")]
         public int TrackCount { get; set; }
         public int FollowerCount { get; set; }
@@ -55,7 +55,7 @@ namespace Models
             }
             ImageURL = playlist.images[0].url;
             Title = playlist.name;
-            SpotifyId = playlist.id;
+            PlaylistId = playlist.id;
             TrackCount = playlist?.tracks?.total ?? 0;
             if (PropertyExists(playlist, "followers"))
             {

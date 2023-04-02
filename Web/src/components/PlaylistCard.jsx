@@ -13,7 +13,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, spotifyId }) => {
+const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, playlistId }) => {
 	const sectionWidth = 215;
 	const cardWidth = sectionWidth * 2;
     const nav = useNavigate();
@@ -22,14 +22,14 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 200 }} className="Cardbk">
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
 				<CardContent sx={{ flex: "1 0 auto", width: 215 }}>
-					<Typography component="div" variant="h6" color="primary" onClick={() => nav(`/playlist/${spotifyId}`)}>
+					<Typography component="div" variant="h6" color="primary" onClick={() => nav(`/playlist/${playlistId}`)}>
 						{title}
 					</Typography>
 					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
 						{description}
 					</Typography>
 					{!ratingIsLoading ? (
-						<HeartRatings title={title} rating={playlistRating?.rating ?? 0} spotifyId={spotifyId} ratingId={playlistRating?.id} />
+						<HeartRatings title={title} rating={playlistRating?.rating ?? 0} playlistId={playlistId} ratingId={playlistRating?.id} />
 					) : (
 						<Skeleton variant="rectangular" width={100} height={20} />
 					)}
@@ -57,7 +57,7 @@ PlaylistCard.propType = {
 	genre: PropTypes.string,
 	spotifyMusicLink: PropTypes.string,
 	imageURL: PropTypes.string,
-	spotifyId: PropTypes.string,
+	playlistId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
 

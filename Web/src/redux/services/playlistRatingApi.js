@@ -20,35 +20,35 @@ export const playlistRatingApi = createApi({
 		getRatings: build.query({
 			query: () => ``,
 			providesTags: (result, error, arg) =>
-				result ? [...result.map(({ spotifyId }) => ({ type: "Rating", spotifyId })), "Rating"] : ["Rating"],
+				result ? [...result.map(({ playlistId }) => ({ type: "Rating", playlistId })), "Rating"] : ["Rating"],
 		}),
 		getRating: build.query({
-			query: (spotifyId) => `/${spotifyId}`,
-			providesTags: (_result, _err, spotifyId) => [{ type: "Rating", spotifyId }],
+			query: (playlistId) => `/${playlistId}`,
+			providesTags: (_result, _err, playlistId) => [{ type: "Rating", playlistId }],
 		}),
 		addRating: build.mutation({
 			query(data) {
-				const { spotifyId, rating } = data;
+				const { playlistId, rating } = data;
 				return {
-					url: `/${spotifyId}`,
+					url: `/${playlistId}`,
 					method: "POST",
 					headers: { "Content-Type": "application/json", "Accept": "application/json" },
 					body:  JSON.stringify(rating),
 				};
 			},
-			invalidatesTags: (result, error, arg) => [{ type: "Rating", spotifyId: arg.spotifyId }],
+			invalidatesTags: (result, error, arg) => [{ type: "Rating", playlistId: arg.playlistId }],
 		}),
 		updateRating: build.mutation({
 			query(data) {
-				const { spotifyId, rating } = data;
+				const { playlistId, rating } = data;
 				return {
-					url: `/${spotifyId}`,
+					url: `/${playlistId}`,
 					method: "PUT",
 					headers: { "Content-Type": "application/json", "Accept": "application/json" },
 					body:  JSON.stringify(rating),
 				};
 			},
-			invalidatesTags: (result, error, arg) => [{ type: "Rating", spotifyId: arg.spotifyId }],
+			invalidatesTags: (result, error, arg) => [{ type: "Rating", playlistId: arg.playlistId }],
 		}),
 		deleteRating: build.mutation({
 			query(data) {
@@ -58,7 +58,7 @@ export const playlistRatingApi = createApi({
 					method: "DELETE",
 				};
 			},
-			invalidatesTags: (result, error, arg) => [{ type: "Rating", spotifyId: arg.spotifyId }],
+			invalidatesTags: (result, error, arg) => [{ type: "Rating", playlistId: arg.playlistId }],
 		}),
 	}),
 	tagTypes: ["Rating"],

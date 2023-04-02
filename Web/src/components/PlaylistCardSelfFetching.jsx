@@ -7,7 +7,7 @@ import { useGetRatingQuery } from "../redux/services/playlistRatingApi";
 const PlaylistCardSelfFetching = (props) => {
 
 	//? This is a way to get this to work on a record by record bases, but lets pull from the cache instead.
-	const {data: playlistRating, isLoading: ratingIsLoading} = useGetRatingQuery(props.spotifyId);
+	const {data: playlistRating, isLoading: ratingIsLoading} = useGetRatingQuery(props.playlistId);
 
 	return (
 		<PlaylistCard {...props} playlistRating={playlistRating} ratingIsLoading={ratingIsLoading} />
@@ -20,7 +20,7 @@ PlaylistCardSelfFetching.propType = {
 	genre: PropTypes.string,
 	spotifyMusicLink: PropTypes.string,
 	imageURL: PropTypes.string,
-	spotifyId: PropTypes.string,
+	playlistId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
 

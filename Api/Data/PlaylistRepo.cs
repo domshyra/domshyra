@@ -5,8 +5,8 @@ public interface IPlaylistRepo
 {
     Task<List<PlaylistRatingDto>> GetRatings();
     Task<PlaylistRatingDto?> GetRating(string playlistId);
-    Task<PlaylistRatingDto> AddRating(string spotifyId, int rating);
-    Task<PlaylistRatingDto> UpdateRating(string spotifyId, int rating);
+    Task<PlaylistRatingDto> AddRating(string playlistId, int rating);
+    Task<PlaylistRatingDto> UpdateRating(string playlistId, int rating);
     Task DeleteRating(string playlistId);
 }
 
@@ -21,12 +21,12 @@ public class PlaylistRepo : IPlaylistRepo {
 
     public async Task<List<PlaylistRatingDto>> GetRatings()
     {
-        return await _context.Ratings.Select(e => new PlaylistRatingDto(e.Id, e.Rating, e.SpotifyId, e.Comment)).ToListAsync();
+        return await _context.Ratings.Select(e => new PlaylistRatingDto(e.Id, e.Rating, e.PlaylistId, e.Comment)).ToListAsync();
     }
 
     public async Task<PlaylistRatingDto?> GetRating(string playlistId)
     {
-        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.SpotifyId == playlistId);
+        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.PlaylistId == playlistId);
         if (entity == null)
             return null;
         return EntityToDetailDto(entity);
@@ -34,7 +34,7 @@ public class PlaylistRepo : IPlaylistRepo {
 
     private PlaylistRatingDto EntityToDetailDto(PlaylistRatingEntity entity)
     {
-        return new PlaylistRatingDto(entity.Id, entity.Rating, entity.SpotifyId, entity.Comment);
+        return new PlaylistRatingDto(entity.Id, entity.Rating, entity.PlaylistId, entity.Comment);
     }
 
     public async Task<PlaylistRatingDto> AddRating(string spotifyId, int rating)
@@ -43,7 +43,7 @@ public class PlaylistRepo : IPlaylistRepo {
         {
             Id = Guid.NewGuid(),
             Rating = rating,
-            SpotifyId = spotifyId
+            PlaylistId = spotifyId
         };
         _context.Ratings.Add(entity);
         await _context.SaveChangesAsync();
@@ -52,7 +52,7 @@ public class PlaylistRepo : IPlaylistRepo {
 
     public async Task<PlaylistRatingDto> UpdateRating(string spotifyId, int rating)
     {
-        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.SpotifyId == spotifyId);
+        var entity = await _context.Ratings.SingleOrDefaultAsync(h => h.PlaylistId == spotifyId);
         if (entity == null)
             throw new Exception($"Playlist rating with id {spotifyId} not found");
         entity.Rating = rating;

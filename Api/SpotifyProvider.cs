@@ -108,7 +108,7 @@ namespace Providers
                         {
                             Description = playlist.description,
                             ImageURL = playlist.images[0].url,
-                            SpotifyId = playlist.id,
+                            PlaylistId = playlist.id,
                             Title = playlist.name,
                             TrackCount = playlist.tracks.total,
                             SpotifyMusicLink = playlist.external_urls.spotify
@@ -137,6 +137,10 @@ namespace Providers
             return new List<PlaylistsModel>();
         }
 
+        /// <summary>
+        /// Sets the description and genre for the playlist
+        /// </summary>
+        /// <param name="playlistModel"></param>
         private static void SetDescriptionAndGenre(PlaylistsModel playlistModel)
         {
             //decode the html
@@ -241,7 +245,7 @@ namespace Providers
                         ImageURL = playlistJSON.images[0].url,
                         Title = playlistJSON.name,
                         Description = playlistJSON.description,
-                        SpotifyId = playlistJSON.id,
+                        PlaylistId = playlistJSON.id,
                         TrackCount = playlistJSON.tracks.total,
                         FollowerCount = playlistJSON.followers.total
                     };

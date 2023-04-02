@@ -7,26 +7,26 @@ import { useParams } from "react-router-dom";
 
 const PlaylistDetails = () => {
     
-	const { spotifyId } = useParams();
-	if (!spotifyId) throw Error("Playlist id not found");
+	const { playlistId } = useParams();
+	if (!playlistId) throw Error("Playlist id not found");
 
     //Here we are using the useQuery hook from the generated api because we don't know if we've loaded the playlist yet from the index page
 	const { data: playlists, isLoading: playlistsIsLoading } = spotifyApi.endpoints.getPlaylists.useQuery();
 
-	const { data: rating, isLoading: ratingIsLoading } = useGetRatingQuery(spotifyId);
+	const { data: rating, isLoading: ratingIsLoading } = useGetRatingQuery(playlistId);
 
     const [playlist, setPlaylist] = useState(null)
 
     useEffect(() => {
         if (!playlistsIsLoading) {
-            const spotifyPlaylist = playlists.find((playlist) => playlist.spotifyId === spotifyId);
+            const spotifyPlaylist = playlists.find((playlist) => playlist.playlistId === playlistId);
             setPlaylist({...spotifyPlaylist})
         }
       return () => {
         
       }
-    }, [playlists, playlistsIsLoading, spotifyId])
+    }, [playlists, playlistsIsLoading, playlistId])
     
-	return <PlaylistCardDetails {...playlist} ratingIsLoading={ratingIsLoading} playlistRating={rating} spotifyId={spotifyId} />;
+	return <PlaylistCardDetails {...playlist} ratingIsLoading={ratingIsLoading} playlistRating={rating} playlistId={playlistId} />;
 };
 export default PlaylistDetails;

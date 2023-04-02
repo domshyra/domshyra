@@ -34,32 +34,32 @@ app.MapGet("/spotify", async (ISpotifyProvider _spotifyProvider) =>
     return await _spotifyProvider.GetPlaylists();
 }).WithName("GetSpotifyPlaylists");
 
-app.MapGet("/spotify/{spotifyId}", async (string spotifyId, ISpotifyProvider _spotifyProvider) =>
+app.MapGet("/spotify/{playlistId}", async (string playlistId, ISpotifyProvider _spotifyProvider) =>
 {
-    return await _spotifyProvider.GetPlaylist(spotifyId);
+    return await _spotifyProvider.GetPlaylist(playlistId);
 }).WithName("GetSpotifyPlaylist");
 
 app.MapGet("/ratings", (IPlaylistRepo repo) => repo.GetRatings()).Produces<PlaylistRatingDto[]>(StatusCodes.Status200OK);
-app.MapGet("/ratings/{spotifyId}", async (string spotifyId, IPlaylistRepo repo) =>
+app.MapGet("/ratings/{playlistId}", async (string playlistId, IPlaylistRepo repo) =>
 {
-    var rating = await repo.GetRating(spotifyId);
+    var rating = await repo.GetRating(playlistId);
     if (rating == null)
         return Results.NoContent();
     return Results.Ok(rating);
 }).Produces<PlaylistRatingDto>(StatusCodes.Status200OK).Produces(StatusCodes.Status204NoContent);
 
-app.MapPost("/ratings/{spotifyId}", async (string spotifyId, [FromBody] int rating, IPlaylistRepo repo) =>
+app.MapPost("/ratings/{playlistId}", async (string playlistId, [FromBody] int rating, IPlaylistRepo repo) =>
 {
-    var newRating = await repo.AddRating(spotifyId, rating);
+    var newRating = await repo.AddRating(playlistId, rating);
     return Results.Created($"/ratings/{newRating.Id}", newRating);
 }).Produces<PlaylistRatingDto>(StatusCodes.Status201Created);
 
-app.MapPut("/ratings/{spotifyId}", async (string spotifyId, [FromBody] int rating, IPlaylistRepo repo) =>
+app.MapPut("/ratings/{playlistId}", async (string playlistId, [FromBody] int rating, IPlaylistRepo repo) =>
 {
-    var existingRating = await repo.GetRating(spotifyId);
+    var existingRating = await repo.GetRating(playlistId);
     if (existingRating == null)
         return Results.NoContent();
-    var updatedRating = await repo.UpdateRating(spotifyId, rating);
+    var updatedRating = await repo.UpdateRating(playlistId, rating);
     return Results.Ok(updatedRating);
 }).Produces<PlaylistRatingDto>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status204NoContent);

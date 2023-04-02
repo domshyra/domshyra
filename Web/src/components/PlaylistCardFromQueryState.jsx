@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const PlaylistCardFromQueryState = (props) => {
-	const { spotifyId } = props;
+	const { playlistId } = props;
 	const [playlistRating, setPlaylistRating] = useState(null);
 	
 	//*This is the way
@@ -15,10 +15,10 @@ const PlaylistCardFromQueryState = (props) => {
 
 	useEffect(() => {
 		if (!ratingIsLoading) {
-			const rating = ratings.find((rating) => rating.spotifyId === spotifyId);
+			const rating = ratings.find((rating) => rating.playlistId === playlistId);
 			setPlaylistRating(rating);
 		}
-	}, [ratings, ratingIsLoading, spotifyId]);
+	}, [ratings, ratingIsLoading, playlistId]);
 
 	return <PlaylistCard {...props} playlistRating={playlistRating} ratingIsLoading={ratingIsLoading} />;
 };
@@ -29,7 +29,7 @@ PlaylistCardFromQueryState.propType = {
 	genre: PropTypes.string,
 	spotifyMusicLink: PropTypes.string,
 	imageURL: PropTypes.string,
-	spotifyId: PropTypes.string,
+	playlistId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
 

@@ -13,7 +13,7 @@ function App() {
 				<Grid mt={4}>
 					<Routes>
 						<Route path="/" element={<Index />} />
-						<Route path="/playlist/:spotifyId" element={<PlaylistDetails />} />
+						<Route path="/playlist/:playlistId" element={<PlaylistDetails />} />
 					</Routes>
 				</Grid>
 			</div>

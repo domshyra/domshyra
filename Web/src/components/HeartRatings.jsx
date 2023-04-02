@@ -18,7 +18,7 @@ const StyledRating = styled(Rating)({
 	},
 });
 
-const HeartRatings = ({ title, rating, spotifyId, ratingId }) => {
+const HeartRatings = ({ title, rating, playlistId, ratingId }) => {
 	const [value, setValue] = useState(rating);
 
 	const [updateRating, { isLoading: isUpdating }] = useUpdateRatingMutation();
@@ -28,7 +28,7 @@ const HeartRatings = ({ title, rating, spotifyId, ratingId }) => {
 	function doChange(event, rating) {
 		if (!ratingId) {
 			// create a new rating
-			addRating({ spotifyId, rating })
+			addRating({ playlistId, rating })
 				.then((result) => {
 					// handle the success!
 					console.log("Adding rating", result);
@@ -36,7 +36,7 @@ const HeartRatings = ({ title, rating, spotifyId, ratingId }) => {
 				.catch((error) => console.error("Adding Error", error));
 		} else {
 			// update the rating
-			updateRating({ spotifyId, rating, id: ratingId })
+			updateRating({ playlistId, rating, id: ratingId })
 				.then((result) => {
 					// handle the success!
 					console.log("Updating rating", result);
@@ -85,6 +85,6 @@ const HeartRatings = ({ title, rating, spotifyId, ratingId }) => {
 };
 HeartRatings.propType = {
 	title: PropTypes.string.isRequired,
-	spotifyId: PropTypes.string.isRequired,
+	playlistId: PropTypes.string.isRequired,
 };
 export default HeartRatings;

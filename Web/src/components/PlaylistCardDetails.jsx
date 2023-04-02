@@ -13,7 +13,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-const PlaylistCardDetails = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, spotifyId }) => {
+const PlaylistCardDetails = ({ title, imageURL, description, genre, trackAndFollowerText, ratingIsLoading, playlistRating, playlistId }) => {
 	const sectionWidth = 350;
 	const cardWidth = sectionWidth * 2;
 	const nav = useNavigate();
@@ -41,7 +41,7 @@ const PlaylistCardDetails = ({ title, imageURL, description, genre, trackAndFoll
 							{description}
 						</Typography>
 						{!ratingIsLoading ? (
-							<HeartRatings title={title} rating={playlistRating?.rating ?? 0} spotifyId={spotifyId} ratingId={playlistRating?.id} />
+							<HeartRatings title={title} rating={playlistRating?.rating ?? 0} playlistId={playlistId} ratingId={playlistRating?.id} />
 						) : (
 							<Skeleton variant="rectangular" width={100} height={20} />
 						)}
@@ -64,7 +64,7 @@ PlaylistCardDetails.propType = {
 	genre: PropTypes.string,
 	spotifyMusicLink: PropTypes.string,
 	imageURL: PropTypes.string,
-	spotifyId: PropTypes.string,
+	playlistId: PropTypes.string,
 	trackAndFollowerText: PropTypes.string,
 };
 
