@@ -66,4 +66,4 @@ jobs:
           app-name: 'domshyraWeb'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A3E239081C9F4FA19DD3F53F6F308C32 }}
-          package: Web/release.zip
+          package: /home/runner/work/domshyra/domshyra
