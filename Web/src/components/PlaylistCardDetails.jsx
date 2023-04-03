@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Button, Grid, Link } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import AspectRatio from "@mui/joy/AspectRatio";
