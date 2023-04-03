@@ -35,10 +35,7 @@ jobs:
           
       - name: Zip artifact for deployment
         run: zip release.zip ./build/* -r
-      
-      - name: list dirs
-        run: ls
-      
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
