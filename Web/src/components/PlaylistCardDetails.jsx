@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Link } from "@mui/material";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import AspectRatio from "@mui/joy/AspectRatio";
@@ -9,7 +9,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { PropTypes } from "prop-types";
 import Typography from "@mui/material/Typography";
-import {renderHeart} from "./HeartRatings";
+import openInSpotifyText from "./subcomponets/openInfSpotify";
+import { renderHeart } from "./HeartRatings";
 import { useNavigate } from "react-router-dom";
 
 const PlaylistCardDetails = ({ title, imageURL, description, genre, trackCount, followerCount, ratingIsLoading, playlistRating, playlistId }) => {
@@ -17,7 +18,7 @@ const PlaylistCardDetails = ({ title, imageURL, description, genre, trackCount, 
 	const cardWidth = sectionWidth * 2;
 	const nav = useNavigate();
 
-	const heart = renderHeart(ratingIsLoading, title, playlistRating, playlistId)
+	const heart = renderHeart(ratingIsLoading, title, playlistRating, playlistId);
 
 	return (
 		<>
@@ -44,6 +45,7 @@ const PlaylistCardDetails = ({ title, imageURL, description, genre, trackCount, 
 							{description}
 						</Typography>
 						{heart()}
+						{openInSpotifyText(playlistId)}
 						<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
 							{genre}
 						</Typography>

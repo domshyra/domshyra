@@ -9,6 +9,7 @@ import CardMedia from "@mui/material/CardMedia";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import { PropTypes } from "prop-types";
 import Typography from "@mui/material/Typography";
+import openInSpotifyText from "./subcomponets/openInfSpotify";
 import { renderHeart } from "./HeartRatings";
 import { useNavigate } from "react-router-dom";
 
@@ -31,6 +32,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 						{description}
 					</Typography>
 					{heart()}
+					{openInSpotifyText(playlistId)}
 				</CardContent>
 				<Box sx={{ display: "flex", alignItems: "center", pl: 1, maxWidth: sectionWidth }}>
 					<Tooltip title={genre} placement="bottom-end" arrow>
