@@ -34,7 +34,7 @@ jobs:
           npm run build --if-present
           
       - name: Zip artifact for deployment
-        run: zip release.zip ./build -r
+        run: zip release.zip ./build/* -r
       
       - name: list dirs
         run: ls
