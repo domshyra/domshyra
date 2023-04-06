@@ -4,6 +4,8 @@ Grabs spotify playlists based on appsettings `Spotify:Username` value.
 
 Written in .Net and react
 
+deployed to https://www.domshyra.com
+
 ## Getting Started
 
 ### API
