@@ -8,7 +8,7 @@ import { useGetRatingsQuery } from "../redux/services/playlistRatingApi";
 const Index = () => {
 	const { data, isLoading } = useGetPlaylistsQuery();
 	const [cards, setCards] = useState([]);
-	
+
 	useGetRatingsQuery();
 
 	useEffect(() => {
@@ -16,7 +16,6 @@ const Index = () => {
 			setCards(renderCards(data));
 		}
 	}, [data, isLoading]);
-
 
 	const renderCards = (data) => {
 		return data.map((item) => (
@@ -29,7 +28,9 @@ const Index = () => {
 	};
 
 	return (
-		<Grid container>{!isLoading ? cards : null}</Grid>
+		<Grid container>
+			{!isLoading ? cards : null}
+		</Grid>
 	);
 };
 
