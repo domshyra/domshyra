@@ -1,7 +1,7 @@
 import "./App.css";
 
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { Grid, IconButton, Typography } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Grid, IconButton, Link, Typography } from "@mui/material";
 
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Index from "../components/Index";
@@ -26,7 +26,7 @@ function App() {
 					<Grid item xs={12}>
 						<Typography component="div" variant="caption" color="text.secondary" align="center">
 							View this code on{" "}
-							<Link href="https://github.com/domshyra/domshyra" underline="none">
+							<Link rel="noopener" target="_blank" href="https://github.com/domshyra/domshyra" underline="none">
 								GitHub
 							</Link>
 						</Typography>
