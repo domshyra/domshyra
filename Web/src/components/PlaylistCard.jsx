@@ -18,14 +18,25 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 	const cardWidth = sectionWidth * 2;
 	const nav = useNavigate();
 
-	const heart = renderHeart(ratingIsLoading, title, playlistRating, playlistId)
+	const heart = renderHeart(ratingIsLoading, title, playlistRating, playlistId);
 
 	return (
 		// TODO: make card into a class
 		<Card sx={{ display: "flex", maxWidth: cardWidth, minHeight: 200 }} className="Cardbk">
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
-				<CardContent sx={{ flex: "1 0 auto", width: 215 }}>
-					<Typography component="div" variant="h6" color="primary" onClick={() => nav(`/playlist/${playlistId}`)}>
+				<CardContent sx={{ flex: "1 0 auto", width: sectionWidth }}>
+					{/* desktop w/ link */}
+					<Typography
+						sx={{ display: { xs: "none", md: "block" } }}
+						component="div"
+						variant="h6"
+						color="primary"
+						onClick={() => nav(`/playlist/${playlistId}`)}
+					>
+						{title}
+					</Typography>
+					{/* mobile w/o link */}
+					<Typography sx={{ display: { xs: "block", md: "none" } }} component="div" variant="h6" color="text.secondary.light">
 						{title}
 					</Typography>
 					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
@@ -33,8 +44,23 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 					</Typography>
 					{heart()}
 					{openInSpotifyText(playlistId)}
+					{/* mobile */}
+					<Typography
+						sx={{ display: { xs: "block", md: "none" } }}
+						component="div"
+						variant="caption"
+						color="text.secondary"
+						align="center"
+					>
+						{genre}
+					</Typography>
+					{/* mobile */}
+					<Typography component="div" variant="caption" color="text.secondary.light" align="center">
+						{trackAndFollowerText}
+					</Typography>
 				</CardContent>
-				<Box sx={{ display: "flex", alignItems: "center", pl: 1, maxWidth: sectionWidth }}>
+				{/* desktop */}
+				<Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", pl: 1, maxWidth: sectionWidth }}>
 					<Tooltip title={genre} placement="bottom-end" arrow>
 						<Button aria-label="genre" color="secondary" size="small" startIcon={<MusicNoteIcon />}>
 							Genre
