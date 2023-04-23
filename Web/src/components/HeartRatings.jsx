@@ -1,5 +1,7 @@
 import { IconButton, Rating, Skeleton } from "@mui/material";
 import { useAddRatingMutation, useDeleteRatingMutation, useUpdateRatingMutation } from "../redux/services/playlistRatingApi";
+import { useAppInsightsContext, useTrackEvent } from "@microsoft/applicationinsights-react-js";
+import { useEffect, useState } from "react";
 
 import { Box } from "@mui/system";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -8,7 +10,6 @@ import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import { PropTypes } from "prop-types";
 import { isProdEnv } from "../config";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
 
 const StyledRating = styled(Rating)({
 	"& .MuiRating-iconFilled": {
@@ -20,11 +21,17 @@ const StyledRating = styled(Rating)({
 });
 
 const HeartRatings = ({ title, rating, playlistId, ratingId }) => {
+	const appInsights = useAppInsightsContext();
 	const [value, setValue] = useState(rating);
+	const trackEvent = useTrackEvent(appInsights, "rating", rating);
 
 	const [updateRating, { isLoading: isUpdating }] = useUpdateRatingMutation();
 	const [addRating, { isLoading: isAdding }] = useAddRatingMutation();
 	const [deleteRating] = useDeleteRatingMutation();
+
+	useEffect(() => {
+		trackEvent(rating);
+	  }, [rating, trackEvent]);
 
 	function doChange(event, rating) {
 		if (!ratingId) {
