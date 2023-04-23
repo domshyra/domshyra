@@ -45,17 +45,17 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 					{heart()}
 					{openInSpotifyText(playlistId)}
 					{/* mobile */}
+					<Typography sx={{ display: { xs: "block", md: "none" } }} component="div" variant="caption" color="text.secondary" align="center">
+						{genre}
+					</Typography>
+					{/* mobile */}
 					<Typography
 						sx={{ display: { xs: "block", md: "none" } }}
 						component="div"
 						variant="caption"
-						color="text.secondary"
+						color="text.secondary.light"
 						align="center"
 					>
-						{genre}
-					</Typography>
-					{/* mobile */}
-					<Typography component="div" variant="caption" color="text.secondary.light" align="center">
 						{trackAndFollowerText}
 					</Typography>
 				</CardContent>
