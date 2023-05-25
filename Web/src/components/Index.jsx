@@ -1,6 +1,6 @@
+import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-import { Grid } from "@mui/material";
 import PlaylistCard from "./PlaylistCardSelfFetching";
 import { useGetPlaylistsQuery } from "../redux/services/spotifyApi";
 import { useGetRatingsQuery } from "../redux/services/playlistRatingApi";
@@ -28,9 +28,14 @@ const Index = () => {
 	};
 
 	return (
-		<Grid container>
-			{!isLoading ? cards : null}
-		</Grid>
+		<>
+			<Box sx={{ justifyContent: "center" }}>
+				<Typography variant="h3" gutterBottom>
+					Playlists
+				</Typography>
+			</Box>
+			<Grid container>{!isLoading ? cards : <Skeleton />}</Grid>
+		</>
 	);
 };
 
