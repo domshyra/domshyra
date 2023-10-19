@@ -6,6 +6,13 @@ Written in .Net and react
 
 deployed to https://www.domshyra.com
 
+There are a few examples of how this project has progressed or the other technologies that have improved over time
+
+[Here is a sample version in containers](https://github.com/domshyra-s-playground/containersDemo) 
+
+[Here is a the upgrade to rtkQuery](https://github.com/domshyra-s-playground/rtkQueryDemo) 
+
+
 ## Getting Started
 
 ### API
