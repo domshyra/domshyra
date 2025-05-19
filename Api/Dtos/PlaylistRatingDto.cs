@@ -1,1 +1,0 @@
-public record PlaylistRatingDto(Guid Id, int Rating, string PlaylistId, string Comment);

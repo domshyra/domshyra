@@ -13,38 +13,10 @@ There are a few examples of how this project has progressed or the other technol
 [Here is a the upgrade to rtkQuery](https://github.com/domshyra-s-playground/rtkQueryDemo) 
 
 
-## Getting Started
-
-### API
-might have to run `dotnet dev-certs https --trust` for api
-
-Spotify will only work with a usersecrets file containing 
-
-```json
-{
-  "Spotify:ClientId": "SpotifyClientId",
-  "Spotify:ClientSecret": "SpotifyClientSecret"
-}
-```
-
-run the following commands to add secrets.
-
-`dotnet user-secrets init`
-
-`dotnet user-secrets set "Spotify:ClientId" "SpotifyClientId"`
-
-`dotnet user-secrets set "Spotify:ClientSecret" "SpotifyClientSecret"`
-
-inorder to use the rating features on play list run `dotnet ef database update`
-
-in vscode use ".NET core launch"
+## Setup
+The [api readme](./Api/README.md#Setup) and [web readme](./Web/README.md#Setup) have more detailed instructions on how to run the project.
 
 
-### Web
-run `npm install`
-in vscode use "Launch Chrome against localhost" or run `npm start` 
+### Running 
 
-
-
-
-
+After doing each api and web's setup, in vscode use `api & web` to run both the api and web projects at the same time.

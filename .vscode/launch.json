@@ -1,0 +1,59 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "terraform",
+			"type": "node",
+			"request": "launch",
+			"preLaunchTask": "terraform",
+			"postDebugTask": "terminate"
+		},
+		{
+			// Use IntelliSense to find out which attributes exist for C# debugging
+			// Use hover for the description of the existing attributes
+			// For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+			"name": "Api",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build api",
+			// If you have changed target frameworks, make sure to update the program path.
+			"program": "${workspaceFolder}/Api/bin/Debug/net9.0/Api.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/Api",
+			"stopAtEntry": false,
+			// Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+			"serverReadyAction": {
+				"action": "openExternally",
+				"pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+				"uriFormat": "%s/swagger"
+			},
+			"env": {
+				"ASPNETCORE_ENVIRONMENT": "Development",
+				"AZURE_USERNAME": "domshyra@gmail.com",
+				"AzureKeyVaultClientId": "RENAME-AZURE-KV-CLIENT-ID",
+				"VaultUri": "https://RENAME-TO-KEY-VAULT-NAME.vault.azure.net/"
+			},
+			"sourceFileMap": {
+				"/Views": "${workspaceFolder}/Api/Views"
+			}
+		},
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "Web",
+			"url": "https://localhost:3005",
+			"webRoot": "${workspaceFolder}/Web",
+			"preLaunchTask": "start web server",
+			"postDebugTask": "terminate"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Api & Web",
+			"configurations": ["Api", "Web"]
+		}
+	]
+}

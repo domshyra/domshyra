@@ -1,0 +1,51 @@
+{
+	"compilerOptions": {
+		//alias
+		"baseUrl": "./",
+		"paths": {
+			"@_types/*": ["src/types/*"],
+			"@authentication/*": ["src/authentication/*"],
+			"@components/*": ["src/components/*"],
+			"@constants/*": ["src/constants/*"],
+			"@fragments/*": ["src/fragments/*"],
+			"@hooks/*": ["src/hooks/*"],
+			"@main/*": ["src/main/*"],
+			"@mocks/*": ["src/__mocks__/*"],
+			"@pages/*": ["src/pages/*"],
+			"@redux/*": ["src/redux/*"],
+			"@sections/*": ["src/sections/*"],
+			"@slices/*": ["src/redux/slices/*"],
+			"@styles/*": ["src/styles/*"],
+			"@tools/*": ["src/tools/*"]
+		},
+
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"lib": ["esnext", "DOM", "DOM.Iterable"],
+		"module": "ESNext",
+		"skipLibCheck": true,
+
+		/* Bundler mode */
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"isolatedModules": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"allowJs": true,
+		"esModuleInterop": true,
+
+		/* Linting */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true,
+		"noImplicitAny": true,
+
+		//VItest
+		"types": ["vitest/globals", "@testing-library/jest-dom"]
+	},
+	"include": ["src", "./src/__mocks__/setupTests.ts"]
+}
