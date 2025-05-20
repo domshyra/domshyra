@@ -1,12 +1,12 @@
 using System.Net;
 using System.Text;
 using System.Web;
-using Interfaces;
-using Models;
+using Api.Interfaces;
+using Api.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Providers
+namespace Api.Services
 {
     /// <inheritdoc/>
     public class SpotifyService : ISpotifyService
@@ -18,7 +18,7 @@ namespace Providers
         public SpotifyService(IConfiguration Configuration)
         {
             _configuration = Configuration;
-            _username = _configuration["Spotify:Username"];
+            _username = _configuration["Spotify:Username"] ?? throw new NullReferenceException("Spotify Username is null");
         }
 
         /// <inheritdoc/>
@@ -166,8 +166,8 @@ namespace Providers
         {
             //https://developer.spotify.com/documentation/general/guides/authorization-guide/
             string authToken;
-            string client_id = _configuration["Spotify:ClientId"];
-            string client_secret = _configuration["Spotify:ClientSecret"];
+            string client_id = _configuration["Spotify:ClientId"] ?? throw new NullReferenceException("Spotify ClientId is null");
+            string client_secret = _configuration["Spotify:ClientSecret"] ?? throw new NullReferenceException("Spotify ClientSecret is null");
 
             //url to query
             string authTokenURL = "https://accounts.spotify.com/api/token";

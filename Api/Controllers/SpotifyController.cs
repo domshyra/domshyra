@@ -1,3 +1,4 @@
+using Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -16,6 +17,7 @@ namespace Api.Controllers
         /// Constructor
         /// </summary>
         /// <param name="logger"></param>
+        /// <param name="spotifyService"></param>
         public SpotifyController(ILogger<SpotifyController> logger, ISpotifyService spotifyService)
         {
             _logger = logger;

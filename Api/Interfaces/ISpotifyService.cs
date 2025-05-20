@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Models;
+using Api.Models;
 
-namespace Interfaces
+namespace Api.Interfaces
 {
     /// <summary>
     /// Provides methods to query Spotify

@@ -14,7 +14,7 @@ on:
 
 env:
     repo: domshyra
-    kv: RENAME-TO-KEY-VAULT-NAME
+    kv: main-kv-domshyra
 
 # https://learn.microsoft.com/en-us/azure/azure-sql/database/connect-github-actions-sql-db?view=azuresql&tabs=userlevel
 jobs:

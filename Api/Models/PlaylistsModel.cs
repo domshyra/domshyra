@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
-namespace Models
+namespace Api.Models
 {
     public class PlaylistsModel
     {

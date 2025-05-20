@@ -76,7 +76,7 @@ resource "azurerm_resource_group" "repository_name" {
 
 # Log Analytics Workspace for monitoring
 resource "azurerm_log_analytics_workspace" "repository_name" {
-  for_each = toset(var.web_app_types)
+  for_each = toset(var.app_services.types)
 
   depends_on = [azurerm_resource_group.repository_name]
 
@@ -92,7 +92,7 @@ resource "azurerm_log_analytics_workspace" "repository_name" {
 
 # Application Insights for telemetry
 resource "azurerm_application_insights" "repository_name" {
-  for_each = toset(var.web_app_types)
+  for_each = toset(var.app_services.types)
 
   depends_on = [azurerm_resource_group.repository_name, azurerm_log_analytics_workspace.repository_name]
 
@@ -112,7 +112,7 @@ resource "azurerm_application_insights" "repository_name" {
 resource "azurerm_user_assigned_identity" "repository_name" {
   depends_on = [azurerm_resource_group.repository_name]
 
-  for_each = toset(var.web_app_types)
+  for_each = toset(var.app_services.types)
 
   name                = "${var.repo.short_name}-${each.value}-mi"
   location            = var.region
@@ -126,7 +126,7 @@ resource "azurerm_user_assigned_identity" "repository_name" {
 resource "azurerm_windows_web_app" "repository_name" {
   depends_on = [azurerm_resource_group.repository_name, azurerm_application_insights.repository_name, azurerm_user_assigned_identity.repository_name]
 
-  for_each = toset(var.web_app_types)
+  for_each = toset(var.app_services.types)
 
   name                       = "${var.repo.short_name}-${each.value}"
   location                   = var.region
@@ -146,13 +146,15 @@ resource "azurerm_windows_web_app" "repository_name" {
     "ApplicationInsightsAgent_EXTENSION_VERSION" = "~2"
     "XDT_MicrosoftApplicationInsights_Mode"      = "default"
 
-    "WEBSITE_NODE_DEFAULT_VERSION"            = each.value == "web" ? "~${var.node_version}" : null
+    "WEBSITE_NODE_DEFAULT_VERSION"            = each.value == "web" ? "~${var.app_services.node_version}" : null
     "XDT_MicrosoftApplicationInsights_NodeJS" = each.value == "web" ? "1" : null
 
-    "FrontEndUrl"                           = each.value == "api" ? "https://${var.repo.name}.com" : null
-    "FrontEndUrlWww"                        = each.value == "api" ? "https://www.${var.repo.name}.com" : null
-    "SitePassword"                          = each.value == "api" ? var.site_password : null
-    "VaultUri"                              = each.value == "api" ? var.key_vault.uri : null
+    "FrontEndUrl"          = each.value == "api" ? "https://${var.repo.name}.com" : null
+    "FrontEndUrlWww"       = each.value == "api" ? "https://www.${var.repo.name}.com" : null
+    "SitePassword"         = each.value == "api" ? var.site_password : null
+    "VaultUri"             = each.value == "api" ? var.key_vault.uri : null
+    "Spotify:ClientId"     = each.value == "api" ? var.spotify_client_id : null
+    "Spotify:ClientSecret" = each.value == "api" ? var.spotify_client_secret : null
   }
 
   site_config {
@@ -161,8 +163,8 @@ resource "azurerm_windows_web_app" "repository_name" {
     default_documents = ["index.html"]
     application_stack {
       current_stack  = each.value == "web" ? "node" : "dotnet"
-      node_version   = each.value == "web" ? "~${var.node_version}" : null
-      dotnet_version = each.value == "api" ? "v${var.dotnet_version}" : null
+      node_version   = each.value == "web" ? "~${var.app_services.node_version}" : null
+      dotnet_version = each.value == "api" ? "v${var.app_services.dotnet_version}" : null
     }
 
     # Default application mapping for root path
@@ -180,7 +182,7 @@ resource "azurerm_windows_web_app" "repository_name" {
 resource "azurerm_monitor_action_group" "repository_name" {
   depends_on = [azurerm_resource_group.repository_name]
 
-  for_each = toset(var.web_app_types)
+  for_each = toset(var.app_services.types)
 
   name                = "${var.repo.short_name}-${each.value}-ag"
   resource_group_name = "rg-${var.repo.short_name}"
@@ -195,7 +197,7 @@ resource "azurerm_monitor_action_group" "repository_name" {
 resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
   depends_on = [azurerm_resource_group.repository_name, azurerm_application_insights.repository_name]
 
-  for_each = toset(var.web_app_types)
+  for_each = toset(var.app_services.types)
 
   name                = "failure anomalies - ${var.repo.short_name}-${each.value}"
   resource_group_name = "rg-${var.repo.short_name}"

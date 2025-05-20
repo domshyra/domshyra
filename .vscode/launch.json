@@ -33,8 +33,7 @@
 			"env": {
 				"ASPNETCORE_ENVIRONMENT": "Development",
 				"AZURE_USERNAME": "domshyra@gmail.com",
-				"AzureKeyVaultClientId": "RENAME-AZURE-KV-CLIENT-ID",
-				"VaultUri": "https://RENAME-TO-KEY-VAULT-NAME.vault.azure.net/"
+				"VaultUri": "https://main-kv-domshyra.vault.azure.net/"
 			},
 			"sourceFileMap": {
 				"/Views": "${workspaceFolder}/Api/Views"

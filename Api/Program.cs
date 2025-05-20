@@ -1,23 +1,10 @@
 using System.Reflection;
-using Api.Data.Database;
 using Api.Data.Entities;
-using Azure.Identity;
-using Microsoft.EntityFrameworkCore;
+using Api.Interfaces;
+using Api.Services;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
-# region key vault 
-if (builder.Environment.IsDevelopment())
-{
-  var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri") ?? throw new ArgumentNullException("VaultUri"));
-  DefaultAzureCredentialOptions options = new()
-  {
-    ManagedIdentityClientId = Environment.GetEnvironmentVariable("AzureKeyVaultClientId") ?? throw new ArgumentNullException("AzureKeyVaultClientId"),
-  };
-  builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential(options));
-}
-#endregion
 
 #region authentication
 builder.Services.AddAuthorization();
@@ -36,8 +23,8 @@ builder.Services.AddSwaggerGen(setUpActions =>
               setUpActions.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
               {
                 Description = @"JWT Authorization header using the Bearer scheme. <br/> 
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      <br/>Example: 'Bearer 12345abcdef'",
+                      Enter 'Bearer' with token.
+                      <br/>Example: 'Bearer eyJiberish'",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
@@ -74,40 +61,13 @@ builder.Services.AddSwaggerGen(setUpActions =>
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddCors();
 
-#region database
-builder.Services.AddDbContext<ExampleDbContext>(options =>
-{
-  if (builder.Environment.IsDevelopment())
-  {
-    var databaseName = Environment.GetEnvironmentVariable("RENAME-TO-APP-NAME-DB") ?? throw new ArgumentNullException("RENAME-TO-APP-NAME-DB");
-    options.UseSqlServer($"Data Source=(LocalDB)\\MSSQLLocalDB;Database={databaseName};Integrated Security=True;Connect Timeout=30");
-  }
-  else if (builder.Environment.IsProduction())
-  {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"), sqlServerOptionsAction: sqlOptions =>
-        {
-          sqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 10,
-            maxRetryDelay: TimeSpan.FromSeconds(30),
-            errorNumbersToAdd: null);
-        });
-
-  }
-  else
-  {
-    throw new Exception("Env not specified");
-  }
-  options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-});
-#endregion
-
 #region identity
 
 // add identity services
-builder.Services
-    .AddIdentityApiEndpoints<UserEntity>()
-    .AddRoles<RoleEntity>()
-    .AddEntityFrameworkStores<ExampleDbContext>();
+// builder.Services
+//     .AddIdentityApiEndpoints<UserEntity>()
+//     .AddRoles<RoleEntity>()
+//     .AddEntityFrameworkStores<ExampleDbContext>();
 
 #endregion
 
@@ -117,7 +77,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 
 # region services
 // register services
-// builder.Services.AddScoped<IExampleService, ExampleService>();
+builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 
 #endregion
 

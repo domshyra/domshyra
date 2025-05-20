@@ -30,11 +30,18 @@ variable "region" {
 variable "region_long_name" {
   default = "West US 2"
 }
-variable "node_version" {
-  default = "22"
-}
-variable "dotnet_version" {
-  default = "9.0"
+variable "app_services" {
+  description = "values for the app service"
+  type = object({
+    types          = list(string)
+    node_version   = string
+    dotnet_version = string
+  })
+  default = {
+    types          = ["web", "api"]
+    node_version   = "22"
+    dotnet_version = "9.0"
+  }
 }
 variable "key_vault" {
   description = "Key Vault name"
@@ -49,9 +56,7 @@ variable "key_vault" {
     resource_group = "rg-asp"
   }
 }
-variable "web_app_types" {
-  default = ["web", "api"]
-}
+
 # variable "client_id" {
 #   sensitive   = true
 #   description = "from .env.local"
@@ -73,6 +78,16 @@ variable "tenant_id" {
   type        = string
 }
 variable "site_password" {
+  sensitive   = true
+  description = "from .env.local"
+  type        = string
+}
+variable "spotify_client_id" {
+  sensitive   = true
+  description = "from .env.local"
+  type        = string
+}
+variable "spotify_client_secret" {
   sensitive   = true
   description = "from .env.local"
   type        = string
