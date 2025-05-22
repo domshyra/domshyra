@@ -3,14 +3,13 @@
 
 name: Web
 
-# TODO enable this workflow when the app is ready
 on:
-    # push:
-    #     branches:
-    #         - main
-    #     paths:
-    #         - Web/**
-    #         - .github/workflows/web.yml
+    push:
+        branches:
+            - main
+        paths:
+            - Web/**
+            - .github/workflows/web.yml
     workflow_dispatch:
 
 env:

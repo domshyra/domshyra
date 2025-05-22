@@ -3,15 +3,13 @@
 
 name: azure
 
-# TODO: Add ENVIRONMENT variables to the workflow_dispatch event before enabling the workflow
-# TODO enable this workflow when the app is ready
 on:
-    # push:
-    #     branches:
-    #         - main
-    #     paths:
-    #         - .azure/**
-    #         - .github/workflows/terraform_apply.yml
+    push:
+        branches:
+            - main
+        paths:
+            - .azure/**
+            - .github/workflows/terraform_apply.yml
     workflow_dispatch:
 
 permissions:
@@ -57,6 +55,8 @@ jobs:
                   TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                   TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
                   TF_VAR_site_password: ${{ secrets.SITE_PASSWORD }}
+                  TF_VAR_spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
+                  TF_VAR_spotify_client_secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
 
             # On push to "main", build or change infrastructure according to Terraform configuration files
             # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
@@ -67,3 +67,6 @@ jobs:
                   TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                   TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
                   TF_VAR_site_password: ${{ secrets.SITE_PASSWORD }}
+                  TF_VAR_spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
+                  TF_VAR_spotify_client_secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+            

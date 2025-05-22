@@ -1,5 +1,4 @@
 using System.Reflection;
-using Api.Data.Entities;
 using Api.Interfaces;
 using Api.Services;
 using Microsoft.OpenApi.Models;
@@ -84,13 +83,13 @@ builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 var app = builder.Build();
 // app.MapGroup("/account").WithTags("Account").MapIdentityApi<UserEntity>(); //uncomment this to use ALL of the identity endpoints
 
-var identityApis = app.MapIdentityApi<UserEntity>();
-identityApis.AddEndpointFilter(async (efiContext, next) =>
-{
-  if (efiContext.HttpContext.Request.Path == "/login")
-    return await next(efiContext);
-  return Results.Forbid();
-});
+// var identityApis = app.MapIdentityApi<UserEntity>();
+// identityApis.AddEndpointFilter(async (efiContext, next) =>
+// {
+//   if (efiContext.HttpContext.Request.Path == "/login")
+//     return await next(efiContext);
+//   return Results.Forbid();
+// });
 
 #region http
 // Configure the HTTP request pipeline.

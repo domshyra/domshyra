@@ -13,12 +13,18 @@ namespace Api.Services
     {
         private readonly IConfiguration _configuration;
         private readonly string _username;
+        private readonly string _client_id;
+        private readonly string _client_secret;
 
         /// <inheritdoc/>
         public SpotifyService(IConfiguration Configuration)
         {
             _configuration = Configuration;
             _username = _configuration["Spotify:Username"] ?? throw new NullReferenceException("Spotify Username is null");
+
+            _client_id = _configuration["Spotify:ClientId"] ?? throw new NullReferenceException("Spotify ClientId is null");
+            _client_secret = _configuration["Spotify:ClientSecret"] ?? throw new NullReferenceException("Spotify ClientSecret is null");
+
         }
 
         /// <inheritdoc/>
@@ -166,8 +172,6 @@ namespace Api.Services
         {
             //https://developer.spotify.com/documentation/general/guides/authorization-guide/
             string authToken;
-            string client_id = _configuration["Spotify:ClientId"] ?? throw new NullReferenceException("Spotify ClientId is null");
-            string client_secret = _configuration["Spotify:ClientSecret"] ?? throw new NullReferenceException("Spotify ClientSecret is null");
 
             //url to query
             string authTokenURL = "https://accounts.spotify.com/api/token";
@@ -176,7 +180,7 @@ namespace Api.Services
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(authTokenURL);
             //endcode the clientId and client secret
-            byte[] plainTextBytes = Encoding.UTF8.GetBytes($"{client_id}:{client_secret}");
+            byte[] plainTextBytes = Encoding.UTF8.GetBytes($"{_client_id}:{_client_secret}");
             string encodedAppInfo = Convert.ToBase64String(plainTextBytes);
 
             webRequest.Method = "POST";
@@ -194,9 +198,9 @@ namespace Api.Services
 
             try
             {
-                if (string.IsNullOrEmpty(client_id) || string.IsNullOrEmpty(client_secret))
+                if (string.IsNullOrEmpty(_client_id) || string.IsNullOrEmpty(_client_secret))
                 {
-                    throw new NullReferenceException($"{nameof(client_id)} is {client_id}, and {nameof(client_secret)} is {client_secret}. These both need to be populated. Make sure client secrets are updated.");
+                    throw new NullReferenceException($"{nameof(_client_id)} is {_client_id}, and {nameof(_client_secret)} is {_client_secret}. These both need to be populated. Make sure client secrets are updated.");
                 }
                 HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
 

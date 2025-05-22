@@ -50,6 +50,23 @@ Api/
 
 Make sure to have the latest version of the dotnet ef tool. Use command `dotnet tool update --global dotnet-ef` to update. See here for more information [here](https://docs.microsoft.com/en-us/ef/core/cli/dotnet).
 
+Spotify will only work with a usersecrets file containing 
+```bash
+#Api/
+dotnet user-secrets init
+dotnet user-secrets set "Spotify:ClientId" "SpotifyClientId"
+dotnet user-secrets set "Spotify:ClientSecret" "SpotifyClientSecret"
+```
+OR a usersecrets.json file in the root of the project. This is a json file that contains the secrets for the project. The file should look like this:
+
+```json
+{
+  "Spotify:ClientId": "SpotifyClientId",
+  "Spotify:ClientSecret": "SpotifyClientSecret"
+}
+```
+
+
 ## Nuget
 
 Run nuget restore to restore the packages for the project. This will restore the packages for the project and add them to the project.
@@ -58,25 +75,6 @@ Run nuget restore to restore the packages for the project. This will restore the
 # Api/
 dotnet restore
 ```
-## Adding environment variables
-
--   powershell
-
-```bash
-# Api/
-$Env:Spotify:ClientId = "spotify-client-id"
-$Env:Spotify:ClientSecret = "spotify-client-secret"
-```
-
--   bash
-
-```bash
-# Api/
-export Spotify:ClientId=spotify-client-id
-export Spotify:ClientSecret=spotify-client-secret
-```
-
-
 
 ## Running the API
 

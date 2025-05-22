@@ -3,14 +3,13 @@
 
 name: Api
 
-# TODO enable this workflow when the app is ready
 on:
-    # push:
-    #     branches:
-    #         - main
-    #     paths:
-    #         - Api/**
-    #         - .github/workflows/api.yml
+    push:
+        branches:
+            - main
+        paths:
+            - Api/**
+            - .github/workflows/api.yml
     workflow_dispatch:
 
 env:
