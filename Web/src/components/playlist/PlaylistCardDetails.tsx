@@ -1,10 +1,9 @@
 import { Button, Grid } from "@mui/material";
 
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import { PlaylistPhoto } from "@fragments/playlistPhoto/PlaylistPhoto";
 import SpotifyLink from "@fragments/spotify/SpotifyLink";
 import Typography from "@mui/material/Typography";
 import { playlist } from "@_types/playlist";
@@ -22,14 +21,7 @@ const PlaylistCardDetails = ({ title, imageURL, description, genre, trackCount, 
 			</Button>
 			<Grid container justifyContent="center">
 				<Card sx={{ maxWidth: cardWidth, minHeight: 150 }}>
-					<CardMedia
-						component={AspectRatio}
-						ratio="4/3"
-						objectFit="contain"
-						sx={{ width: cardWidth }}
-						image={imageURL}
-						alt={`${title} image`}
-					/>
+					<PlaylistPhoto imageURL={imageURL} title={title} cardWidth={cardWidth} />
 
 					<CardContent sx={{ flex: "1 0 auto", width: cardWidth }}>
 						<Typography component="div" variant="h6">

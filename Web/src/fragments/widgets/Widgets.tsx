@@ -11,7 +11,7 @@ export const Widget = styled(Paper)(({ theme }) => ({
 	position: "relative",
 	zIndex: 1,
 	backdropFilter: "blur(40px)",
-	boxShadow: theme.palette.mode === "dark" ? theme.shadows[2] : theme.shadows[1],
+	boxShadow: theme.palette.mode !== "light" ? theme.shadows[2] : theme.shadows[1],
 }));
 
 export const WidgetMobile = styled(Paper)(({ theme }) => ({
@@ -25,5 +25,5 @@ export const WidgetMobile = styled(Paper)(({ theme }) => ({
 	position: "relative",
 	zIndex: 1,
 	backdropFilter: "blur(40px)",
-	boxShadow: theme.palette.mode === "dark" ? theme.shadows[2] : theme.shadows[1],
+	boxShadow: theme.palette.mode !== "light" ? theme.shadows[2] : theme.shadows[1],
 }));

@@ -1,28 +1,27 @@
 import { Box, Button, Tooltip } from "@mui/material";
 
-import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import { PlaylistPhoto } from "@fragments/playlistPhoto/PlaylistPhoto";
 import SpotifyLink from "@fragments/spotify/SpotifyLink";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
 type PlaylistCardProps = {
-	title?: string;
 	anchorId?: string;
+	cardWidth: number;
 	description?: string;
 	genre?: string;
-	spotifyMusicLink?: string;
 	imageURL?: string;
 	playlistId: string;
+	sectionWidth: number;
+	spotifyMusicLink?: string;
+	title?: string;
 	trackAndFollowerText?: string;
 };
 
-const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, playlistId }: PlaylistCardProps) => {
-	const sectionWidth = 215;
-	const cardWidth = sectionWidth * 2;
+const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, playlistId, sectionWidth, cardWidth }: PlaylistCardProps) => {
 	const nav = useNavigate();
 
 	return (
@@ -70,7 +69,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 					</Typography>
 				</Box>
 			</Box>
-			<CardMedia component={AspectRatio} ratio="4/3" objectFit="contain" sx={{ width: sectionWidth }} image={imageURL} alt={`${title} image`} />
+			<PlaylistPhoto imageURL={imageURL} title={title} cardWidth={cardWidth} />
 		</Card>
 	);
 };

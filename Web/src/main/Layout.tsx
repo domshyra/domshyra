@@ -1,12 +1,14 @@
 import "@styles/App.css";
 
-import { Box, Container, CssBaseline, Paper, ThemeProvider, Typography } from "@mui/material";
+import { Box, Container, CssBaseline, Grid, IconButton, THEME_ID as MATERIAL_THEME_ID, Paper, ThemeProvider, Typography } from "@mui/material";
+import { Link, Outlet } from "react-router-dom";
 
 import AppBar from "@sections/appBar/AppBar";
 import BreadCrumbs from "src/fragments/breadcrumbs/BreadCrumbs";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
+import { Experimental_CssVarsProvider as MaterialCssVarsProvider } from "@mui/material/styles";
 import { OfflineAlert } from "@components/offline/OfflineAlert";
-import { Outlet } from "react-router-dom";
 import PageTitle from "@sections/PageTitle";
 import { SnackbarLayout } from "./SnackbarLayout";
 import { getMuiTheme } from "@redux/slices/themeMode";
@@ -23,30 +25,34 @@ function Layout() {
 	const theme = getMuiTheme(themeName);
 
 	return (
-		<ThemeProvider theme={theme}>
-			<PageTitle />
-			<AppBar />
-			<OfflineAlert />
-			<Box sx={{ mb: 2 }}>
-				<div className="App">
-					<Box mt={2}>
-						<Container maxWidth="xl">
-							<SnackbarLayout>
-								<>
-									<BreadCrumbs />
-									<Outlet />
-								</>
-							</SnackbarLayout>
-						</Container>
+		<ThemeProvider theme={{ [MATERIAL_THEME_ID]: theme }}>
+			<MaterialCssVarsProvider>
+				<JoyCssVarsProvider>
+					<CssBaseline enableColorScheme />
+					<PageTitle />
+					<AppBar />
+					<OfflineAlert />
+					<Box sx={{ mb: 2 }}>
+						<div className="App">
+							<Box mt={2}>
+								<Container maxWidth="xl">
+									<SnackbarLayout>
+										<>
+											<BreadCrumbs />
+											<Outlet />
+										</>
+									</SnackbarLayout>
+								</Container>
+							</Box>
+						</div>
 					</Box>
-				</div>
-			</Box>
-			<Box sx={{ mb: 2 }} />
-			<Paper elevation={3} sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
-				<MediumScreenFooter />
-				<SmallScreenFooter />
-			</Paper>
-			<CssBaseline />
+					<Box sx={{ mb: 2 }} />
+					<Paper elevation={3} sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000 }}>
+						<MediumScreenFooter />
+						<SmallScreenFooter />
+					</Paper>
+				</JoyCssVarsProvider>
+			</MaterialCssVarsProvider>
 		</ThemeProvider>
 	);
 }

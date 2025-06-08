@@ -77,6 +77,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 # region services
 // register services
 builder.Services.AddScoped<ISpotifyService, SpotifyService>();
+builder.Services.AddHttpClient<SpotifyService>();
 
 #endregion
 
