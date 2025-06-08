@@ -36,6 +36,7 @@ namespace Api.Services
             return [.. playlists.OrderBy(x => x.Title)];
         }
 
+        /// <inheritdoc/>
         public async Task<PlaylistsModel> GetPlaylist(string playlistId)
         {
             string authToken = await GetAuthTokenAsync();
@@ -224,7 +225,7 @@ namespace Api.Services
             {
                 var client = _httpClient;
                 client.DefaultRequestHeaders.Remove("Authorization");
-                client.DefaultRequestHeaders.Add("Authorization", $"Basic {authToken}");
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {authToken}");
                 using HttpResponseMessage res = await client.GetAsync(baseUrl);
                 using HttpContent content = res.Content;
                 string data = await content.ReadAsStringAsync();

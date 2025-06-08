@@ -33,4 +33,4 @@ export const spotifyApi = createApi({
 	tagTypes: [tagType],
 });
 
-export const { useGetPlaylistsQuery, useGetPlaylistQuery } = spotifyApi;
+export const { useGetPlaylistsQuery, useLazyGetPlaylistQuery, useGetPlaylistQuery } = spotifyApi;

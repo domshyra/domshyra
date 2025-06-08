@@ -14,6 +14,7 @@ import { SnackbarLayout } from "./SnackbarLayout";
 import { getMuiTheme } from "@redux/slices/themeMode";
 import { useAppSelector } from "@redux/hooks";
 
+//? https://mui.com/joy-ui/integrations/material-ui/
 /**
  * Renders the layout of the application.
  * This consists of the AppBar, OfflineAlert, and the Outlet.
@@ -32,7 +33,7 @@ function Layout() {
 					<PageTitle />
 					<AppBar />
 					<OfflineAlert />
-					<Box sx={{ mb: 2 }}>
+					<Box sx={{ mb: 4, pb:2 }}>
 						<div className="App">
 							<Box mt={2}>
 								<Container maxWidth="xl">

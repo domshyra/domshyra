@@ -6,6 +6,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import { PlaylistPhoto } from "@fragments/playlistPhoto/PlaylistPhoto";
 import SpotifyLink from "@fragments/spotify/SpotifyLink";
 import Typography from "@mui/material/Typography";
+import { stations } from "@constants/routes";
 import { useNavigate } from "react-router-dom";
 
 type PlaylistCardProps = {
@@ -33,7 +34,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 						component="div"
 						variant="h6"
 						color="primary"
-						onClick={() => nav(`/playlist/${playlistId}`)}
+						onClick={() => nav(`${stations}/${playlistId}`, { state: { title } })} // Navigate to playlist details
 					>
 						{title}
 					</Typography>

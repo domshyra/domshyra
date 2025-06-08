@@ -20,10 +20,7 @@ const MediumScreenMenu = (props: MenuProps) => {
 			}}
 		>
 			<Box sx={{ flexShrink: 1 }}>{showHamburgerMenu ? <Menu {...props} /> : null}</Box>
-
-			<Box sx={{ width: "100%", ml: accessToken ? 6 : 5 }}>
-				<AppBarTitle />
-			</Box>
+			<AppBarTitle />
 			<Box sx={{ flexShrink: 0 }}>
 				{accessToken ? (
 					<Button variant="text" color="secondary" onClick={() => setAccessTokenCallback(null)}>

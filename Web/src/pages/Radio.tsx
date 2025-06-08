@@ -29,7 +29,7 @@ const Radio = () => {
 		<>
 			<Box sx={{ justifyContent: "center" }}>
 				<Typography variant="h3" gutterBottom>
-					Playlists
+					Stations
 				</Typography>
 			</Box>
 			<Grid container>{!isLoading ? cards : <Skeleton />}</Grid>

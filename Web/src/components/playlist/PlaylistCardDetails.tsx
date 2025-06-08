@@ -1,47 +1,25 @@
-import { Button, Grid } from "@mui/material";
+import PlaylistCardDetailsView from "./PlaylistCardDetailsView";
+import { useEffect } from "react";
+import { useGetPlaylistQuery } from "@redux/services/spotifyApi";
+import { useParams } from "react-router-dom";
 
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import { PlaylistPhoto } from "@fragments/playlistPhoto/PlaylistPhoto";
-import SpotifyLink from "@fragments/spotify/SpotifyLink";
-import Typography from "@mui/material/Typography";
-import { playlist } from "@_types/playlist";
-import { useNavigate } from "react-router-dom";
+const PlaylistDetails = () => {
+	const { id: playlistId } = useParams<{ id: string }>();
+	if (!playlistId) throw Error("Playlist id not found");
 
-const PlaylistCardDetails = ({ title, imageURL, description, genre, trackCount, followerCount, playlistId }: playlist) => {
-	const sectionWidth = 350;
-	const cardWidth = sectionWidth * 2;
-	const nav = useNavigate();
+	const { data: playlistDetails, error } = useGetPlaylistQuery(playlistId);
 
-	return (
-		<>
-			<Button onClick={() => nav(`/`)} variant="text" startIcon={<ArrowBackIosIcon />}>
-				Back to playlists
-			</Button>
-			<Grid container justifyContent="center">
-				<Card sx={{ maxWidth: cardWidth, minHeight: 150 }}>
-					<PlaylistPhoto imageURL={imageURL} title={title} cardWidth={cardWidth} />
+	useEffect(() => {
+		if (error) {
+			if ("data" in error) {
+				console.error("Error fetching playlist details:", error.data);
+			} else {
+				console.error("Error fetching playlist details:", error);
+			}
+		}
+	}, [error]);
 
-					<CardContent sx={{ flex: "1 0 auto", width: cardWidth }}>
-						<Typography component="div" variant="h6">
-							{title}
-						</Typography>
-						<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
-							{description}
-						</Typography>
-						<SpotifyLink playlistId={playlistId} />
-						<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
-							{genre}
-						</Typography>
-						<Typography variant="caption" color="text.secondary.light" noWrap align="right">
-							{trackCount} tracks{followerCount ? <>, {followerCount} followers</> : null}
-						</Typography>
-					</CardContent>
-				</Card>
-			</Grid>
-		</>
-	);
+	return <PlaylistCardDetailsView {...playlistDetails} playlistId={playlistId} />;
 };
 
-export default PlaylistCardDetails;
+export default PlaylistDetails;

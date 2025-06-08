@@ -54,7 +54,7 @@ namespace Api.Controllers
         {
             try
             {
-                _logger.LogInformation($"Getting playlist with id {playlistId}");
+                _logger.LogInformation("Getting playlist with id {playlistId}", playlistId);
                 var response = await _spotifyService.GetPlaylist(playlistId);
                 return Ok(response);
             }
