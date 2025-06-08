@@ -1,8 +1,8 @@
 import { Box, Button, Container, Divider, FormHelperText, ToggleButton, ToggleButtonGroup, Typography, useTheme } from "@mui/material";
 
-import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import BorderPaper from "src/fragments/paper/BorderPaper";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { useAppSelector } from "@redux/hooks";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ export default function SettingsView({ activateDarkMode, activateLightMode, acti
 	const themeOptions = [
 		{ key: "light", label: "Light", icon: <WbSunnyIcon />, onchange: activateLightMode },
 		{ key: "dark", label: "Dark", icon: <BedtimeIcon />, onchange: activateDarkMode },
-		{ key: "cvd", label: "Color Vision Deficiency", icon: <AccessibilityIcon />, onchange: activateCvdMode },
+		{ key: "cvd", label: "Color Vision Deficiency", icon: <VisibilityIcon />, onchange: activateCvdMode },
 	];
 
 	const boxDivider = (
