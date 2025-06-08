@@ -362,3 +362,38 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+Web/.cert/
+Web/build/
+# dependencies
+Web/node_modules
+Web/.pnp
+Web/.pnp.js
+
+# testing
+Web/coverage
+
+# production
+Web/build
+Web/dist
+
+# misc
+Web/.DS_Store
+Web/.env.local
+Web/.env.development.local
+Web/.env.test.local
+Web/.env.production.local
+
+Web/npm-debug.log*
+Web/yarn-debug.log*
+Web/yarn-error.log*
+
+
+# Terraform files
+.azure/*.tfstate
+.azure/*.tfstate.backup
+.azure/.terraform/
+.azure/.terraform.lock.hcl
+.azure/.terraform.tfstate.*
+.azure/.env.local
+
+

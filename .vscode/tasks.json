@@ -1,0 +1,89 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build api",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"build",
+				"${workspaceFolder}/Api/Api.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "publish api",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"publish",
+				"${workspaceFolder}/Api/Api.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "watch api",
+			"command": "dotnet",
+			"type": "process",
+			"args": ["watch", "run", "--project", "${workspaceFolder}/Api/Api.csproj"],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "start web server",
+			"type": "npm",
+			"script": "dev",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"isBackground": true,
+			"options": {
+				"cwd": "${workspaceFolder}/Web",
+				"env": {
+					// Ensures that react-scripts does not open a browser.
+					"BROWSER": "none"
+				}
+			},
+			"problemMatcher": {
+				"pattern": {
+					// This is not needed but, required by the problemMatcher Object
+					"regexp": "^$"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "Compiling...",
+					// Ensures that browser is only opened after the task is completed.
+					"endsPattern": "Compiled .*"
+				}
+			}
+		},
+		{
+			"label": "terminate",
+			"command": "echo ${input:terminate}",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/Web"
+			}
+		},
+		{
+			"label": "terraform",
+			"command": "source local.sh && terraform validate && terraform plan",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/.azure"
+			}
+		}
+	],
+	"inputs": [
+		{
+			"id": "terminate",
+			"type": "command",
+			"command": "workbench.action.tasks.terminate",
+			"args": "terminateAll"
+		}
+	]
+}

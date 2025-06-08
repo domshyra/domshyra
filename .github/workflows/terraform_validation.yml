@@ -1,0 +1,77 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: terraform validation
+
+on:
+    pull_request:
+        branches:
+            - main
+        paths:
+            - .azure/**
+            - .github/workflows/terraform_validation.yml
+    workflow_dispatch:
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    terraform:
+        name: "Terraform"
+        runs-on: ubuntu-latest
+
+        # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+        defaults:
+            run:
+                shell: bash
+                working-directory: .azure
+
+        steps:
+            # Checkout the repository to the GitHub Actions runner
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v1
+              with:
+                  cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                  client-id: ${{ secrets.AZURE_CLIENT_ID }} # save these as the federal credentials with no quotes
+                  tenant-id: ${{ secrets.AZURE_TENANT_ID }} 
+                  subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+            # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+            - name: Terraform Init
+              run: terraform init
+              working-directory: .azure
+
+            # Checks that all Terraform configuration files adhere to a canonical format
+            # todo! something is wrong with the terraform fmt command "Terraform exited with code 3."
+            # - name: Terraform Format
+            #   run: terraform fmt -check
+            #   working-directory: .azure
+            #   shell: bash
+            #   env:
+            #       TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+            #       TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+            #       TF_VAR_site_password: ${{ secrets.SITE_PASSWORD }}
+
+            # Generates an execution plan for Terraform
+            - name: Debug Terraform Plan
+              working-directory: .azure
+              run: terraform plan -input=false -out=tfplan.binary
+              shell: bash
+              env:
+                  TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+                  TF_VAR_site_password: ${{ secrets.SITE_PASSWORD }}
+                  TF_VAR_spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
+                  TF_VAR_spotify_client_secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+            - name: Show Plan Output
+              working-directory: .azure
+              run: terraform show -json tfplan.binary

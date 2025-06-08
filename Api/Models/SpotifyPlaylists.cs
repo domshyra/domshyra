@@ -1,4 +1,4 @@
-namespace Models
+namespace Api.Models
 {
     public class SpotifyPlaylists
     {

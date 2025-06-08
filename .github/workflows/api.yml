@@ -1,0 +1,78 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Api
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - Api/**
+            - .github/workflows/api.yml
+    workflow_dispatch:
+
+env:
+    repo: domshyra
+
+jobs:
+    build:
+        runs-on: windows-latest
+
+        defaults:
+            run:
+                working-directory: Api
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - run: ls
+            - name: Set up .NET Core
+              uses: actions/setup-dotnet@v1
+              with:
+                  dotnet-version: "9.0.x"
+                  include-prerelease: true
+
+            - name: Build with dotnet
+              run: dotnet build --configuration Release
+
+            - name: App Settings Variable Substitution
+              uses: microsoft/variable-substitution@v1
+              with:
+                  files: 'D:\a\${{env.repo}}\${{env.repo}}\Api\appsettings.json'
+              env:
+                  ConnectionStrings.DbConnectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+                  StorageAccountConnectionString: ${{ secrets.STORAGE_ACCOUNT_CONNECTION_STRING }}
+
+            - name: dotnet publish
+              run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Api
+
+            - name: Upload artifact for deployment job
+              uses: actions/upload-artifact@v4
+              with:
+                  name: .net-app
+                  path: ${{env.DOTNET_ROOT}}/Api
+
+    deploy:
+        runs-on: windows-latest
+        needs: build
+        environment:
+            name: "Production"
+            url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+        steps:
+            - name: Download artifact from build job
+              uses: actions/download-artifact@v4
+              with:
+                  name: .net-app
+
+            # https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github%2Cgithubactions#configure-the-deployment-source
+            # https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel%2Caspnetcore
+            - name: Deploy to Azure Web App
+              id: deploy-to-webapp
+              uses: azure/webapps-deploy@v2
+              with:
+                  app-name: "${{env.repo}}Api"
+                  slot-name: "Production"
+                  publish-profile: ${{ secrets.AZURE_APPSERVICE_PUBLISH_PROFILE_API }}
+                  package: .

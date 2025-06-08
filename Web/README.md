@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# About
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is using [vite](https://vite.dev/) and [vitest](https://vitest.dev/) with [react](https://reactjs.org/) and written in [typescript](https://www.typescriptlang.org/).
 
-## Available Scripts
+## Folder descriptions
+**Fragments** – Small, focused building blocks like layout or UI wrappers that serve single, specific purposes.
 
-In the project directory, you can run:
+**Components** – Reusable UI elements built from fragments, with associated prop types defined here for consistency and clarity.
 
-### `npm start`
+**Sections** – Higher-level UI assemblies made from components and fragments to represent full content sections on a page.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Page** – Complete pages composed of sections, components, and fragments that users interact with directly.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Types** – Shared logic and view types for clean, consistent data shaping and easier testing across the codebase.
 
-### `npm test`
+**__Mocks__** – Centralized mock data and MSW handlers used to support consistent and maintainable test environments.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+src/
+├── Fragments/         # Small, focused building blocks (e.g., Grid, Wrapper)
+│   └── Grid.tsx
+│
+├── Components/        # Reusable UI elements built from fragments
+│   ├── SearchBar.tsx
+│   └── PropTypes.ts   # Component-specific prop definitions
+│
+├── Sections/          # Assemblies of components and fragments for full sections
+│   └── HeroSection.tsx
+│
+├── Page/              # Complete, user-facing pages composed of sections and more
+│   └── SearchPage.tsx
+│
+├── Types/             # Shared logic/view types (not prop types)
+│   └── SearchTypes.ts
+│
+└── __Mocks__/         # MSW handlers and test data for consistent test setup
+    ├── handlers.ts
+    └── mockData.ts
+```
 
-### `npm run build`
+# Setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Certificates
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Windows instructions for creating certificates.
+1. install chocolatey `https://chocolatey.org/install`
+2. then, the actual certificate library, 'choco install mkcert' `do this from admin`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Mac and Linux Pre-requisites
+1. Install brew if you don't have it. `https://brew.sh/`
+2. Install mkcert use `brew install mkcert`
 
-### `npm run eject`
+#### To get certificates, you have the following commands.
+3. run `mkcert -install` to install the root certificate
+4. now run the following to create the actual certificates.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+# Web/
+//create a certificate folder
+mkdir -p .cert
+//create the actual certificates in the folder 
+mkcert -key-file ./.cert/key.pem -cert-file ./.cert/cert.pem "localhost"
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Running 
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+After the certs are created, you can run the project using the following command.
 
-## Learn More
+```bash
+# Web/
+npm install
+```
+once the packages are installed, you are ready to run the project.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+# Web/
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+this runs the app in the development mode.\
+Open [https://localhost:3005](https://localhost:3005) to view it in the browser.
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Env local
+for the client secret, you can create a `.env.local` file in the root of the project and add the following line
+```
+VITE_CLIENT_SECRET==your_client_secret
+```
