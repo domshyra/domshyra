@@ -74,5 +74,5 @@ jobs:
               with:
                   app-name: "${{env.repo}}Api"
                   slot-name: "Production"
-                  publish-profile: ${{ secrets.AZURE_APPSERVICE_PUBLISH_PROFILE_API }}
+                  publish-profile: ${{ env.AZURE_APPSERVICE_PUBLISH_PROFILE_API }}
                   package: .
