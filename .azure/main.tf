@@ -216,18 +216,18 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
   }
 }
 
-output "AZURE_APPSERVICE_PUBLISH_PROFILE_API" {
+output "app_service_publish_profile_api" {
   value = azurerm_windows_web_app.repository_name["api"].id
 }
 
-output "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB" {
+output "app_service_publish_profile_web" {
   value = azurerm_windows_web_app.repository_name["web"].id
 }
 
-output "AZURE_APPSERVICE_CLIENTID_API" {
+output "app_service_client_id_api" {
   value = azurerm_user_assigned_identity.repository_name["api"].principal_id
 }
 
-output "AZURE_APPSERVICE_CLIENTID_WEB" {
+output "app_service_client_id_web" {
   value = azurerm_user_assigned_identity.repository_name["web"].principal_id
 }

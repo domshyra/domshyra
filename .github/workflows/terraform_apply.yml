@@ -102,10 +102,14 @@ jobs:
             # Outputs from Terraform
             - name: Export Terraform Outputs
               run: |
-                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_API=$(terraform output -raw AZURE_APPSERVICE_PUBLISH_PROFILE_API)" >> $GITHUB_ENV
-                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB=$(terraform output -raw AZURE_APPSERVICE_PUBLISH_PROFILE_WEB)" >> $GITHUB_ENV
-                echo "AZURE_APPSERVICE_CLIENTID_API=$(terraform output -raw AZURE_APPSERVICE_CLIENTID_API)" >> $GITHUB_ENV
-                echo "AZURE_APPSERVICE_CLIENTID_WEB=$(terraform output -raw AZURE_APPSERVICE_CLIENTID_WEB)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_API=$(terraform output -raw app_service_publish_profile_api)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB=$(terraform output -raw app_service_publish_profile_web)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_CLIENTID_API=$(terraform output -raw app_service_client_id_api)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_CLIENTID_WEB=$(terraform output -raw app_service_client_id_web)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_API=$(terraform output -raw app_service_publish_profile_api)" >> $GITHUB_OUTPUT
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB=$(terraform output -raw app_service_publish_profile_web)" >> $GITHUB_OUTPUT
+                echo "AZURE_APPSERVICE_CLIENTID_API=$(terraform output -raw app_service_client_id_api)" >> $GITHUB_OUTPUT
+                echo "AZURE_APPSERVICE_CLIENTID_WEB=$(terraform output -raw app_service_client_id_web)" >> $GITHUB_OUTPUT
 
             # On push to "main", build or change infrastructure according to Terraform configuration files
             # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
