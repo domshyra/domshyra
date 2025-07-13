@@ -6,7 +6,7 @@ variable "app_service_plan" {
     location       = string
   })
   default = {
-    name           = "domdeckard"
+    name           = "asp-domdeckard"
     resource_group = "rg-asp"
     location       = "westus2"
   }
