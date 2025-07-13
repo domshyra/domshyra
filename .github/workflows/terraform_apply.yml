@@ -99,18 +99,7 @@ jobs:
                   TF_VAR_spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
                   TF_VAR_spotify_client_secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
 
-            # Outputs from Terraform
-            - name: Export Terraform Outputs
-              run: |
-                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_API=$(terraform output -raw app_service_publish_profile_api)" >> $GITHUB_ENV
-                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB=$(terraform output -raw app_service_publish_profile_web)" >> $GITHUB_ENV
-                echo "AZURE_APPSERVICE_CLIENTID_API=$(terraform output -raw app_service_client_id_api)" >> $GITHUB_ENV
-                echo "AZURE_APPSERVICE_CLIENTID_WEB=$(terraform output -raw app_service_client_id_web)" >> $GITHUB_ENV
-                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_API=$(terraform output -raw app_service_publish_profile_api)" >> $GITHUB_OUTPUT
-                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB=$(terraform output -raw app_service_publish_profile_web)" >> $GITHUB_OUTPUT
-                echo "AZURE_APPSERVICE_CLIENTID_API=$(terraform output -raw app_service_client_id_api)" >> $GITHUB_OUTPUT
-                echo "AZURE_APPSERVICE_CLIENTID_WEB=$(terraform output -raw app_service_client_id_web)" >> $GITHUB_OUTPUT
-
+          
             # On push to "main", build or change infrastructure according to Terraform configuration files
             # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
             - name: Terraform Apply
@@ -122,4 +111,16 @@ jobs:
                   TF_VAR_site_password: ${{ secrets.SITE_PASSWORD }}
                   TF_VAR_spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
                   TF_VAR_spotify_client_secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+
+            # Outputs from Terraform
+            - name: Export Terraform Outputs
+              run: |
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_API=$(terraform output -raw app_service_publish_profile_api)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB=$(terraform output -raw app_service_publish_profile_web)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_CLIENTID_API=$(terraform output -raw app_service_client_id_api)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_CLIENTID_WEB=$(terraform output -raw app_service_client_id_web)" >> $GITHUB_ENV
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_API=$(terraform output -raw app_service_publish_profile_api)" >> $GITHUB_OUTPUT
+                echo "AZURE_APPSERVICE_PUBLISH_PROFILE_WEB=$(terraform output -raw app_service_publish_profile_web)" >> $GITHUB_OUTPUT
+                echo "AZURE_APPSERVICE_CLIENTID_API=$(terraform output -raw app_service_client_id_api)" >> $GITHUB_OUTPUT
+                echo "AZURE_APPSERVICE_CLIENTID_WEB=$(terraform output -raw app_service_client_id_web)" >> $GITHUB_OUTPUT
 
