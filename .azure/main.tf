@@ -40,9 +40,9 @@ provider "godaddy-dns" {
   api_secret = var.godaddy_api_secret
 }
 
-provider "acme" {
-  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
-}
+# provider "acme" {
+#   server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
+# }
 
 # Resource group for the application
 resource "azurerm_resource_group" "repository_name" {
@@ -246,14 +246,33 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
 #   }
 # }
 
-# create "alias.test.com" as CNAME for "other.com"
-resource "godaddy-dns_record" "repository_name" {
+# go daddy settings for DNS records
+resource "godaddy-dns_record" "c_name" {
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "CNAME"
   name   = "www"
   data   = "${var.repo.name}${each.value}.azurewebsites.net."
+  ttl    = 3600 # Set TTL to 1 hour
+}
+resource "godaddy-dns_record" "txt" {
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "TXT"
+  name   = "asuid"
+  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
+  ttl    = 3600 # Set TTL to 1 hour
+}
+resource "godaddy-dns_record" "txt_www" {
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "TXT"
+  name   = "asuid.www"
+  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
+  ttl    = 3600 # Set TTL to 1 hour
 }
 
 output "app_service_publish_profile_api" {
