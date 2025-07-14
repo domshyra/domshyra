@@ -280,8 +280,8 @@ resource "godaddy-dns_record" "a_record" {
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "A"
   name   = "@"
-  data   = azurerm_windows_web_app.repository_name[each.value].outbound_ip_addresses # ip address of the web app
-  ttl    = 600                                                                       # Set TTL to 10 minutes
+  data   = azurerm_windows_web_app.repository_name[each.value].outbound_ip_address_list[0] # ip address of the web app
+  ttl    = 600                                                                             # Set TTL to 10 minutes
 }
 
 output "app_service_publish_profile_api" {
