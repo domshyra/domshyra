@@ -77,7 +77,7 @@ jobs:
               id: deploy-to-webapp
               uses: azure/webapps-deploy@v2
               with:
-                  app-name: "${{env.repo}}Web"
+                  app-name: "${{env.repo}}-web"
                   slot-name: "Production"
                   publish-profile: ${{ env.AZURE_APPSERVICE_PUBLISH_PROFILE_WEB }}
                   package: D:\a\${{env.repo}}\${{env.repo}}\release.zip

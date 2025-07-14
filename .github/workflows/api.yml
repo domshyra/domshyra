@@ -75,7 +75,7 @@ jobs:
               id: deploy-to-webapp
               uses: azure/webapps-deploy@v2
               with:
-                  app-name: "${{env.repo}}Api"
+                  app-name: "${{env.repo}}-api"
                   slot-name: "Production"
                   publish-profile: ${{ env.AZURE_APPSERVICE_PUBLISH_PROFILE_API }}
                   package: .
