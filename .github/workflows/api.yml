@@ -36,14 +36,6 @@ jobs:
             - name: Build with dotnet
               run: dotnet build --configuration Release
 
-            - name: App Settings Variable Substitution
-              uses: microsoft/variable-substitution@v1
-              with:
-                  files: 'D:\a\${{env.repo}}\${{env.repo}}\Api\appsettings.json'
-              env:
-                  ConnectionStrings.DbConnectionString: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-                  StorageAccountConnectionString: ${{ secrets.STORAGE_ACCOUNT_CONNECTION_STRING }}
-
             - name: dotnet publish
               run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Api
 
@@ -65,6 +57,13 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: .net-app
+        
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                client-id: ${{ secrets.AZURE_CLIENT_ID }} # save these as the federal credentials with no quotes
+                tenant-id: ${{ secrets.AZURE_TENANT_ID }} 
+                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
             # https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github%2Cgithubactions#configure-the-deployment-source
             # https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel%2Caspnetcore
