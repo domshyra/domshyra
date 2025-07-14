@@ -15,6 +15,10 @@ on:
 env:
     repo: domshyra
 
+permissions:
+    id-token: write
+    contents: read
+
 jobs:
     build:
         runs-on: windows-latest
