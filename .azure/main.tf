@@ -8,6 +8,13 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 3.7.0"
     }
+    godaddy-dns = {
+      source = "registry.terraform.io/veksh/godaddy-dns"
+    }
+    # acme = {
+    #   source  = "vancluever/acme"
+    #   version = ">= 2.0.0"
+    # }
   }
 
   required_version = ">= 1.1.0"
@@ -25,6 +32,16 @@ provider "azurerm" {
   # client_secret   = var.client_secret
   # tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
+}
+
+# keys from env
+provider "godaddy-dns" {
+  api_key    = var.godaddy_api_key
+  api_secret = var.godaddy_api_secret
+}
+
+provider "acme" {
+  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
 
 # Resource group for the application
@@ -214,6 +231,29 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
   tags = {
     Area = var.repo.name
   }
+}
+
+# resource "acme_certificate" "certificate" {
+#   account_key_pem = var.acme_account_key_pem
+#   common_name     = "www.example.com"
+#   dns_challenge {
+#     provider = "godaddy"
+
+#     config = {
+#       GODADDY_API_KEY    = var.godaddy_api_key
+#       GODADDY_API_SECRET = var.godaddy_api_secret
+#     }
+#   }
+# }
+
+# create "alias.test.com" as CNAME for "other.com"
+resource "godaddy-dns_record" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "CNAME"
+  name   = "www"
+  data   = "${var.repo.name}${each.value}.azurewebsites.net."
 }
 
 output "app_service_publish_profile_api" {
