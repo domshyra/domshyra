@@ -59,6 +59,15 @@ jobs:
               with:
                   name: node-app
 
+            
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                client-id: ${{ secrets.AZURE_CLIENT_ID }} # save these as the federal credentials with no quotes
+                tenant-id: ${{ secrets.AZURE_TENANT_ID }} 
+                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+
             # https://learn.microsoft.com/en-us/azure/app-service/deploy-continuous-deployment?tabs=github%2Cgithubactions#configure-the-deployment-source
             # https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel%2Caspnetcore
             - name: Deploy to Azure Web App
