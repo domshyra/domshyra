@@ -77,6 +77,16 @@ variable "tenant_id" {
   description = "from .env.local"
   type        = string
 }
+variable "godaddy_api_key" {
+  sensitive   = true
+  description = "from .env.local"
+  type        = string
+}
+variable "godaddy_api_secret" {
+  sensitive   = true
+  description = "from .env.local"
+  type        = string
+}
 variable "site_password" {
   sensitive   = true
   description = "from .env.local"
