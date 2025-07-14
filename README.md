@@ -12,6 +12,8 @@ There are a few examples of how this project has progressed or the other technol
 
 [Here is a the upgrade to rtkQuery](https://github.com/domshyra-s-playground/rtkQueryDemo) 
 
+Now using terraform for all the resources
+
 
 ## Setup
 The [api readme](./Api/README.md#Setup) and [web readme](./Web/README.md#Setup) have more detailed instructions on how to run the project.
