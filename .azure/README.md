@@ -16,7 +16,20 @@ client_id="<APPID_VALUE>"
 subscription_id="<SUBSCRIPTION_ID>"
 client_secret="<PASSWORD_VALUE>"
 tenant_id="<TENANT_ID>"
+godaddy_api_key="<GODADDY_API_KEY>"
+godaddy_api_secret="<GODADDY_API_SECRET>"
 ```
+
+
+#### Run this to create the container for the tfstate
+
+```bash
+STORAGE_ACCOUNT_NAME=sadomshyratfstates
+CONTAINER_NAME=domshyra-tfstate
+# Create blob container
+az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+```
+
 
 ## Steps to Run Terraform
 
