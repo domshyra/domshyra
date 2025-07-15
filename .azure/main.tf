@@ -236,6 +236,22 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
   }
 }
 
+resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
+  for_each = toset(var.app_services.types)
+
+  hostname            = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
+  app_service_name    = azurerm_app_service.repository_name[each.value].name
+  resource_group_name = azurerm_resource_group.repository_name[each.value].name
+}
+resource "azurerm_app_service_custom_hostname_binding" "root_repository_name" {
+  for_each = toset(var.app_services.types)
+
+  hostname            = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  app_service_name    = azurerm_app_service.repository_name[each.value].name
+  resource_group_name = azurerm_resource_group.repository_name[each.value].name
+}
+
+
 # resource "acme_certificate" "certificate" {
 #   account_key_pem = var.acme_account_key_pem
 #   common_name     = "www.example.com"
