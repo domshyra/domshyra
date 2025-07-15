@@ -1,4 +1,4 @@
-# Configure the Azure provider
+#region Terraform Backend and Providers
 terraform {
   backend "azurerm" {
     resource_group_name  = "rg-tfstate"
@@ -22,7 +22,9 @@ terraform {
 
   required_version = ">= 1.1.0"
 }
+#endregion
 
+#region Providers
 provider "azurerm" {
   features {
     key_vault {
@@ -46,6 +48,10 @@ provider "godaddy-dns" {
 # provider "acme" {
 #   server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
 # }
+
+#endregion
+
+#region Azure resource group
 
 # Resource group for the application
 resource "azurerm_resource_group" "repository_name" {
@@ -93,6 +99,9 @@ resource "azurerm_resource_group" "repository_name" {
 #   key_vault_id = azurerm_key_vault.repository_name.id
 # }
 
+#endregion
+
+#region Log Analytics Workspace and Application Insights
 
 # Log Analytics Workspace for monitoring
 resource "azurerm_log_analytics_workspace" "repository_name" {
@@ -141,6 +150,9 @@ resource "azurerm_user_assigned_identity" "repository_name" {
     Area = var.repo.name
   }
 }
+#endregion
+
+#region App Service
 
 # Windows Web App for hosting the application
 resource "azurerm_windows_web_app" "repository_name" {
@@ -197,6 +209,9 @@ resource "azurerm_windows_web_app" "repository_name" {
 
 }
 
+#endregion
+
+#region Monitoring and Alerts
 
 # Action Group for monitoring alerts
 resource "azurerm_monitor_action_group" "repository_name" {
@@ -236,6 +251,21 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
   }
 }
 
+#endregion
+
+#region Custom Domain and DNS Records
+resource "azurerm_dns_txt_record" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  name                = "asuid.${azurerm_dns_cname_record.repository_name[each.value].name}"
+  zone_name           = data.azurerm_dns_zone.repository_name[each.value].name
+  resource_group_name = data.azurerm_dns_zone.repository_name[each.value].resource_group_name
+  ttl                 = 300
+  record {
+    value = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
+  }
+}
+
 resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
 
@@ -244,17 +274,65 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   hostname            = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
   app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
   resource_group_name = azurerm_resource_group.repository_name.name
+
+  lifecycle {
+    ignore_changes = [ssl_state, thumbprint]
+  }
 }
 resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_txt_record.repository_name]
 
   for_each = toset(var.app_services.types)
 
   hostname            = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
   resource_group_name = azurerm_resource_group.repository_name.name
+
+  lifecycle {
+    ignore_changes = [ssl_state, thumbprint]
+  }
+
 }
 
+
+data "azurerm_dns_zone" "www_repository_name" {
+  for_each = toset(var.app_services.types)
+
+  name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
+  resource_group_name = azurerm_resource_group.repository_name.name
+}
+
+data "azurerm_dns_zone" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  resource_group_name = azurerm_resource_group.repository_name.name
+}
+
+resource "azurerm_dns_cname_record" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  name                = "www"
+  zone_name           = data.azurerm_dns_zone.repository_name[each.value].name
+  resource_group_name = data.azurerm_dns_zone.repository_name[each.value].resource_group_name
+  ttl                 = 300
+  record              = azurerm_windows_web_app.repository_name[each.value].default_site_hostname
+}
+
+
+resource "azurerm_app_service_managed_certificate" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+}
+
+resource "azurerm_app_service_certificate_binding" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  certificate_id      = azurerm_app_service_managed_certificate.repository_name[each.value].id
+  ssl_state           = "SniEnabled"
+}
 
 # resource "acme_certificate" "certificate" {
 #   account_key_pem = var.acme_account_key_pem
@@ -268,6 +346,10 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
 #     }
 #   }
 # }
+
+#endregion
+
+#region GoDaddy DNS records
 
 # go daddy settings for DNS records
 resource "godaddy-dns_record" "c_name" {
@@ -306,7 +388,9 @@ resource "godaddy-dns_record" "a_record" {
   data   = azurerm_windows_web_app.repository_name[each.value].outbound_ip_address_list[0] # ip address of the web app
   ttl    = 600                                                                             # Set TTL to 10 minutes
 }
+#endregion 
 
+#region outputs
 output "app_service_publish_profile_api" {
   value = azurerm_windows_web_app.repository_name["api"].id
 }
@@ -322,3 +406,5 @@ output "app_service_client_id_api" {
 output "app_service_client_id_web" {
   value = azurerm_user_assigned_identity.repository_name["web"].principal_id
 }
+
+#endregion
