@@ -1,7 +1,10 @@
 # Configure the Azure provider
 terraform {
-  backend "local" {
-    path = "terraform.tfstate"
+  backend "azurerm" {
+    resource_group_name  = "rg-tfstate"
+    storage_account_name = "sadomshyratfstates"
+    container_name       = "domshyra-tfstate"
+    key                  = "terraform.tfstate"
   }
   required_providers {
     azurerm = {
