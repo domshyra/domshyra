@@ -303,7 +303,7 @@ resource "azurerm_dns_cname_record" "repository_name" {
 
 
 resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.www_repository_name]
 
   for_each = toset(var.app_services.types)
 
@@ -316,7 +316,7 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   }
 }
 resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
 
   for_each = toset(var.app_services.types)
 
@@ -338,6 +338,9 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  timeouts {
+    create = "12m"
+  }
 
   tags = {
     Area = var.repo.name
