@@ -13,9 +13,3 @@ output "app_service_client_id_api" {
 output "app_service_client_id_web" {
   value = azurerm_user_assigned_identity.repository_name["web"].principal_id
 }
-output "app_service_certificate_binding_api" {
-  value = azurerm_app_service_certificate_binding.repository_name["api"].id
-}
-output "app_service_certificate_binding_web" {
-  value = azurerm_app_service_certificate_binding.repository_name["web"].id
-}
