@@ -257,17 +257,23 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
 #region Custom Domain and DNS Records
 
 resource "azurerm_dns_zone" "www_repository_name" {
-  for_each = toset(var.app_services.types)
+  depends_on = [azurerm_resource_group.repository_name]
+  for_each   = toset(var.app_services.types)
 
   name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
   resource_group_name = azurerm_resource_group.repository_name.name
 }
 
 resource "azurerm_dns_zone" "repository_name" {
-  for_each = toset(var.app_services.types)
+  depends_on = [azurerm_resource_group.repository_name]
+  for_each   = toset(var.app_services.types)
 
   name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   resource_group_name = azurerm_resource_group.repository_name.name
+
+  tags = {
+    Area = var.repo.name
+  }
 }
 
 resource "azurerm_dns_txt_record" "repository_name" {
@@ -310,7 +316,7 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   }
 }
 resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_txt_record.repository_name]
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
 
   for_each = toset(var.app_services.types)
 
@@ -333,6 +339,9 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
 
+  tags = {
+    Area = var.repo.name
+  }
   # Ensure step to verify the certificate creation
   lifecycle {
     create_before_destroy = true
