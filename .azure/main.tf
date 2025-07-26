@@ -271,7 +271,7 @@ resource "azurerm_dns_zone" "repository_name" {
 }
 resource "azurerm_dns_zone" "www_repository_name" {
   # run after the other binding is created to see if it frees up the hostname and doesn't time out the certificate creation
-  depends_on = [azurerm_resource_group.repository_name, azurerm_dns_zone.repository_name, azurerm_app_service_managed_certificate.repository_name]
+  depends_on = [azurerm_resource_group.repository_name, azurerm_dns_zone.repository_name, azurerm_app_service_managed_certificate.web, azurerm_app_service_managed_certificate.api]
   for_each   = toset(var.app_services.types)
 
   name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
@@ -392,14 +392,15 @@ resource "azurerm_app_service_managed_certificate" "api" {
 
 resource "azurerm_app_service_certificate_binding" "repository_name" {
   depends_on = [
-    azurerm_app_service_managed_certificate.repository_name,
+    azurerm_app_service_managed_certificate.web,
+    azurerm_app_service_managed_certificate.api,
     azurerm_app_service_custom_hostname_binding.repository_name
   ]
 
   for_each = toset(var.app_services.types)
 
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
-  certificate_id      = azurerm_app_service_managed_certificate.repository_name[each.value].id
+  certificate_id      = each.value == "web" ? azurerm_app_service_managed_certificate.web.id : azurerm_app_service_managed_certificate.api.id
   ssl_state           = "SniEnabled"
 }
 
