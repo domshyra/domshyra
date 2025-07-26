@@ -255,20 +255,6 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
 #endregion
 
 #region Custom Domain and DNS Records
-
-
-
-resource "azurerm_dns_zone" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name]
-  for_each   = toset(var.app_services.types)
-
-  name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  resource_group_name = "rg-${var.repo.short_name}"
-
-  tags = {
-    Area = var.repo.name
-  }
-}
 resource "azurerm_dns_zone" "www_repository_name" {
   depends_on = [azurerm_resource_group.repository_name]
   for_each   = toset(var.app_services.types)
@@ -289,21 +275,6 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
     ignore_changes = [ssl_state, thumbprint]
   }
 }
-resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
-
-  for_each = toset(var.app_services.types)
-
-  hostname            = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
-  resource_group_name = "rg-${var.repo.short_name}"
-
-  lifecycle {
-    ignore_changes = [ssl_state, thumbprint]
-  }
-
-}
-
 resource "azurerm_app_service_managed_certificate" "www_repository_name" {
   depends_on = [
     azurerm_app_service_custom_hostname_binding.www_repository_name
@@ -323,6 +294,45 @@ resource "azurerm_app_service_managed_certificate" "www_repository_name" {
   lifecycle {
     create_before_destroy = true
   }
+}
+resource "azurerm_app_service_certificate_binding" "www_repository_name" {
+  depends_on = [
+    azurerm_app_service_managed_certificate.www_repository_name,
+    azurerm_app_service_custom_hostname_binding.www_repository_name
+  ]
+
+  for_each = toset(var.app_services.types)
+
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
+  certificate_id      = azurerm_app_service_managed_certificate.www_repository_name[each.value].id
+  ssl_state           = "SniEnabled"
+}
+
+
+resource "azurerm_dns_zone" "repository_name" {
+  depends_on = [azurerm_resource_group.repository_name, azurerm_app_service_certificate_binding.www_repository_name]
+  for_each   = toset(var.app_services.types)
+
+  name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  resource_group_name = "rg-${var.repo.short_name}"
+
+  tags = {
+    Area = var.repo.name
+  }
+}
+resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
+
+  for_each = toset(var.app_services.types)
+
+  hostname            = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
+  resource_group_name = "rg-${var.repo.short_name}"
+
+  lifecycle {
+    ignore_changes = [ssl_state, thumbprint]
+  }
+
 }
 resource "azurerm_app_service_managed_certificate" "repository_name" {
   depends_on = [
@@ -345,29 +355,16 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
   }
 }
 
-
 resource "azurerm_app_service_certificate_binding" "repository_name" {
   depends_on = [
     azurerm_app_service_managed_certificate.repository_name,
-    azurerm_app_service_custom_hostname_binding.repository_name
+    azurerm_app_service_custom_hostname_binding.repository_name,
   ]
 
   for_each = toset(var.app_services.types)
 
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
   certificate_id      = azurerm_app_service_managed_certificate.repository_name[each.value].id
-  ssl_state           = "SniEnabled"
-}
-resource "azurerm_app_service_certificate_binding" "www_repository_name" {
-  depends_on = [
-    azurerm_app_service_managed_certificate.www_repository_name,
-    azurerm_app_service_custom_hostname_binding.www_repository_name
-  ]
-
-  for_each = toset(var.app_services.types)
-
-  hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
-  certificate_id      = azurerm_app_service_managed_certificate.www_repository_name[each.value].id
   ssl_state           = "SniEnabled"
 }
 
