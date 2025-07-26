@@ -304,31 +304,31 @@ resource "azurerm_app_service_certificate_binding" "www_repository_name" {
 }
 
 #TODO! fix the non www domains
-# resource "azurerm_dns_zone" "repository_name" {
-#   depends_on = [azurerm_resource_group.repository_name, azurerm_app_service_certificate_binding.www_repository_name]
-#   for_each   = toset(var.app_services.types)
+resource "azurerm_dns_zone" "repository_name" {
+  depends_on = [azurerm_resource_group.repository_name, azurerm_app_service_certificate_binding.www_repository_name]
+  for_each   = toset(var.app_services.types)
 
-#   name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-#   resource_group_name = azurerm_resource_group.repository_name.name
+  name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  resource_group_name = azurerm_resource_group.repository_name.name
 
-#   tags = {
-#     Area = var.repo.name
-#   }
-# }
-# resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-#   depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
+  tags = {
+    Area = var.repo.name
+  }
+}
+resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
 
-#   for_each = toset(var.app_services.types)
+  for_each = toset(var.app_services.types)
 
-#   hostname            = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-#   app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
-#   resource_group_name = azurerm_resource_group.repository_name.name
+  hostname            = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
+  resource_group_name = azurerm_resource_group.repository_name.name
 
-#   lifecycle {
-#     ignore_changes = [ssl_state, thumbprint]
-#   }
+  lifecycle {
+    ignore_changes = [ssl_state, thumbprint]
+  }
 
-# }
+}
 # resource "azurerm_app_service_managed_certificate" "repository_name" {
 #   depends_on = [
 #     azurerm_app_service_custom_hostname_binding.repository_name,
