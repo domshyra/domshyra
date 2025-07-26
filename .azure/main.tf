@@ -268,6 +268,10 @@ resource "azurerm_dns_zone" "repository_name" {
 
   name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   resource_group_name = azurerm_resource_group.repository_name.name
+
+  tags = {
+    Area = var.repo.name
+  }
 }
 
 resource "azurerm_dns_txt_record" "repository_name" {
@@ -332,7 +336,12 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  friendly_name              = "${var.repo.short_name}-${each.value}-cert"
+  canonical_name             = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
 
+  tags = {
+    Area = var.repo.name
+  }
   # Ensure step to verify the certificate creation
   lifecycle {
     create_before_destroy = true
