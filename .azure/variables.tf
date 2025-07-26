@@ -1,14 +1,24 @@
+variable "region" {
+  description = "Azure region for resources"
+  type = object({
+    location  = string
+    long_name = string
+  })
+  default = {
+    location  = "westus2"
+    long_name = "West US 2"
+  }
+}
+
 variable "app_service_plan" {
   description = "values for the app service"
   type = object({
     name           = string
     resource_group = string
-    location       = string
   })
   default = {
     name           = "asp-domdeckard"
     resource_group = "rg-asp"
-    location       = "westus2"
   }
 }
 
@@ -24,12 +34,6 @@ variable "repo" {
   }
 }
 
-variable "region" {
-  default = "westus2"
-}
-variable "region_long_name" {
-  default = "West US 2"
-}
 variable "app_services" {
   description = "values for the app service"
   type = object({
@@ -56,6 +60,24 @@ variable "key_vault" {
     resource_group = "rg-asp"
   }
 }
+
+#TODO? figure out how to use this in backend configuration
+variable "backend" {
+  description = "Backend configuration variables"
+  type = object({
+    container_name       = string
+    key                  = string
+    resource_group_name  = string
+    storage_account_name = string
+  })
+  default = {
+    container_name       = "domshyra-tfstate"
+    key                  = "terraform.tfstate"
+    resource_group_name  = "rg-tfstate"
+    storage_account_name = "sadomshyratfstates"
+  }
+}
+#region private variables
 
 # variable "client_id" {
 #   sensitive   = true
@@ -102,3 +124,4 @@ variable "spotify_client_secret" {
   description = "from .env.local"
   type        = string
 }
+#endregion 
