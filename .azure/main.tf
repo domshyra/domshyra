@@ -336,8 +336,6 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
-  friendly_name              = "${var.repo.short_name}-${each.value}-cert"
-  canonical_name             = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
 
   tags = {
     Area = var.repo.name
