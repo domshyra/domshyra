@@ -1,6 +1,7 @@
 #region Terraform Backend and Providers
 terraform {
   backend "azurerm" {
+    # Note: vars aren't allowed in backend configuration
     resource_group_name  = "rg-tfstate"
     storage_account_name = "sadomshyratfstates"
     container_name       = "domshyra-tfstate"
@@ -56,7 +57,7 @@ provider "godaddy-dns" {
 # Resource group for the application
 resource "azurerm_resource_group" "repository_name" {
   name     = "rg-${var.repo.short_name}"
-  location = var.region_long_name
+  location = var.region.long_name
 }
 
 
@@ -110,7 +111,7 @@ resource "azurerm_log_analytics_workspace" "repository_name" {
   depends_on = [azurerm_resource_group.repository_name]
 
   name                = "managed-${var.repo.short_name}-${each.value}-ws"
-  location            = var.region
+  location            = var.region.location
   resource_group_name = "rg-${var.repo.short_name}"
   sku                 = "PerGB2018"
   retention_in_days   = 30
@@ -127,7 +128,7 @@ resource "azurerm_application_insights" "repository_name" {
 
 
   name                = "${var.repo.short_name}-${each.value}-ai"
-  location            = var.region
+  location            = var.region.location
   resource_group_name = "rg-${var.repo.short_name}"
   application_type    = each.value == "web" ? "web" : "other"
   retention_in_days   = 90
@@ -144,7 +145,7 @@ resource "azurerm_user_assigned_identity" "repository_name" {
   for_each = toset(var.app_services.types)
 
   name                = "${var.repo.short_name}-${each.value}-mi"
-  location            = var.region
+  location            = var.region.location
   resource_group_name = "rg-${var.repo.short_name}"
   tags = {
     Area = var.repo.name
@@ -161,7 +162,7 @@ resource "azurerm_windows_web_app" "repository_name" {
   for_each = toset(var.app_services.types)
 
   name                       = "${var.repo.short_name}-${each.value}"
-  location                   = var.region
+  location                   = var.region.location
   resource_group_name        = "rg-${var.repo.short_name}"
   service_plan_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${var.app_service_plan.resource_group}/providers/Microsoft.Web/serverFarms/${var.app_service_plan.name}"
   https_only                 = true
@@ -311,6 +312,8 @@ data "azurerm_dns_zone" "repository_name" {
 
 resource "azurerm_dns_cname_record" "repository_name" {
   for_each = toset(var.app_services.types)
+
+  depends_on = [data.azurerm_dns_zone.repository_name, azurerm_windows_web_app.repository_name]
 
   name                = "www"
   zone_name           = data.azurerm_dns_zone.repository_name[each.value].name

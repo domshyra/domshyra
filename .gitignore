@@ -395,5 +395,6 @@ Web/yarn-error.log*
 .azure/.terraform.lock.hcl
 .azure/.terraform.tfstate.*
 .azure/.env.local
+.azure/tfplan
 
 
