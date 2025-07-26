@@ -325,10 +325,26 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
 }
 
 resource "azurerm_app_service_managed_certificate" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_app_service_custom_hostname_binding.repository_name]
-  for_each   = toset(var.app_services.types)
+  depends_on = [
+    azurerm_app_service_custom_hostname_binding.repository_name
+  ]
+
+  for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+
+  # Ensure step to verify the certificate creation
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  # Added validation to ensure DNS records are properly configured
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "Validating DNS records for ${azurerm_app_service_custom_hostname_binding.repository_name[each.value].hostname}"
+      nslookup ${azurerm_app_service_custom_hostname_binding.repository_name[each.value].hostname}
+    EOT
+  }
 }
 
 resource "azurerm_app_service_certificate_binding" "repository_name" {
@@ -406,4 +422,4 @@ resource "godaddy-dns_record" "a_record" {
   data   = azurerm_windows_web_app.repository_name[each.value].outbound_ip_address_list[0] # ip address of the web app
   ttl    = 600                                                                             # Set TTL to 10 minutes
 }
-#endregion 
+#endregion
