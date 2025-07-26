@@ -336,15 +336,12 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
 
 }
 
-resource "azurerm_app_service_managed_certificate" "repository_name" {
+resource "azurerm_app_service_managed_certificate" "web" {
   depends_on = [
     azurerm_app_service_custom_hostname_binding.repository_name,
     azurerm_dns_zone.repository_name
   ]
-
-  for_each = toset(var.app_services.types)
-
-  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name["web"].id
   timeouts {
     create = "12m"
   }
@@ -360,8 +357,35 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
   # Added validation to ensure DNS records are properly configured
   provisioner "local-exec" {
     command = <<EOT
-      echo "Validating DNS records for ${azurerm_app_service_custom_hostname_binding.repository_name[each.value].hostname}"
-      nslookup ${azurerm_app_service_custom_hostname_binding.repository_name[each.value].hostname}
+      echo "Validating DNS records for ${azurerm_app_service_custom_hostname_binding.repository_name["web"].hostname}"
+      nslookup ${azurerm_app_service_custom_hostname_binding.repository_name["web"].hostname}
+    EOT
+  }
+}
+resource "azurerm_app_service_managed_certificate" "api" {
+  depends_on = [
+    azurerm_app_service_custom_hostname_binding.repository_name,
+    azurerm_dns_zone.repository_name,
+    azurerm_app_service_managed_certificate.web
+  ]
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name["api"].id
+  timeouts {
+    create = "12m"
+  }
+
+  tags = {
+    Area = var.repo.name
+  }
+  # Ensure step to verify the certificate creation
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  # Added validation to ensure DNS records are properly configured
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "Validating DNS records for ${azurerm_app_service_custom_hostname_binding.repository_name["api"].hostname}"
+      nslookup ${azurerm_app_service_custom_hostname_binding.repository_name["api"].hostname}
     EOT
   }
 }
