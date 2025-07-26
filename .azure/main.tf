@@ -320,7 +320,7 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   }
 }
 resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name, azurerm_app_service_custom_hostname_binding.www_repository_name]
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
 
   for_each = toset(var.app_services.types)
 
