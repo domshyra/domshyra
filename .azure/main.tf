@@ -255,17 +255,46 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
 #endregion
 
 #region Custom Domain and DNS Records
+
+resource "azurerm_dns_zone" "www_repository_name" {
+  for_each = toset(var.app_services.types)
+
+  name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
+  resource_group_name = azurerm_resource_group.repository_name.name
+}
+
+resource "azurerm_dns_zone" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  resource_group_name = azurerm_resource_group.repository_name.name
+}
+
 resource "azurerm_dns_txt_record" "repository_name" {
+  depends_on = [azurerm_dns_zone.repository_name, azurerm_windows_web_app.repository_name]
+
   for_each = toset(var.app_services.types)
 
   name                = "asuid.${azurerm_dns_cname_record.repository_name[each.value].name}"
-  zone_name           = data.azurerm_dns_zone.repository_name[each.value].name
-  resource_group_name = data.azurerm_dns_zone.repository_name[each.value].resource_group_name
+  zone_name           = azurerm_dns_zone.repository_name[each.value].name
+  resource_group_name = azurerm_dns_zone.repository_name[each.value].resource_group_name
   ttl                 = 300
   record {
     value = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
   }
 }
+resource "azurerm_dns_cname_record" "repository_name" {
+  depends_on = [azurerm_dns_zone.repository_name, azurerm_windows_web_app.repository_name]
+
+  for_each = toset(var.app_services.types)
+
+  name                = "www"
+  zone_name           = azurerm_dns_zone.repository_name[each.value].name
+  resource_group_name = azurerm_dns_zone.repository_name[each.value].resource_group_name
+  ttl                 = 300
+  record              = azurerm_windows_web_app.repository_name[each.value].default_hostname
+}
+
 
 resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
@@ -295,41 +324,19 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
 
 }
 
-
-data "azurerm_dns_zone" "www_repository_name" {
-  for_each = toset(var.app_services.types)
-
-  name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
-  resource_group_name = azurerm_resource_group.repository_name.name
-}
-
-data "azurerm_dns_zone" "repository_name" {
-  for_each = toset(var.app_services.types)
-
-  name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  resource_group_name = azurerm_resource_group.repository_name.name
-}
-
-resource "azurerm_dns_cname_record" "repository_name" {
-  for_each = toset(var.app_services.types)
-
-  depends_on = [data.azurerm_dns_zone.repository_name, azurerm_windows_web_app.repository_name]
-
-  name                = "www"
-  zone_name           = data.azurerm_dns_zone.repository_name[each.value].name
-  resource_group_name = data.azurerm_dns_zone.repository_name[each.value].resource_group_name
-  ttl                 = 300
-  record              = azurerm_windows_web_app.repository_name[each.value].default_site_hostname
-}
-
-
 resource "azurerm_app_service_managed_certificate" "repository_name" {
-  for_each = toset(var.app_services.types)
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_app_service_custom_hostname_binding.repository_name]
+  for_each   = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
 }
 
 resource "azurerm_app_service_certificate_binding" "repository_name" {
+  depends_on = [
+    azurerm_app_service_managed_certificate.repository_name,
+    azurerm_app_service_custom_hostname_binding.repository_name
+  ]
+
   for_each = toset(var.app_services.types)
 
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
@@ -356,6 +363,8 @@ resource "azurerm_app_service_certificate_binding" "repository_name" {
 
 # go daddy settings for DNS records
 resource "godaddy-dns_record" "c_name" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
@@ -365,6 +374,8 @@ resource "godaddy-dns_record" "c_name" {
   ttl    = 3600 # Set TTL to 1 hour
 }
 resource "godaddy-dns_record" "txt" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
@@ -374,6 +385,8 @@ resource "godaddy-dns_record" "txt" {
   ttl    = 3600 # Set TTL to 1 hour
 }
 resource "godaddy-dns_record" "txt_www" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
@@ -383,6 +396,8 @@ resource "godaddy-dns_record" "txt_www" {
   ttl    = 3600 # Set TTL to 1 hour
 }
 resource "godaddy-dns_record" "a_record" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
@@ -392,22 +407,3 @@ resource "godaddy-dns_record" "a_record" {
   ttl    = 600                                                                             # Set TTL to 10 minutes
 }
 #endregion 
-
-#region outputs
-output "app_service_publish_profile_api" {
-  value = azurerm_windows_web_app.repository_name["api"].id
-}
-
-output "app_service_publish_profile_web" {
-  value = azurerm_windows_web_app.repository_name["web"].id
-}
-
-output "app_service_client_id_api" {
-  value = azurerm_user_assigned_identity.repository_name["api"].principal_id
-}
-
-output "app_service_client_id_web" {
-  value = azurerm_user_assigned_identity.repository_name["web"].principal_id
-}
-
-#endregion
