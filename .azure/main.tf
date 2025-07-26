@@ -311,7 +311,7 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   for_each = toset(var.app_services.types)
 
   #  Note: The hostname is constructed to ensure uniqueness and avoid conflicts, it's also the name of the certificate
-  hostname            = (each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com") + "-${var.repo.name}-${each.value}"
+  hostname            = "${each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"}-${var.repo.name}-${each.value}"
   app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
   resource_group_name = azurerm_resource_group.repository_name.name
 
@@ -325,7 +325,7 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
   for_each = toset(var.app_services.types)
 
   #  Note: The hostname is constructed to ensure uniqueness and avoid conflicts, it's also the name of the certificate
-  hostname            = (each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com") + "-${var.repo.name}-${each.value}"
+  hostname            = "${each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"}-${var.repo.name}-${each.value}"
   app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
   resource_group_name = azurerm_resource_group.repository_name.name
 
