@@ -256,13 +256,7 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
 
 #region Custom Domain and DNS Records
 
-resource "azurerm_dns_zone" "www_repository_name" {
-  depends_on = [azurerm_resource_group.repository_name]
-  for_each   = toset(var.app_services.types)
 
-  name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
-  resource_group_name = azurerm_resource_group.repository_name.name
-}
 
 resource "azurerm_dns_zone" "repository_name" {
   depends_on = [azurerm_resource_group.repository_name]
@@ -271,6 +265,17 @@ resource "azurerm_dns_zone" "repository_name" {
   name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   resource_group_name = azurerm_resource_group.repository_name.name
 
+  tags = {
+    Area = var.repo.name
+  }
+}
+resource "azurerm_dns_zone" "www_repository_name" {
+  # run after the other binding is created to see if it frees up the hostname and doesn't time out the certificate creation
+  depends_on = [azurerm_resource_group.repository_name, azurerm_dns_zone.repository_name, azurerm_app_service_managed_certificate.repository_name]
+  for_each   = toset(var.app_services.types)
+
+  name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
+  resource_group_name = azurerm_resource_group.repository_name.name
   tags = {
     Area = var.repo.name
   }
@@ -303,7 +308,8 @@ resource "azurerm_dns_cname_record" "repository_name" {
 
 
 resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
+  # run after the other binding is created to see if it frees up the hostname and doest time ou the certificate creation
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.www_repository_name, azurerm_app_service_custom_hostname_binding.repository_name]
 
   for_each = toset(var.app_services.types)
 
@@ -316,7 +322,7 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
   }
 }
 resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
 
   for_each = toset(var.app_services.types)
 
@@ -332,12 +338,16 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
 
 resource "azurerm_app_service_managed_certificate" "repository_name" {
   depends_on = [
-    azurerm_app_service_custom_hostname_binding.repository_name
+    azurerm_app_service_custom_hostname_binding.repository_name,
+    azurerm_dns_zone.repository_name
   ]
 
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  timeouts {
+    create = "12m"
+  }
 
   tags = {
     Area = var.repo.name
