@@ -329,39 +329,52 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
   }
 
 }
-# resource "azurerm_app_service_managed_certificate" "repository_name" {
-#   depends_on = [
-#     azurerm_app_service_custom_hostname_binding.repository_name,
-#   ]
+resource "azurerm_dns_a_record" "repository_name" {
+  depends_on = [azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name, azurerm_app_service_custom_hostname_binding.repository_name]
 
-#   for_each = toset(var.app_services.types)
+  for_each = toset(var.app_services.types)
 
-#   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
-#   timeouts {
-#     create = "5m"
-#   }
+  name                = "@"
+  zone_name           = azurerm_dns_zone.repository_name[each.value].name
+  resource_group_name = azurerm_dns_zone.repository_name[each.value].resource_group_name
+  ttl                 = 3600
+  records             = [azurerm_windows_web_app.repository_name[each.value].outbound_ip_address_list[0]]
+}
 
-#   tags = {
-#     Area = var.repo.name
-#   }
-#   # Ensure step to verify the certificate creation
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
+resource "azurerm_app_service_managed_certificate" "repository_name" {
+  depends_on = [
+    azurerm_app_service_custom_hostname_binding.repository_name,
+    azurerm_dns_a_record.repository_name,
+  ]
 
-# resource "azurerm_app_service_certificate_binding" "repository_name" {
-#   depends_on = [
-#     azurerm_app_service_managed_certificate.repository_name,
-#     azurerm_app_service_custom_hostname_binding.repository_name,
-#   ]
+  for_each = toset(var.app_services.types)
 
-#   for_each = toset(var.app_services.types)
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  timeouts {
+    create = "5m"
+  }
 
-#   hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
-#   certificate_id      = azurerm_app_service_managed_certificate.repository_name[each.value].id
-#   ssl_state           = "SniEnabled"
-# }
+  tags = {
+    Area = var.repo.name
+  }
+  # Ensure step to verify the certificate creation
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_app_service_certificate_binding" "repository_name" {
+  depends_on = [
+    azurerm_app_service_managed_certificate.repository_name,
+    azurerm_app_service_custom_hostname_binding.repository_name,
+  ]
+
+  for_each = toset(var.app_services.types)
+
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  certificate_id      = azurerm_app_service_managed_certificate.repository_name[each.value].id
+  ssl_state           = "SniEnabled"
+}
 
 #endregion
 
