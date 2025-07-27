@@ -333,10 +333,6 @@ resource "azurerm_app_service_managed_certificate" "www_repository_name" {
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
-  timeouts {
-    create = "5m"
-  }
-
   tags = {
     Area = var.repo.name
   }
@@ -391,9 +387,6 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
-  timeouts {
-    create = "5m"
-  }
 
   tags = {
     Area = var.repo.name
