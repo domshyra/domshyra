@@ -293,8 +293,8 @@ resource "godaddy-dns_record" "a_record" {
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "A"
   name   = "@"
-  data   = azurerm_windows_web_app.repository_name[each.value].default_hostname # ip address of the web app #TODO! this ip is wrong which is why it cant create a cert
-  ttl    = 600                                                                  # Set TTL to 10 minutes
+  data   = each.value == "web" ? app_service_inbound_ip_web.value : app_service_inbound_ip_api.value # Use the last outbound IP address from the web app
+  ttl    = 600                                                                                       # Set TTL to 10 minutes
 }
 #endregion
 
@@ -352,8 +352,6 @@ resource "azurerm_app_service_certificate_binding" "www_repository_name" {
   certificate_id      = azurerm_app_service_managed_certificate.www_repository_name[each.value].id
   ssl_state           = "SniEnabled"
 }
-
-#TODO! fix the non www domains
 resource "azurerm_dns_zone" "repository_name" {
   depends_on = [azurerm_resource_group.repository_name, azurerm_app_service_certificate_binding.www_repository_name]
   for_each   = toset(var.app_services.types)
