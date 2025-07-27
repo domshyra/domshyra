@@ -285,6 +285,11 @@ resource "godaddy-dns_record" "txt_www" {
   data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
   ttl    = 3600 # Set TTL to 1 hour
 }
+locals {
+  app_service_inbound_ip_api = azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list) - 1]
+  app_service_inbound_ip_web = azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list) - 1]
+}
+
 resource "godaddy-dns_record" "a_record" {
   depends_on = [azurerm_windows_web_app.repository_name]
 
@@ -293,7 +298,7 @@ resource "godaddy-dns_record" "a_record" {
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "A"
   name   = "@"
-  data   = each.value == "web" ? app_service_inbound_ip_web.value : app_service_inbound_ip_api.value # Use the last outbound IP address from the web app
+  data   = each.value == "web" ? local.app_service_inbound_ip_web : local.app_service_inbound_ip_api # Use the last outbound IP address from the web app
   ttl    = 600                                                                                       # Set TTL to 10 minutes
 }
 #endregion
