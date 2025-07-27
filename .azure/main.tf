@@ -15,10 +15,6 @@ terraform {
     godaddy-dns = {
       source = "registry.terraform.io/veksh/godaddy-dns"
     }
-    # acme = {
-    #   source  = "vancluever/acme"
-    #   version = ">= 2.0.0"
-    # }
   }
 
   required_version = ">= 1.1.0"
@@ -289,7 +285,7 @@ locals {
   app_service_inbound_ip_api = azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list) - 1]
   app_service_inbound_ip_web = azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list) - 1]
 }
-
+#note: if this cert fails make sure godaddy-dns_record.a_record is empty in dns records on GoDaddy.com
 resource "godaddy-dns_record" "a_record" {
   depends_on = [azurerm_windows_web_app.repository_name]
 
@@ -327,12 +323,14 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
 }
 resource "azurerm_app_service_managed_certificate" "www_repository_name" {
   depends_on = [
-    azurerm_app_service_custom_hostname_binding.www_repository_name
+    godaddy-dns_record.a_record,
+    azurerm_app_service_custom_hostname_binding.www_repository_name,
   ]
 
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
+
   tags = {
     Area = var.repo.name
   }
@@ -344,7 +342,7 @@ resource "azurerm_app_service_managed_certificate" "www_repository_name" {
 resource "azurerm_app_service_certificate_binding" "www_repository_name" {
   depends_on = [
     azurerm_app_service_managed_certificate.www_repository_name,
-    azurerm_app_service_custom_hostname_binding.www_repository_name
+    azurerm_app_service_custom_hostname_binding.www_repository_name,
   ]
 
   for_each = toset(var.app_services.types)
@@ -387,6 +385,10 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
   for_each = toset(var.app_services.types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+
+  timeouts {
+    create = "5m" # 5 instead of 30 for testing
+  }
 
   tags = {
     Area = var.repo.name
