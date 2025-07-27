@@ -249,6 +249,56 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
 
 #endregion
 
+#region GoDaddy DNS records
+
+# go daddy settings for DNS records
+resource "godaddy-dns_record" "c_name" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "CNAME"
+  name   = "www"
+  data   = "${var.repo.name}${each.value}.azurewebsites.net."
+  ttl    = 3600 # Set TTL to 1 hour
+}
+resource "godaddy-dns_record" "txt" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "TXT"
+  name   = "asuid"
+  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
+  ttl    = 3600 # Set TTL to 1 hour
+}
+resource "godaddy-dns_record" "txt_www" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "TXT"
+  name   = "asuid.www"
+  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
+  ttl    = 3600 # Set TTL to 1 hour
+}
+resource "godaddy-dns_record" "a_record" {
+  depends_on = [azurerm_windows_web_app.repository_name]
+
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "A"
+  name   = "@"
+  data   = azurerm_windows_web_app.repository_name[each.value].default_hostname # ip address of the web app #TODO! this ip is wrong which is why it cant create a cert
+  ttl    = 600                                                                  # Set TTL to 10 minutes
+}
+#endregion
+
+
 #region Custom Domain and DNS Records
 resource "azurerm_dns_zone" "www_repository_name" {
   depends_on = [azurerm_resource_group.repository_name]
@@ -329,22 +379,10 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
   }
 
 }
-resource "azurerm_dns_a_record" "repository_name" {
-  depends_on = [azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name, azurerm_app_service_custom_hostname_binding.repository_name]
-
-  for_each = toset(var.app_services.types)
-
-  name                = "@"
-  zone_name           = azurerm_dns_zone.repository_name[each.value].name
-  resource_group_name = azurerm_dns_zone.repository_name[each.value].resource_group_name
-  ttl                 = 3600
-  records             = [azurerm_windows_web_app.repository_name[each.value].outbound_ip_address_list[0]]
-}
-
 resource "azurerm_app_service_managed_certificate" "repository_name" {
   depends_on = [
     azurerm_app_service_custom_hostname_binding.repository_name,
-    azurerm_dns_a_record.repository_name,
+    godaddy-dns_record.a_record,
   ]
 
   for_each = toset(var.app_services.types)
@@ -378,51 +416,3 @@ resource "azurerm_app_service_certificate_binding" "repository_name" {
 
 #endregion
 
-#region GoDaddy DNS records
-
-# go daddy settings for DNS records
-resource "godaddy-dns_record" "c_name" {
-  depends_on = [azurerm_windows_web_app.repository_name]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "CNAME"
-  name   = "www"
-  data   = "${var.repo.name}${each.value}.azurewebsites.net."
-  ttl    = 3600 # Set TTL to 1 hour
-}
-resource "godaddy-dns_record" "txt" {
-  depends_on = [azurerm_windows_web_app.repository_name]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "TXT"
-  name   = "asuid"
-  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
-  ttl    = 3600 # Set TTL to 1 hour
-}
-resource "godaddy-dns_record" "txt_www" {
-  depends_on = [azurerm_windows_web_app.repository_name]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "TXT"
-  name   = "asuid.www"
-  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
-  ttl    = 3600 # Set TTL to 1 hour
-}
-resource "godaddy-dns_record" "a_record" {
-  depends_on = [azurerm_windows_web_app.repository_name]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "A"
-  name   = "@"
-  data   = azurerm_windows_web_app.repository_name[each.value].outbound_ip_address_list[0] # ip address of the web app
-  ttl    = 600                                                                             # Set TTL to 10 minutes
-}
-#endregion
