@@ -47,20 +47,6 @@ variable "app_services" {
     dotnet_version = "9.0"
   }
 }
-variable "key_vault" {
-  description = "Key Vault name"
-  type = object({
-    name           = string
-    uri            = string
-    resource_group = string
-  })
-  default = {
-    name           = "KV-NAME",
-    uri            = "https://KV_NAME.vault.azure.net/"
-    resource_group = "rg-asp"
-  }
-}
-
 #TODO? figure out how to use this in backend configuration
 variable "backend" {
   description = "Backend configuration variables"
