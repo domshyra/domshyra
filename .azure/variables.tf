@@ -1,12 +1,18 @@
 variable "region" {
   description = "Azure region for resources"
   type = object({
-    location  = string
-    long_name = string
+    location      = string
+    long_name     = string
+    cert_province = string
+    cert_country  = string
+    cert_locality = string
   })
   default = {
-    location  = "westus2"
-    long_name = "West US 2"
+    location      = "westus2"
+    long_name     = "West US 2"
+    cert_province = "OR"
+    cert_country  = "US"
+    cert_locality = "Portland"
   }
 }
 
@@ -118,6 +124,16 @@ variable "digicert_host_url" {
 variable "digicert_api_key" {
   sensitive   = true
   description = "DigiCert API key for authentication"
+  type        = string
+}
+variable "digicert_account_id" {
+  sensitive   = true
+  description = "DigiCert account ID for authentication"
+  type        = string
+}
+variable "digicert_account_password" {
+  sensitive   = true
+  description = "DigiCert account password for authentication"
   type        = string
 }
 #endregion 

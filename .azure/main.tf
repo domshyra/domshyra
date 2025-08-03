@@ -17,8 +17,12 @@ terraform {
       version = ">= 0.3.12"
     }
     digicert = {
-      source  = "digicert/digicert"
-      version = ">= 0.1.3"
+      source  = "registry.terraform.io/digicert/digicert"
+      version = ">= 0.1.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "4.1.0"
     }
   }
 
@@ -50,6 +54,9 @@ provider "godaddy-dns" {
 provider "digicert" {
   url     = var.digicert_host_url
   api_key = var.digicert_api_key
+}
+provider "tls" {
+  # Configuration options
 }
 #endregion
 
@@ -351,79 +358,54 @@ resource "godaddy-dns_record" "a_record" {
 
 #region azure cert 
 
-resource "azurerm_key_vault_certificate_issuer" "repository_name" {
-  name          = "${var.repo.short_name}-issuer"
-  key_vault_id  = azurerm_key_vault.repository_name.id
-  provider_name = "DigiCert"
+# Generate a private key
+resource "tls_private_key" "repository_name" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+resource "tls_cert_request" "repository_name" {
+  for_each   = toset(var.app_services.types)
+  depends_on = [tls_private_key.repository_name]
+
+  private_key_pem = tls_private_key.repository_name[each.value].private_key_pem
+  subject {
+    common_name  = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+    organization = var.repo.name
+    country      = var.region.cert_country
+    province     = var.region.cert_province
+    locality     = var.region.cert_locality
+  }
+  dns_names    = each.value == "web" ? ["${var.repo.name}.com", "www.${var.repo.name}.com"] : ["${var.repo.name}${each.value}.com", "www.${var.repo.name}${each.value}.com"]
+  ip_addresses = azurerm_windows_web_app.repository_name[each.value].outbound_ip_address_list
+}
+
+resource "digicert_certificate" "repository_name" {
+  for_each = toset(var.app_services.types)
+
+  profile_id  = "8e201a92-4b16-412d-aa5c-bbeba3dacdef"
+  common_name = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  dns_names   = each.value == "web" ? "${var.repo.name}.com,www.${var.repo.name}.com" : "${var.repo.name}${each.value}.com,www.${var.repo.name}${each.value}.com"
+  csr         = tls_cert_request.repository_name[each.value].cert_request_pem
+}
+
+resource "local_sensitive_file" "pfx_certificate" {
+  for_each = toset(var.app_services.types)
+
+  content         = digicert_certificate.repository_name[each.key].certificate_pem
+  filename        = "${var.repo.short_name}-certificate-${each.key}.pfx"
+  file_permission = "0600" # Set appropriate file permissions for security
 }
 
 resource "azurerm_key_vault_certificate" "repository_name" {
   for_each = toset(var.app_services.types)
 
-  name         = "${var.repo.short_name}-${each.value}-cert"
+  name         = "${var.repo.short_name}-cert-${each.key}"
   key_vault_id = azurerm_key_vault.repository_name.id
 
-  # certificate {
-  #   contents = filebase64("${var.certificate.filename}")
-  #   password = var.certificate.password
-  # }
-
-  certificate_policy {
-    issuer_parameters {
-      name = azurerm_key_vault_certificate_issuer.repository_name.provider_name
-    }
-
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = true
-    }
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
-
-      trigger {
-        days_before_expiry = 30
-      }
-    }
-
-
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
-
-    x509_certificate_properties {
-      # Server Authentication = 1.3.6.1.5.5.7.3.1
-      # Client Authentication = 1.3.6.1.5.5.7.3.2
-      extended_key_usage = [
-        "1.3.6.1.5.5.7.3.1",
-        "1.3.6.1.5.5.7.3.2"
-      ]
-
-      key_usage = [
-        "cRLSign",
-        "dataEncipherment",
-        "digitalSignature",
-        "keyAgreement",
-        "keyCertSign",
-        "keyEncipherment",
-      ]
-
-      subject_alternative_names {
-        dns_names = [
-          each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com",
-          each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com",
-        ]
-      }
-      subject            = each.value == "web" ? "CN=${var.repo.name}.com" : "CN=${var.repo.name}${each.value}.com"
-      validity_in_months = 12
-
-    }
+  certificate {
+    contents = filebase64(local_sensitive_file.pfx_certificate[each.key].filename)
   }
 }
-
 #endregion
 
 #region Custom Domain and DNS Records
@@ -447,24 +429,24 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
     ignore_changes = [ssl_state, thumbprint]
   }
 }
-# resource "azurerm_app_service_managed_certificate" "www_repository_name" {
-#   depends_on = [
-#     godaddy-dns_record.a_record,
-#     azurerm_app_service_custom_hostname_binding.www_repository_name,
-#   ]
+resource "azurerm_app_service_managed_certificate" "www_repository_name" {
+  depends_on = [
+    godaddy-dns_record.a_record,
+    azurerm_app_service_custom_hostname_binding.www_repository_name,
+  ]
 
-#   for_each = toset(var.app_services.types)
+  for_each = toset(var.app_services.types)
 
-#   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
 
-#   tags = {
-#     Area = var.repo.name
-#   }
-#   # Ensure step to verify the certificate creation
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
+  tags = {
+    Area = var.repo.name
+  }
+  # Ensure step to verify the certificate creation
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 resource "azurerm_app_service_certificate_binding" "www_repository_name" {
   depends_on = [
     azurerm_key_vault_certificate.repository_name,
@@ -481,6 +463,7 @@ resource "azurerm_app_service_certificate_binding" "www_repository_name" {
     ignore_changes = [ssl_state]
   }
 }
+
 
 # .repo_name.com
 resource "azurerm_dns_zone" "repository_name" {
@@ -508,28 +491,28 @@ resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
   }
 
 }
-# resource "azurerm_app_service_managed_certificate" "repository_name" {
-#   depends_on = [
-#     azurerm_app_service_custom_hostname_binding.repository_name,
-#     godaddy-dns_record.a_record,
-#   ]
+resource "azurerm_app_service_managed_certificate" "repository_name" {
+  depends_on = [
+    azurerm_app_service_custom_hostname_binding.repository_name,
+    godaddy-dns_record.a_record,
+  ]
 
-#   for_each = toset(var.app_services.types)
+  for_each = toset(var.app_services.types)
 
-#   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
 
-#   timeouts {
-#     create = "15m" # 5 instead of 30 for testing
-#   }
+  timeouts {
+    create = "15m" # 5 instead of 30 for testing
+  }
 
-#   tags = {
-#     Area = var.repo.name
-#   }
-#   # Ensure step to verify the certificate creation
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
+  tags = {
+    Area = var.repo.name
+  }
+  # Ensure step to verify the certificate creation
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
 resource "azurerm_app_service_certificate_binding" "repository_name" {
   depends_on = [
