@@ -16,6 +16,10 @@ terraform {
       source  = "registry.terraform.io/veksh/godaddy-dns"
       version = ">= 0.3.12"
     }
+    digicert = {
+      source  = "digicert/digicert"
+      version = ">= 0.1.3"
+    }
   }
 
   required_version = ">= 1.1.0"
@@ -42,6 +46,10 @@ provider "godaddy-dns" {
   api_key    = var.godaddy_api_key
   api_secret = var.godaddy_api_secret
 
+}
+provider "digicert" {
+  url     = var.digicert_host_url
+  api_key = var.digicert_api_key
 }
 #endregion
 
@@ -128,10 +136,10 @@ resource "azurerm_key_vault" "repository_name" {
 
 # Data source to fetch secrets from Azure Key Vault
 # Uncomment and configure the data source if needed
-data "azurerm_key_vault_secret" "example_var" {
-  name         = "valueOfSecret"
-  key_vault_id = azurerm_key_vault.repository_name.id
-}
+# data "azurerm_key_vault_secret" "example_var" {
+#   name         = "valueOfSecret"
+#   key_vault_id = azurerm_key_vault.repository_name.id
+# }
 
 #endregion
 
@@ -218,7 +226,7 @@ resource "azurerm_windows_web_app" "repository_name" {
     "FrontEndUrl"          = each.value == "api" ? "https://${var.repo.name}.com" : null
     "FrontEndUrlWww"       = each.value == "api" ? "https://www.${var.repo.name}.com" : null
     "SitePassword"         = each.value == "api" ? var.site_password : null
-    "VaultUri"             = each.value == "api" ? azurerm_key_vault.repository_name.uri : null
+    "VaultUri"             = each.value == "api" ? "https://${azurerm_key_vault.repository_name.name}.vault.azure.net/" : null
     "Spotify:ClientId"     = each.value == "api" ? var.spotify_client_id : null
     "Spotify:ClientSecret" = each.value == "api" ? var.spotify_client_secret : null
   }
@@ -342,6 +350,7 @@ resource "godaddy-dns_record" "a_record" {
 #endregion
 
 #region azure cert 
+
 resource "azurerm_key_vault_certificate_issuer" "repository_name" {
   name          = "${var.repo.short_name}-issuer"
   key_vault_id  = azurerm_key_vault.repository_name.id
@@ -353,6 +362,11 @@ resource "azurerm_key_vault_certificate" "repository_name" {
 
   name         = "${var.repo.short_name}-${each.value}-cert"
   key_vault_id = azurerm_key_vault.repository_name.id
+
+  # certificate {
+  #   contents = filebase64("${var.certificate.filename}")
+  #   password = var.certificate.password
+  # }
 
   certificate_policy {
     issuer_parameters {
@@ -453,14 +467,14 @@ resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
 # }
 resource "azurerm_app_service_certificate_binding" "www_repository_name" {
   depends_on = [
-    azurerm_key_vault_certificate.www_repository_name,
+    azurerm_key_vault_certificate.repository_name,
     azurerm_app_service_custom_hostname_binding.www_repository_name,
   ]
 
   for_each = toset(var.app_services.types)
 
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
-  certificate_id      = azurerm_key_vault_certificate.www_repository_name[each.value].id
+  certificate_id      = azurerm_key_vault_certificate.repository_name[each.value].id
   ssl_state           = "SniEnabled"
 
   lifecycle {
