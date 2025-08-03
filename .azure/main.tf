@@ -16,14 +16,6 @@ terraform {
       source  = "registry.terraform.io/veksh/godaddy-dns"
       version = ">= 0.3.12"
     }
-    digicert = {
-      source  = "registry.terraform.io/digicert/digicert"
-      version = ">= 0.1.0"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "4.1.0"
-    }
   }
 
   required_version = ">= 1.1.0"
