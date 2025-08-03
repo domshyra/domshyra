@@ -116,24 +116,4 @@ variable "spotify_client_secret" {
   description = "from .env.local"
   type        = string
 }
-variable "digicert_host_url" {
-  sensitive   = true
-  description = "DigiCert ONE API base URL"
-  type        = string
-}
-variable "digicert_api_key" {
-  sensitive   = true
-  description = "DigiCert API key for authentication"
-  type        = string
-}
-variable "digicert_account_id" {
-  sensitive   = true
-  description = "DigiCert account ID for authentication"
-  type        = string
-}
-variable "digicert_account_password" {
-  sensitive   = true
-  description = "DigiCert account password for authentication"
-  type        = string
-}
 #endregion 
