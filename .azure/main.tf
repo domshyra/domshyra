@@ -10,15 +10,12 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.7.0"
+      version = ">= 4.36.0"
     }
     godaddy-dns = {
-      source = "registry.terraform.io/veksh/godaddy-dns"
+      source  = "registry.terraform.io/veksh/godaddy-dns"
+      version = ">= 0.3.12"
     }
-    # acme = {
-    #   source  = "vancluever/acme"
-    #   version = ">= 2.0.0"
-    # }
   }
 
   required_version = ">= 1.1.0"
@@ -36,7 +33,7 @@ provider "azurerm" {
 
   # client_id       = var.client_id
   # client_secret   = var.client_secret
-  # tenant_id       = var.tenant_id
+  tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
 }
 
@@ -44,6 +41,7 @@ provider "azurerm" {
 provider "godaddy-dns" {
   api_key    = var.godaddy_api_key
   api_secret = var.godaddy_api_secret
+
 }
 #endregion
 
@@ -54,39 +52,79 @@ resource "azurerm_resource_group" "repository_name" {
   name     = "rg-${var.repo.short_name}"
   location = var.region.long_name
 }
+#endregion
+
+#region Azure Key Vault
 
 
+data "azurerm_client_config" "current" {}
 # Key Vault for storing secrets
 # Uncomment and configure the Key Vault resource if needed
-# resource "azurerm_key_vault" "repository_name" {
-#   name                        = var.key_vault_name
-#   location                    = azurerm_resource_group.repository_name.location
-#   resource_group_name         = azurerm_resource_group.repository_name.name
-#   enabled_for_disk_encryption = true
-#   tenant_id                   = var.tenant_id
-#   soft_delete_retention_days  = 7
-#   purge_protection_enabled    = false
+resource "azurerm_key_vault" "repository_name" {
+  name                        = "kv-${var.repo.short_name}"
+  location                    = azurerm_resource_group.repository_name.location
+  resource_group_name         = azurerm_resource_group.repository_name.name
+  enabled_for_disk_encryption = true
+  tenant_id                   = var.tenant_id
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
 
-#   sku_name = "standard"
+  sku_name = "standard"
 
-#   access_policy {
-#     tenant_id = var.tenant_id
-#     # object_id = doesn't work here, needs to be the resource that uses the key vault?? 
-#     object_id = "/subscriptions/${var.subscription_id}/resourceGroups/${var.key_vault_resource_group}/providers/Microsoft.KeyVault/vaults/${var.key_vault_name}"
+  access_policy {
+    tenant_id = var.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
 
-#     key_permissions = [
-#       "Get",
-#     ]
+    storage_permissions = [
+      "Get",
+    ]
 
-#     secret_permissions = [
-#       "Get",
-#     ]
+    certificate_permissions = [
+      "Create",
+      "Delete",
+      "DeleteIssuers",
+      "Get",
+      "GetIssuers",
+      "Import",
+      "List",
+      "ListIssuers",
+      "ManageContacts",
+      "ManageIssuers",
+      "SetIssuers",
+      "Update",
+    ]
 
-#     storage_permissions = [
-#       "Get",
-#     ]
-#   }
-# }
+    key_permissions = [
+      "Backup",
+      "Create",
+      "Decrypt",
+      "Delete",
+      "Encrypt",
+      "Get",
+      "Import",
+      "List",
+      "Purge",
+      "Recover",
+      "Restore",
+      "Sign",
+      "UnwrapKey",
+      "Update",
+      "Verify",
+      "WrapKey",
+    ]
+
+    secret_permissions = [
+      "Backup",
+      "Delete",
+      "Get",
+      "List",
+      "Purge",
+      "Recover",
+      "Restore",
+      "Set",
+    ]
+  }
+}
 
 # Data source to fetch secrets from Azure Key Vault
 # Uncomment and configure the data source if needed
@@ -161,8 +199,8 @@ resource "azurerm_windows_web_app" "repository_name" {
   resource_group_name        = azurerm_resource_group.repository_name.name
   service_plan_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${var.app_service_plan.resource_group}/providers/Microsoft.Web/serverFarms/${var.app_service_plan.name}"
   https_only                 = true
-  client_certificate_enabled = true
-  client_certificate_mode    = "Required"
+  client_certificate_enabled = false
+  # client_certificate_mode    = "Required" # Uncomment if you want to enforce client certificates
 
   tags = {
     Area = var.repo.name
@@ -180,7 +218,7 @@ resource "azurerm_windows_web_app" "repository_name" {
     "FrontEndUrl"          = each.value == "api" ? "https://${var.repo.name}.com" : null
     "FrontEndUrlWww"       = each.value == "api" ? "https://www.${var.repo.name}.com" : null
     "SitePassword"         = each.value == "api" ? var.site_password : null
-    "VaultUri"             = each.value == "api" ? var.key_vault.uri : null
+    "VaultUri"             = each.value == "api" ? "https://${azurerm_key_vault.repository_name.name}.vault.azure.net/" : null
     "Spotify:ClientId"     = each.value == "api" ? var.spotify_client_id : null
     "Spotify:ClientSecret" = each.value == "api" ? var.spotify_client_secret : null
   }
@@ -260,7 +298,7 @@ resource "godaddy-dns_record" "c_name" {
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "CNAME"
   name   = "www"
-  data   = "${var.repo.name}${each.value}.azurewebsites.net."
+  data   = "${var.repo.name}-${each.value}.azurewebsites.net."
   ttl    = 3600 # Set TTL to 1 hour
 }
 resource "godaddy-dns_record" "txt" {
@@ -289,7 +327,7 @@ locals {
   app_service_inbound_ip_api = azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list) - 1]
   app_service_inbound_ip_web = azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list) - 1]
 }
-
+#note: if this cert fails make sure godaddy-dns_record.a_record is empty in dns records on GoDaddy.com
 resource "godaddy-dns_record" "a_record" {
   depends_on = [azurerm_windows_web_app.repository_name]
 
@@ -303,95 +341,50 @@ resource "godaddy-dns_record" "a_record" {
 }
 #endregion
 
-
 #region Custom Domain and DNS Records
-resource "azurerm_dns_zone" "www_repository_name" {
-  depends_on = [azurerm_resource_group.repository_name]
-  for_each   = toset(var.app_services.types)
 
-  name                = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
-  resource_group_name = azurerm_resource_group.repository_name.name
-}
-resource "azurerm_app_service_custom_hostname_binding" "www_repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.www_repository_name]
-
-  for_each = toset(var.app_services.types)
-
-  hostname            = each.value == "web" ? "www.${var.repo.name}.com" : "www.${var.repo.name}${each.value}.com"
-  app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
-  resource_group_name = azurerm_resource_group.repository_name.name
-
-  lifecycle {
-    ignore_changes = [ssl_state, thumbprint]
+locals {
+  domain_names = {
+    web     = "${var.repo.name}.com",
+    api     = "${var.repo.name}api.com",
+    www_web = "www.${var.repo.name}.com",
+    www_api = "www.${var.repo.name}api.com"
   }
 }
-resource "azurerm_app_service_managed_certificate" "www_repository_name" {
-  depends_on = [
-    azurerm_app_service_custom_hostname_binding.www_repository_name
-  ]
-
-  for_each = toset(var.app_services.types)
-
-  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
-  tags = {
-    Area = var.repo.name
-  }
-  # Ensure step to verify the certificate creation
-  lifecycle {
-    create_before_destroy = true
-  }
+locals {
+  dns_types = ["web", "api", "www_web", "www_api"]
 }
-resource "azurerm_app_service_certificate_binding" "www_repository_name" {
-  depends_on = [
-    azurerm_app_service_managed_certificate.www_repository_name,
-    azurerm_app_service_custom_hostname_binding.www_repository_name
-  ]
 
-  for_each = toset(var.app_services.types)
-
-  hostname_binding_id = azurerm_app_service_custom_hostname_binding.www_repository_name[each.value].id
-  certificate_id      = azurerm_app_service_managed_certificate.www_repository_name[each.value].id
-  ssl_state           = "SniEnabled"
-}
 resource "azurerm_dns_zone" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_app_service_certificate_binding.www_repository_name]
-  for_each   = toset(var.app_services.types)
+  for_each = toset(local.dns_types)
 
-  name                = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  name                = local.domain_names[each.value]
   resource_group_name = azurerm_resource_group.repository_name.name
-
-  tags = {
-    Area = var.repo.name
-  }
 }
+
 resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_windows_web_app.repository_name, azurerm_dns_zone.repository_name]
+  depends_on = [
+    azurerm_resource_group.repository_name,
+    azurerm_windows_web_app.repository_name,
+  ]
+  for_each = toset(local.dns_types)
 
-  for_each = toset(var.app_services.types)
-
-  hostname            = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  app_service_name    = azurerm_windows_web_app.repository_name[each.value].name
+  hostname            = local.domain_names[each.value]
+  app_service_name    = strcontains(each.value, "web") ? azurerm_windows_web_app.repository_name["web"].name : azurerm_windows_web_app.repository_name["api"].name
   resource_group_name = azurerm_resource_group.repository_name.name
-
   lifecycle {
     ignore_changes = [ssl_state, thumbprint]
   }
-
 }
+
+# todo get these to work with www and non www domains
 resource "azurerm_app_service_managed_certificate" "repository_name" {
   depends_on = [
-    azurerm_app_service_custom_hostname_binding.repository_name,
-    godaddy-dns_record.a_record,
+    azurerm_app_service_custom_hostname_binding.repository_name
   ]
-
-  for_each = toset(var.app_services.types)
+  for_each = toset(local.dns_types)
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
-
-  tags = {
-    Area = var.repo.name
-  }
-  # Ensure step to verify the certificate creation
   lifecycle {
     create_before_destroy = true
   }
@@ -400,14 +393,16 @@ resource "azurerm_app_service_managed_certificate" "repository_name" {
 resource "azurerm_app_service_certificate_binding" "repository_name" {
   depends_on = [
     azurerm_app_service_managed_certificate.repository_name,
-    azurerm_app_service_custom_hostname_binding.repository_name,
+    azurerm_app_service_custom_hostname_binding.repository_name
   ]
-
-  for_each = toset(var.app_services.types)
+  for_each = toset(local.dns_types)
 
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
   certificate_id      = azurerm_app_service_managed_certificate.repository_name[each.value].id
   ssl_state           = "SniEnabled"
+  lifecycle {
+    ignore_changes = [ssl_state]
+  }
 }
 
 #endregion

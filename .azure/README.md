@@ -16,11 +16,9 @@ client_id="<APPID_VALUE>"
 subscription_id="<SUBSCRIPTION_ID>"
 client_secret="<PASSWORD_VALUE>"
 tenant_id="<TENANT_ID>"
-godaddy_api_key="<GODADDY_API_KEY>"
-godaddy_api_secret="<GODADDY_API_SECRET>"
 ```
 
-
+there are more configs in the `.env` file that you can use to set up your environment variables. use `env.local` if using the shell scripts to run the terraform commands.
 #### Run this to create the container for the tfstate
 
 ```bash

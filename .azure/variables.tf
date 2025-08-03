@@ -1,12 +1,18 @@
 variable "region" {
   description = "Azure region for resources"
   type = object({
-    location  = string
-    long_name = string
+    location      = string
+    long_name     = string
+    cert_province = string
+    cert_country  = string
+    cert_locality = string
   })
   default = {
-    location  = "westus2"
-    long_name = "West US 2"
+    location      = "westus2"
+    long_name     = "West US 2"
+    cert_province = "OR"
+    cert_country  = "US"
+    cert_locality = "Portland"
   }
 }
 
@@ -47,20 +53,6 @@ variable "app_services" {
     dotnet_version = "9.0"
   }
 }
-variable "key_vault" {
-  description = "Key Vault name"
-  type = object({
-    name           = string
-    uri            = string
-    resource_group = string
-  })
-  default = {
-    name           = "KV-NAME",
-    uri            = "https://KV_NAME.vault.azure.net/"
-    resource_group = "rg-asp"
-  }
-}
-
 #TODO? figure out how to use this in backend configuration
 variable "backend" {
   description = "Backend configuration variables"
