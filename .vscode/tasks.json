@@ -70,11 +70,27 @@
 			}
 		},
 		{
-			"label": "terraform",
-			"command": "source local.sh && terraform validate && terraform plan",
+			"label": "terraform plan",
+			"command": "source plan.sh",
 			"type": "shell",
 			"options": {
-				"cwd": "${workspaceFolder}/.azure"
+				"cwd": "${workspaceFolder}/Demo/.azure"
+			}
+		},
+		{
+			"label": "terraform apply",
+			"command": "source apply.sh",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/Demo/.azure"
+			}
+		},
+		{
+			"label": "terraform destroy",
+			"command": "source destroy.sh",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/Demo/.azure"
 			}
 		}
 	],
@@ -85,5 +101,17 @@
 			"command": "workbench.action.tasks.terminate",
 			"args": "terminateAll"
 		}
-	]
+	],
+	"options": {
+		"tasks": [
+			"build api",
+			"publish api",
+			"start web server",
+			"terminate",
+			"terraform apply",
+			"terraform destroy",
+			"terraform plan",
+			"watch api"
+		]
+	}
 }
