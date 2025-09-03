@@ -40,6 +40,26 @@ provider "godaddy-dns" {
 }
 #endregion
 
+#region Locals
+locals {
+  azure_sites_name = {
+    web = "${var.repo.name}-web.azurewebsites.net",
+    api = "${var.repo.name}-api.azurewebsites.net"
+  }
+}
+locals {
+  domain_names = {
+    web     = "${var.repo.name}.com",
+    api     = "${var.repo.name}api.com",
+    www_web = "www.${var.repo.name}.com",
+    www_api = "www.${var.repo.name}api.com"
+  }
+}
+locals {
+  dns_types = ["web", "api", "www_web", "www_api"]
+}
+#endregion
+
 #region Azure resource group
 
 # Resource group for the application
@@ -208,12 +228,13 @@ resource "azurerm_windows_web_app" "domshyra" {
     "WEBSITE_NODE_DEFAULT_VERSION"            = each.value == "web" ? "~${var.app_services.node_version}" : null
     "XDT_MicrosoftApplicationInsights_NodeJS" = each.value == "web" ? "1" : null
 
-    "FrontEndUrl"          = each.value == "api" ? "https://${var.repo.name}.com" : null
-    "FrontEndUrlWww"       = each.value == "api" ? "https://www.${var.repo.name}.com" : null
-    "SitePassword"         = each.value == "api" ? var.site_password : null
-    "VaultUri"             = each.value == "api" ? "https://${azurerm_key_vault.domshyra.name}.vault.azure.net/" : null
-    "Spotify:ClientId"     = each.value == "api" ? var.spotify_client_id : null
-    "Spotify:ClientSecret" = each.value == "api" ? var.spotify_client_secret : null
+    "FrontEndUrl"           = each.value == "api" ? "https://${var.repo.name}.com" : null
+    "FrontEndUrlWww"        = each.value == "api" ? "https://www.${var.repo.name}.com" : null
+    "FrontEndUrlAzureSites" = each.value == "api" ? "https://${local.azure_sites_name.web}" : null # this is for the web cors
+    "SitePassword"          = each.value == "api" ? var.site_password : null
+    "VaultUri"              = each.value == "api" ? "https://${azurerm_key_vault.domshyra.name}.vault.azure.net/" : null
+    "Spotify:ClientId"      = each.value == "api" ? var.spotify_client_id : null
+    "Spotify:ClientSecret"  = each.value == "api" ? var.spotify_client_secret : null
   }
 
   site_config {
@@ -229,7 +250,7 @@ resource "azurerm_windows_web_app" "domshyra" {
       allowed_origins = each.value == "api" ? [
         "https://${var.repo.name}.com",
         "https://www.${var.repo.name}.com",
-        "https://${var.repo.name}.azurewebsites.net"
+        "https://${local.azure_sites_name.web}"
       ] : null
     }
     # Default application mapping for root path
@@ -297,7 +318,7 @@ resource "godaddy-dns_record" "c_name" {
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "CNAME"
   name   = "www"
-  data   = "${var.repo.name}-${each.value}.azurewebsites.net"
+  data   = each.value == "web" ? local.azure_sites_name.web : local.azure_sites_name.api
   ttl    = 3600 # Set TTL to 1 hour
 }
 resource "godaddy-dns_record" "txt" {
@@ -342,17 +363,6 @@ resource "godaddy-dns_record" "a_record" {
 
 #region Custom Domain and DNS Records
 
-locals {
-  domain_names = {
-    web     = "${var.repo.name}.com",
-    api     = "${var.repo.name}api.com",
-    www_web = "www.${var.repo.name}.com",
-    www_api = "www.${var.repo.name}api.com"
-  }
-}
-locals {
-  dns_types = ["web", "api", "www_web", "www_api"]
-}
 
 resource "azurerm_dns_zone" "domshyra" {
   for_each = toset(local.dns_types)
@@ -371,11 +381,12 @@ resource "azurerm_app_service_custom_hostname_binding" "domshyra" {
   hostname            = local.domain_names[each.value]
   app_service_name    = strcontains(each.value, "web") ? azurerm_windows_web_app.domshyra["web"].name : azurerm_windows_web_app.domshyra["api"].name
   resource_group_name = azurerm_resource_group.domshyra.name
+
   lifecycle {
     ignore_changes = [ssl_state, thumbprint]
   }
 }
-# todo get these to work with www and non www domains
+#! for some reason two will succeed and the other two will fail, create those two manually in the portal, then import 
 resource "azurerm_app_service_managed_certificate" "domshyra" {
   depends_on = [
     azurerm_app_service_custom_hostname_binding.domshyra
