@@ -15,6 +15,7 @@ namespace Api.Services
         private readonly string _client_id;
         private readonly string _client_secret;
         private readonly HttpClient _httpClient;
+        private const string TokenUrl = "https://accounts.spotify.com/api/token";
 
         /// <inheritdoc/>
         public SpotifyService(IConfiguration Configuration, HttpClient httpClient)
@@ -179,9 +180,6 @@ namespace Api.Services
             //? https://developer.spotify.com/documentation/general/guides/authorization-guide/
             string authToken;
 
-            //url to query
-            string authTokenURL = "https://accounts.spotify.com/api/token";
-
             //endcode the clientId and client secret
             byte[] plainTextBytes = Encoding.UTF8.GetBytes($"{_client_id}:{_client_secret}");
             string encodedAppInfo = Convert.ToBase64String(plainTextBytes);
@@ -199,12 +197,13 @@ namespace Api.Services
                     new KeyValuePair<string, string>("grant_type", "client_credentials")
                 };
                 using var content = new FormUrlEncodedContent(requestData);
-                using HttpResponseMessage response = await client.PostAsync(authTokenURL, content);
-                response.EnsureSuccessStatusCode();
+                using HttpResponseMessage response = await client.PostAsync(TokenUrl, content);
                 string json = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();
                 var spotifyAuth = JsonConvert.DeserializeObject<SpotifyAuth>(json);
                 if (spotifyAuth == null || string.IsNullOrEmpty(spotifyAuth.access_token))
                 {
+
                     throw new Exception("Failed to retrieve Spotify access token.");
                 }
                 authToken = spotifyAuth.access_token;
@@ -214,8 +213,20 @@ namespace Api.Services
             {
                 //Make sure clientId and Secrets are set
                 Console.WriteLine(e.Message);
+                // Console.WriteLine(ParseCurl(encodedAppInfo));
                 throw;
             }
+        }
+        private string ParseCurl(string encodedAppInfo)
+        {
+            string requestCurl;
+            requestCurl = $"curl -X POST {TokenUrl} \\\n" +
+                          "  -H \"Content-Type: application/x-www-form-urlencoded\" \\\n" +
+                          "  -H \"Accept: application/json\" \\\n" +
+                          "  -d \"grant_type=client_credentials\" \\\n" +
+                          $"  -d \"Authorization=Basic {encodedAppInfo}\"";
+
+            return requestCurl;
         }
 
         private async Task<PlaylistsModel?> GetPlaylistInfoAsync(string playlistId, string authToken)

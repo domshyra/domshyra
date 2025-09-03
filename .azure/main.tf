@@ -391,9 +391,6 @@ resource "azurerm_app_service_managed_certificate" "domshyra" {
 
   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
 
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 resource "azurerm_app_service_certificate_binding" "domshyra" {
   depends_on = [
