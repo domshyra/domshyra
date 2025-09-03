@@ -56,7 +56,7 @@ builder.Services.AddSwaggerGen(setUpActions =>
             });
 
 #endregion
-
+// reads from TF env vars
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddCors();
 
