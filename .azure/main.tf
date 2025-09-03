@@ -46,16 +46,12 @@ locals {
     web = "${var.repo.name}-web.azurewebsites.net",
     api = "${var.repo.name}-api.azurewebsites.net"
   }
-}
-locals {
   domain_names = {
     web     = "${var.repo.name}.com",
     api     = "${var.repo.name}api.com",
     www_web = "www.${var.repo.name}.com",
     www_api = "www.${var.repo.name}api.com"
   }
-}
-locals {
   dns_types = ["web", "api", "www_web", "www_api"]
 }
 #endregion
