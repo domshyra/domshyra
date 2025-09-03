@@ -1,11 +1,6 @@
 #region Terraform Backend and Providers
 terraform {
   backend "azurerm" {
-    # Note: vars aren't allowed in backend configuration
-    resource_group_name  = "rg-tfstate"
-    storage_account_name = "sadomshyratfstates"
-    container_name       = "domshyra-tfstate"
-    key                  = "terraform.tfstate"
   }
   required_providers {
     azurerm = {
@@ -48,7 +43,7 @@ provider "godaddy-dns" {
 #region Azure resource group
 
 # Resource group for the application
-resource "azurerm_resource_group" "repository_name" {
+resource "azurerm_resource_group" "domshyra" {
   name     = "rg-${var.repo.short_name}"
   location = var.region.long_name
 }
@@ -60,10 +55,10 @@ resource "azurerm_resource_group" "repository_name" {
 data "azurerm_client_config" "current" {}
 # Key Vault for storing secrets
 # Uncomment and configure the Key Vault resource if needed
-resource "azurerm_key_vault" "repository_name" {
+resource "azurerm_key_vault" "domshyra" {
   name                        = "kv-${var.repo.short_name}"
-  location                    = azurerm_resource_group.repository_name.location
-  resource_group_name         = azurerm_resource_group.repository_name.name
+  location                    = azurerm_resource_group.domshyra.location
+  resource_group_name         = azurerm_resource_group.domshyra.name
   enabled_for_disk_encryption = true
   tenant_id                   = var.tenant_id
   soft_delete_retention_days  = 7
@@ -130,7 +125,7 @@ resource "azurerm_key_vault" "repository_name" {
 # Uncomment and configure the data source if needed
 # data "azurerm_key_vault_secret" "example_var" {
 #   name         = "valueOfSecret"
-#   key_vault_id = azurerm_key_vault.repository_name.id
+#   key_vault_id = azurerm_key_vault.domshyra.id
 # }
 
 #endregion
@@ -138,48 +133,46 @@ resource "azurerm_key_vault" "repository_name" {
 #region Log Analytics Workspace and Application Insights
 
 # Log Analytics Workspace for monitoring
-resource "azurerm_log_analytics_workspace" "repository_name" {
+resource "azurerm_log_analytics_workspace" "domshyra" {
   for_each = toset(var.app_services.types)
 
-  depends_on = [azurerm_resource_group.repository_name]
+  depends_on = [azurerm_resource_group.domshyra]
 
   name                = "managed-${var.repo.short_name}-${each.value}-ws"
   location            = var.region.location
-  resource_group_name = azurerm_resource_group.repository_name.name
+  resource_group_name = azurerm_resource_group.domshyra.name
   sku                 = "PerGB2018"
   retention_in_days   = 30
   tags = {
     Area = var.repo.name
   }
 }
-
 # Application Insights for telemetry
-resource "azurerm_application_insights" "repository_name" {
+resource "azurerm_application_insights" "domshyra" {
   for_each = toset(var.app_services.types)
 
-  depends_on = [azurerm_resource_group.repository_name, azurerm_log_analytics_workspace.repository_name]
+  depends_on = [azurerm_resource_group.domshyra, azurerm_log_analytics_workspace.domshyra]
 
 
   name                = "${var.repo.short_name}-${each.value}-ai"
   location            = var.region.location
-  resource_group_name = azurerm_resource_group.repository_name.name
+  resource_group_name = azurerm_resource_group.domshyra.name
   application_type    = each.value == "web" ? "web" : "other"
   retention_in_days   = 90
-  workspace_id        = azurerm_log_analytics_workspace.repository_name[each.key].id
+  workspace_id        = azurerm_log_analytics_workspace.domshyra[each.key].id
   tags = {
     Area = var.repo.name
   }
 }
-
 # User-assigned managed identity for the application
-resource "azurerm_user_assigned_identity" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name]
+resource "azurerm_user_assigned_identity" "domshyra" {
+  depends_on = [azurerm_resource_group.domshyra]
 
   for_each = toset(var.app_services.types)
 
   name                = "${var.repo.short_name}-${each.value}-mi"
   location            = var.region.location
-  resource_group_name = azurerm_resource_group.repository_name.name
+  resource_group_name = azurerm_resource_group.domshyra.name
   tags = {
     Area = var.repo.name
   }
@@ -189,15 +182,15 @@ resource "azurerm_user_assigned_identity" "repository_name" {
 #region App Service
 
 # Windows Web App for hosting the application
-resource "azurerm_windows_web_app" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_application_insights.repository_name, azurerm_user_assigned_identity.repository_name]
+resource "azurerm_windows_web_app" "domshyra" {
+  depends_on = [azurerm_resource_group.domshyra, azurerm_application_insights.domshyra, azurerm_user_assigned_identity.domshyra]
 
   for_each = toset(var.app_services.types)
 
   name                       = "${var.repo.short_name}-${each.value}"
   location                   = var.region.location
-  resource_group_name        = azurerm_resource_group.repository_name.name
-  service_plan_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${var.app_service_plan.resource_group}/providers/Microsoft.Web/serverFarms/${var.app_service_plan.name}"
+  resource_group_name        = azurerm_resource_group.domshyra.name
+  service_plan_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${var.app_service_plan.resource_group}/providers/Microsoft.Web/serverFarms/${var.app_service_plan_name}"
   https_only                 = true
   client_certificate_enabled = false
   # client_certificate_mode    = "Required" # Uncomment if you want to enforce client certificates
@@ -207,8 +200,8 @@ resource "azurerm_windows_web_app" "repository_name" {
   }
 
   app_settings = {
-    "APPLICATIONINSIGHTS_CONNECTION_STRING"      = azurerm_application_insights.repository_name[each.key].connection_string
-    "APPINSIGHTS_INSTRUMENTATIONKEY"             = azurerm_application_insights.repository_name[each.key].instrumentation_key
+    "APPLICATIONINSIGHTS_CONNECTION_STRING"      = azurerm_application_insights.domshyra[each.key].connection_string
+    "APPINSIGHTS_INSTRUMENTATIONKEY"             = azurerm_application_insights.domshyra[each.key].instrumentation_key
     "ApplicationInsightsAgent_EXTENSION_VERSION" = "~2"
     "XDT_MicrosoftApplicationInsights_Mode"      = "default"
 
@@ -218,7 +211,7 @@ resource "azurerm_windows_web_app" "repository_name" {
     "FrontEndUrl"          = each.value == "api" ? "https://${var.repo.name}.com" : null
     "FrontEndUrlWww"       = each.value == "api" ? "https://www.${var.repo.name}.com" : null
     "SitePassword"         = each.value == "api" ? var.site_password : null
-    "VaultUri"             = each.value == "api" ? "https://${azurerm_key_vault.repository_name.name}.vault.azure.net/" : null
+    "VaultUri"             = each.value == "api" ? "https://${azurerm_key_vault.domshyra.name}.vault.azure.net/" : null
     "Spotify:ClientId"     = each.value == "api" ? var.spotify_client_id : null
     "Spotify:ClientSecret" = each.value == "api" ? var.spotify_client_secret : null
   }
@@ -232,7 +225,13 @@ resource "azurerm_windows_web_app" "repository_name" {
       node_version   = each.value == "web" ? "~${var.app_services.node_version}" : null
       dotnet_version = each.value == "api" ? "v${var.app_services.dotnet_version}" : null
     }
-
+    cors {
+      allowed_origins = each.value == "api" ? [
+        "https://${var.repo.name}.com",
+        "https://www.${var.repo.name}.com",
+        "https://${var.repo.name}.azurewebsites.net"
+      ] : null
+    }
     # Default application mapping for root path
     virtual_application {
       virtual_path  = "/"                                                             # The virtual path you want to map
@@ -248,13 +247,13 @@ resource "azurerm_windows_web_app" "repository_name" {
 #region Monitoring and Alerts
 
 # Action Group for monitoring alerts
-resource "azurerm_monitor_action_group" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name]
+resource "azurerm_monitor_action_group" "domshyra" {
+  depends_on = [azurerm_resource_group.domshyra]
 
   for_each = toset(var.app_services.types)
 
   name                = "${var.repo.short_name}-${each.value}-ag"
-  resource_group_name = azurerm_resource_group.repository_name.name
+  resource_group_name = azurerm_resource_group.domshyra.name
   short_name          = var.repo.short_name
 
   tags = {
@@ -263,21 +262,21 @@ resource "azurerm_monitor_action_group" "repository_name" {
 }
 
 # Smart Detector Alert Rule for monitoring failures
-resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
-  depends_on = [azurerm_resource_group.repository_name, azurerm_application_insights.repository_name]
+resource "azurerm_monitor_smart_detector_alert_rule" "domshyra" {
+  depends_on = [azurerm_resource_group.domshyra, azurerm_application_insights.domshyra]
 
   for_each = toset(var.app_services.types)
 
   name                = "failure anomalies - ${var.repo.short_name}-${each.value}"
-  resource_group_name = azurerm_resource_group.repository_name.name
+  resource_group_name = azurerm_resource_group.domshyra.name
   description         = "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls."
   severity            = "Sev3"
   frequency           = "PT1M"
   detector_type       = "FailureAnomaliesDetector"
-  scope_resource_ids  = [azurerm_application_insights.repository_name[each.key].id]
+  scope_resource_ids  = [azurerm_application_insights.domshyra[each.key].id]
 
   action_group {
-    ids = [azurerm_monitor_action_group.repository_name[each.key].id]
+    ids = [azurerm_monitor_action_group.domshyra[each.key].id]
   }
 
   tags = {
@@ -291,45 +290,45 @@ resource "azurerm_monitor_smart_detector_alert_rule" "repository_name" {
 
 # go daddy settings for DNS records
 resource "godaddy-dns_record" "c_name" {
-  depends_on = [azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_windows_web_app.domshyra]
 
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "CNAME"
   name   = "www"
-  data   = "${var.repo.name}-${each.value}.azurewebsites.net."
+  data   = "${var.repo.name}-${each.value}.azurewebsites.net"
   ttl    = 3600 # Set TTL to 1 hour
 }
 resource "godaddy-dns_record" "txt" {
-  depends_on = [azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_windows_web_app.domshyra]
 
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "TXT"
   name   = "asuid"
-  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
+  data   = azurerm_windows_web_app.domshyra[each.value].custom_domain_verification_id
   ttl    = 3600 # Set TTL to 1 hour
 }
 resource "godaddy-dns_record" "txt_www" {
-  depends_on = [azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_windows_web_app.domshyra]
 
   for_each = toset(var.app_services.types)
 
   domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
   type   = "TXT"
   name   = "asuid.www"
-  data   = azurerm_windows_web_app.repository_name[each.value].custom_domain_verification_id
+  data   = azurerm_windows_web_app.domshyra[each.value].custom_domain_verification_id
   ttl    = 3600 # Set TTL to 1 hour
 }
 locals {
-  app_service_inbound_ip_api = azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["api"].outbound_ip_address_list) - 1]
-  app_service_inbound_ip_web = azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list[length(azurerm_windows_web_app.repository_name["web"].outbound_ip_address_list) - 1]
+  app_service_inbound_ip_api = azurerm_windows_web_app.domshyra["api"].outbound_ip_address_list[length(azurerm_windows_web_app.domshyra["api"].outbound_ip_address_list) - 1]
+  app_service_inbound_ip_web = azurerm_windows_web_app.domshyra["web"].outbound_ip_address_list[length(azurerm_windows_web_app.domshyra["web"].outbound_ip_address_list) - 1]
 }
 #note: if this cert fails make sure godaddy-dns_record.a_record is empty in dns records on GoDaddy.com
 resource "godaddy-dns_record" "a_record" {
-  depends_on = [azurerm_windows_web_app.repository_name]
+  depends_on = [azurerm_windows_web_app.domshyra]
 
   for_each = toset(var.app_services.types)
 
@@ -355,50 +354,49 @@ locals {
   dns_types = ["web", "api", "www_web", "www_api"]
 }
 
-resource "azurerm_dns_zone" "repository_name" {
+resource "azurerm_dns_zone" "domshyra" {
   for_each = toset(local.dns_types)
 
   name                = local.domain_names[each.value]
-  resource_group_name = azurerm_resource_group.repository_name.name
+  resource_group_name = azurerm_resource_group.domshyra.name
 }
 
-resource "azurerm_app_service_custom_hostname_binding" "repository_name" {
+resource "azurerm_app_service_custom_hostname_binding" "domshyra" {
   depends_on = [
-    azurerm_resource_group.repository_name,
-    azurerm_windows_web_app.repository_name,
+    azurerm_resource_group.domshyra,
+    azurerm_windows_web_app.domshyra,
   ]
   for_each = toset(local.dns_types)
 
   hostname            = local.domain_names[each.value]
-  app_service_name    = strcontains(each.value, "web") ? azurerm_windows_web_app.repository_name["web"].name : azurerm_windows_web_app.repository_name["api"].name
-  resource_group_name = azurerm_resource_group.repository_name.name
+  app_service_name    = strcontains(each.value, "web") ? azurerm_windows_web_app.domshyra["web"].name : azurerm_windows_web_app.domshyra["api"].name
+  resource_group_name = azurerm_resource_group.domshyra.name
   lifecycle {
     ignore_changes = [ssl_state, thumbprint]
   }
 }
-
 # todo get these to work with www and non www domains
-resource "azurerm_app_service_managed_certificate" "repository_name" {
+resource "azurerm_app_service_managed_certificate" "domshyra" {
   depends_on = [
-    azurerm_app_service_custom_hostname_binding.repository_name
+    azurerm_app_service_custom_hostname_binding.domshyra
   ]
   for_each = toset(local.dns_types)
 
-  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
+  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
+
   lifecycle {
     create_before_destroy = true
   }
 }
-
-resource "azurerm_app_service_certificate_binding" "repository_name" {
+resource "azurerm_app_service_certificate_binding" "domshyra" {
   depends_on = [
-    azurerm_app_service_managed_certificate.repository_name,
-    azurerm_app_service_custom_hostname_binding.repository_name
+    azurerm_app_service_managed_certificate.domshyra,
+    azurerm_app_service_custom_hostname_binding.domshyra
   ]
   for_each = toset(local.dns_types)
 
-  hostname_binding_id = azurerm_app_service_custom_hostname_binding.repository_name[each.value].id
-  certificate_id      = azurerm_app_service_managed_certificate.repository_name[each.value].id
+  hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
+  certificate_id      = azurerm_app_service_managed_certificate.domshyra[each.value].id
   ssl_state           = "SniEnabled"
   lifecycle {
     ignore_changes = [ssl_state]

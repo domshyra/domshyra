@@ -19,11 +19,9 @@ variable "region" {
 variable "app_service_plan" {
   description = "values for the app service"
   type = object({
-    name           = string
     resource_group = string
   })
   default = {
-    name           = "asp-domdeckard"
     resource_group = "rg-asp"
   }
 }
@@ -114,6 +112,11 @@ variable "spotify_client_id" {
 variable "spotify_client_secret" {
   sensitive   = true
   description = "from .env.local"
+  type        = string
+}
+variable "app_service_plan_name" {
+  sensitive   = true
+  description = "from .env.local or yaml pipeline"
   type        = string
 }
 #endregion 
