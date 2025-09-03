@@ -11,6 +11,15 @@ terraform {
       source  = "registry.terraform.io/veksh/godaddy-dns"
       version = ">= 0.3.12"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "4.1.0"
+    }
+    acme = {
+      source  = "vancluever/acme"
+      version = "2.35.1"
+    }
+
   }
 
   required_version = ">= 1.1.0"
@@ -38,6 +47,29 @@ provider "godaddy-dns" {
   api_secret = var.godaddy_api_secret
 
 }
+provider "tls" {
+  # Configuration options
+}
+provider "acme" {
+  // use staging for testing, production for live
+  server_url = var.prod_cert ? "https://acme-staging-v02.api.letsencrypt.org/directory" : "https://acme-v02.api.letsencrypt.org/directory"
+}
+#endregion
+
+#region Locals
+locals {
+  azure_sites_name = {
+    web = "${var.repo.name}-web.azurewebsites.net",
+    api = "${var.repo.name}-api.azurewebsites.net"
+  }
+  domain_names = {
+    web     = "${var.repo.name}.com",
+    api     = "${var.repo.name}api.com",
+    www-web = "www.${var.repo.name}.com",
+    www-api = "www.${var.repo.name}api.com"
+  }
+  dns_types = ["web", "api", "www-web", "www-api"]
+}
 #endregion
 
 #region Azure resource group
@@ -46,6 +78,8 @@ provider "godaddy-dns" {
 resource "azurerm_resource_group" "domshyra" {
   name     = "rg-${var.repo.short_name}"
   location = var.region.long_name
+
+  tags = { Area = var.repo.name }
 }
 #endregion
 
@@ -65,68 +99,34 @@ resource "azurerm_key_vault" "domshyra" {
   purge_protection_enabled    = false
 
   sku_name = "standard"
-
-  access_policy {
-    tenant_id = var.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    storage_permissions = [
-      "Get",
-    ]
-
-    certificate_permissions = [
-      "Create",
-      "Delete",
-      "DeleteIssuers",
-      "Get",
-      "GetIssuers",
-      "Import",
-      "List",
-      "ListIssuers",
-      "ManageContacts",
-      "ManageIssuers",
-      "SetIssuers",
-      "Update",
-    ]
-
-    key_permissions = [
-      "Backup",
-      "Create",
-      "Decrypt",
-      "Delete",
-      "Encrypt",
-      "Get",
-      "Import",
-      "List",
-      "Purge",
-      "Recover",
-      "Restore",
-      "Sign",
-      "UnwrapKey",
-      "Update",
-      "Verify",
-      "WrapKey",
-    ]
-
-    secret_permissions = [
-      "Backup",
-      "Delete",
-      "Get",
-      "List",
-      "Purge",
-      "Recover",
-      "Restore",
-      "Set",
-    ]
+  tags = {
+    Area = var.repo.name
   }
 }
+resource "azurerm_key_vault_access_policy" "domshyra" {
+  key_vault_id = azurerm_key_vault.domshyra.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
 
-# Data source to fetch secrets from Azure Key Vault
-# Uncomment and configure the data source if needed
-# data "azurerm_key_vault_secret" "example_var" {
-#   name         = "valueOfSecret"
-#   key_vault_id = azurerm_key_vault.domshyra.id
-# }
+  secret_permissions = [
+    "Get",
+    "List",
+  ]
+
+  key_permissions = [
+    "Verify"
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "List",
+    "Create",
+    "Update",
+    "Delete",
+    "Purge",
+    "Import"
+  ]
+}
 
 #endregion
 
@@ -208,12 +208,13 @@ resource "azurerm_windows_web_app" "domshyra" {
     "WEBSITE_NODE_DEFAULT_VERSION"            = each.value == "web" ? "~${var.app_services.node_version}" : null
     "XDT_MicrosoftApplicationInsights_NodeJS" = each.value == "web" ? "1" : null
 
-    "FrontEndUrl"          = each.value == "api" ? "https://${var.repo.name}.com" : null
-    "FrontEndUrlWww"       = each.value == "api" ? "https://www.${var.repo.name}.com" : null
-    "SitePassword"         = each.value == "api" ? var.site_password : null
-    "VaultUri"             = each.value == "api" ? "https://${azurerm_key_vault.domshyra.name}.vault.azure.net/" : null
-    "Spotify:ClientId"     = each.value == "api" ? var.spotify_client_id : null
-    "Spotify:ClientSecret" = each.value == "api" ? var.spotify_client_secret : null
+    "FrontEndUrl"           = each.value == "api" ? "https://${var.repo.name}.com" : null
+    "FrontEndUrlWww"        = each.value == "api" ? "https://www.${var.repo.name}.com" : null
+    "FrontEndUrlAzureSites" = each.value == "api" ? "https://${local.azure_sites_name.web}" : null # this is for the web cors
+    "SitePassword"          = each.value == "api" ? var.site_password : null
+    "VaultUri"              = each.value == "api" ? "https://${azurerm_key_vault.domshyra.name}.vault.azure.net/" : null
+    "Spotify:ClientId"      = each.value == "api" ? var.spotify_client_id : null
+    "Spotify:ClientSecret"  = each.value == "api" ? var.spotify_client_secret : null
   }
 
   site_config {
@@ -229,7 +230,7 @@ resource "azurerm_windows_web_app" "domshyra" {
       allowed_origins = each.value == "api" ? [
         "https://${var.repo.name}.com",
         "https://www.${var.repo.name}.com",
-        "https://${var.repo.name}.azurewebsites.net"
+        "https://${local.azure_sites_name.web}"
       ] : null
     }
     # Default application mapping for root path
@@ -243,6 +244,62 @@ resource "azurerm_windows_web_app" "domshyra" {
 }
 
 #endregion
+
+#region GoDaddy DNS records
+
+# go daddy settings for DNS records
+resource "godaddy-dns_record" "c_name" {
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "CNAME"
+  name   = "www"
+  data   = each.value == "web" ? local.azure_sites_name.web : local.azure_sites_name.api
+  ttl    = 3600 # Set TTL to 1 hour
+}
+resource "godaddy-dns_record" "txt" {
+  depends_on = [azurerm_windows_web_app.domshyra]
+
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "TXT"
+  name   = "asuid"
+  data   = azurerm_windows_web_app.domshyra[each.value].custom_domain_verification_id
+  ttl    = 3600 # Set TTL to 1 hour
+}
+resource "godaddy-dns_record" "txt_www" {
+  depends_on = [azurerm_windows_web_app.domshyra]
+
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "TXT"
+  name   = "asuid.www"
+  data   = azurerm_windows_web_app.domshyra[each.value].custom_domain_verification_id
+  ttl    = 3600 # Set TTL to 1 hour
+}
+
+locals {
+  app_service_inbound_ip_api = azurerm_windows_web_app.domshyra["api"].outbound_ip_address_list[length(azurerm_windows_web_app.domshyra["api"].outbound_ip_address_list) - 1]
+  app_service_inbound_ip_web = azurerm_windows_web_app.domshyra["web"].outbound_ip_address_list[length(azurerm_windows_web_app.domshyra["web"].outbound_ip_address_list) - 1]
+}
+#note: if this cert fails make sure godaddy-dns_record.a_record is empty in dns records on GoDaddy.com
+resource "godaddy-dns_record" "a_record" {
+  depends_on = [azurerm_windows_web_app.domshyra]
+
+  for_each = toset(var.app_services.types)
+
+  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
+  type   = "A"
+  name   = "@"
+  data   = each.value == "web" ? local.app_service_inbound_ip_web : local.app_service_inbound_ip_api # Use the last outbound IP address from the web app
+  ttl    = 600                                                                                       # Set TTL to 10 minutes
+}
+
+
+#endregion
+
 
 #region Monitoring and Alerts
 
@@ -286,74 +343,8 @@ resource "azurerm_monitor_smart_detector_alert_rule" "domshyra" {
 
 #endregion
 
-#region GoDaddy DNS records
-
-# go daddy settings for DNS records
-resource "godaddy-dns_record" "c_name" {
-  depends_on = [azurerm_windows_web_app.domshyra]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "CNAME"
-  name   = "www"
-  data   = "${var.repo.name}-${each.value}.azurewebsites.net"
-  ttl    = 3600 # Set TTL to 1 hour
-}
-resource "godaddy-dns_record" "txt" {
-  depends_on = [azurerm_windows_web_app.domshyra]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "TXT"
-  name   = "asuid"
-  data   = azurerm_windows_web_app.domshyra[each.value].custom_domain_verification_id
-  ttl    = 3600 # Set TTL to 1 hour
-}
-resource "godaddy-dns_record" "txt_www" {
-  depends_on = [azurerm_windows_web_app.domshyra]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "TXT"
-  name   = "asuid.www"
-  data   = azurerm_windows_web_app.domshyra[each.value].custom_domain_verification_id
-  ttl    = 3600 # Set TTL to 1 hour
-}
-locals {
-  app_service_inbound_ip_api = azurerm_windows_web_app.domshyra["api"].outbound_ip_address_list[length(azurerm_windows_web_app.domshyra["api"].outbound_ip_address_list) - 1]
-  app_service_inbound_ip_web = azurerm_windows_web_app.domshyra["web"].outbound_ip_address_list[length(azurerm_windows_web_app.domshyra["web"].outbound_ip_address_list) - 1]
-}
-#note: if this cert fails make sure godaddy-dns_record.a_record is empty in dns records on GoDaddy.com
-resource "godaddy-dns_record" "a_record" {
-  depends_on = [azurerm_windows_web_app.domshyra]
-
-  for_each = toset(var.app_services.types)
-
-  domain = each.value == "web" ? "${var.repo.name}.com" : "${var.repo.name}${each.value}.com"
-  type   = "A"
-  name   = "@"
-  data   = each.value == "web" ? local.app_service_inbound_ip_web : local.app_service_inbound_ip_api # Use the last outbound IP address from the web app
-  ttl    = 600                                                                                       # Set TTL to 10 minutes
-}
-#endregion
 
 #region Custom Domain and DNS Records
-
-locals {
-  domain_names = {
-    web     = "${var.repo.name}.com",
-    api     = "${var.repo.name}api.com",
-    www_web = "www.${var.repo.name}.com",
-    www_api = "www.${var.repo.name}api.com"
-  }
-}
-locals {
-  dns_types = ["web", "api", "www_web", "www_api"]
-}
-
 resource "azurerm_dns_zone" "domshyra" {
   for_each = toset(local.dns_types)
 
@@ -365,43 +356,115 @@ resource "azurerm_app_service_custom_hostname_binding" "domshyra" {
   depends_on = [
     azurerm_resource_group.domshyra,
     azurerm_windows_web_app.domshyra,
+    godaddy-dns_record.txt,
+    godaddy-dns_record.txt_www,
   ]
   for_each = toset(local.dns_types)
 
   hostname            = local.domain_names[each.value]
   app_service_name    = strcontains(each.value, "web") ? azurerm_windows_web_app.domshyra["web"].name : azurerm_windows_web_app.domshyra["api"].name
   resource_group_name = azurerm_resource_group.domshyra.name
+
   lifecycle {
     ignore_changes = [ssl_state, thumbprint]
   }
 }
-# todo get these to work with www and non www domains
-resource "azurerm_app_service_managed_certificate" "domshyra" {
+#endregion
+
+#region Certificates
+
+resource "tls_private_key" "acme_account_key" {
+  for_each = toset(var.app_services.types)
+
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "acme_registration" "domshyra" {
+  for_each = toset(var.app_services.types)
+
+  account_key_pem = tls_private_key.acme_account_key[each.value].private_key_pem
+  email_address   = "domshyra@gmail.com"
+}
+
+resource "acme_certificate" "certificate" {
   depends_on = [
-    azurerm_app_service_custom_hostname_binding.domshyra
+    acme_registration.domshyra,
+    tls_private_key.acme_account_key,
   ]
-  for_each = toset(local.dns_types)
 
-  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
+  for_each = toset(var.app_services.types)
 
-  lifecycle {
-    create_before_destroy = true
+  account_key_pem = acme_registration.domshyra[each.value].account_key_pem
+  common_name     = local.domain_names[each.value]
+  key_type        = tls_private_key.acme_account_key[each.value].rsa_bits
+
+  subject_alternative_names = [
+    local.domain_names[each.value],
+    local.domain_names["www-${each.value}"],
+  ]
+
+  dns_challenge {
+    provider = "godaddy"
+    config = {
+      GODADDY_API_KEY    = var.godaddy_api_key
+      GODADDY_API_SECRET = var.godaddy_api_secret
+    }
   }
 }
-resource "azurerm_app_service_certificate_binding" "domshyra" {
-  depends_on = [
-    azurerm_app_service_managed_certificate.domshyra,
-    azurerm_app_service_custom_hostname_binding.domshyra
-  ]
-  for_each = toset(local.dns_types)
 
-  hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
-  certificate_id      = azurerm_app_service_managed_certificate.domshyra[each.value].id
-  ssl_state           = "SniEnabled"
-  lifecycle {
-    ignore_changes = [ssl_state]
+resource "azurerm_key_vault_certificate" "domshyra" {
+  depends_on = [azurerm_key_vault.domshyra, acme_certificate.certificate]
+  for_each   = toset(var.app_services.types)
+
+  name         = "${each.value}-cert"
+  key_vault_id = azurerm_key_vault.domshyra.id
+
+  certificate {
+    contents = acme_certificate.certificate[each.value].certificate_p12
   }
 }
+
+//! NOTE THESE NEED TO BE DONE MANUALLY FOR NOW
+//? https://github.com/hashicorp/terraform-provider-azurerm/issues/30572
+
+// hide the cert via portal no matter if i use KV or If I roll it my own with pfx_blob
+# resource "azurerm_app_service_certificate" "domshyra" {
+#   depends_on = [
+#     azurerm_app_service_custom_hostname_binding.domshyra,
+#     acme_certificate.certificate,
+#     azurerm_resource_group.domshyra,
+#   ]
+#   for_each = toset(var.app_services.types)
+
+#   resource_group_name = azurerm_resource_group.domshyra.name
+# name                = "${azurerm_key_vault.domshyra.name}-${azurerm_key_vault_certificate.domshyra[each.value].name}"
+#   location            = azurerm_resource_group.domshyra.location
+#   key_vault_secret_id = azurerm_key_vault_certificate.domshyra[each.value].secret_id
+#   # pfx_blob            = acme_certificate.certificate[each.value].certificate_p12
+#   # pfx_blob          = each.value == "web" ? local.cert-web-ms : local.cert-api-ms # fails but has the whole token in it output
+
+#   tags = { Area = var.repo.name }
+# }
+
+// This will 404 because the above step will banish the cert to another server farm
+# resource "azurerm_app_service_certificate_binding" "domshyra" {
+#   depends_on = [
+#     azurerm_app_service_custom_hostname_binding.domshyra,
+#     azurerm_app_service_certificate.domshyra,
+#     godaddy-dns_record.txt,
+#     godaddy-dns_record.txt_www,
+#   ]
+#   for_each = toset(local.dns_types)
+
+#   hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
+#   certificate_id      = strcontains(each.value, "web") ? azurerm_app_service_certificate.domshyra["web"].id : azurerm_app_service_certificate.domshyra["api"].id
+#   ssl_state           = "SniEnabled"
+
+#   lifecycle {
+#     ignore_changes = [ssl_state]
+#   }
+# }
 
 #endregion
 
