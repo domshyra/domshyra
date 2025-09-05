@@ -49,10 +49,10 @@ locals {
   domain_names = {
     web     = "${var.repo.name}.com",
     api     = "${var.repo.name}api.com",
-    www_web = "www.${var.repo.name}.com",
-    www_api = "www.${var.repo.name}api.com"
+    www-web = "www.${var.repo.name}.com",
+    www-api = "www.${var.repo.name}api.com"
   }
-  dns_types = ["web", "api", "www_web", "www_api"]
+  dns_types = ["web", "api", "www-web", "www-api"]
 }
 #endregion
 
@@ -81,68 +81,120 @@ resource "azurerm_key_vault" "domshyra" {
   purge_protection_enabled    = false
 
   sku_name = "standard"
-
-  access_policy {
-    tenant_id = var.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    storage_permissions = [
-      "Get",
-    ]
-
-    certificate_permissions = [
-      "Create",
-      "Delete",
-      "DeleteIssuers",
-      "Get",
-      "GetIssuers",
-      "Import",
-      "List",
-      "ListIssuers",
-      "ManageContacts",
-      "ManageIssuers",
-      "SetIssuers",
-      "Update",
-    ]
-
-    key_permissions = [
-      "Backup",
-      "Create",
-      "Decrypt",
-      "Delete",
-      "Encrypt",
-      "Get",
-      "Import",
-      "List",
-      "Purge",
-      "Recover",
-      "Restore",
-      "Sign",
-      "UnwrapKey",
-      "Update",
-      "Verify",
-      "WrapKey",
-    ]
-
-    secret_permissions = [
-      "Backup",
-      "Delete",
-      "Get",
-      "List",
-      "Purge",
-      "Recover",
-      "Restore",
-      "Set",
-    ]
+  tags = {
+    Area = var.repo.name
   }
 }
+resource "azurerm_key_vault_access_policy" "domshyra" {
+  key_vault_id = azurerm_key_vault.domshyra.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
 
-# Data source to fetch secrets from Azure Key Vault
-# Uncomment and configure the data source if needed
-# data "azurerm_key_vault_secret" "example_var" {
-#   name         = "valueOfSecret"
-#   key_vault_id = azurerm_key_vault.domshyra.id
+  secret_permissions = [
+    "Get",
+  ]
+
+  certificate_permissions = [
+    "Get",
+    "List",
+  ]
+}
+# resource "azuread_application" "app-service-plan" {
+#   display_name = "asp-${var.repo.short_name}"
+#   owners       = [data.azuread_client_config.current.object_id]
 # }
+
+# resource "azuread_service_principal" "app-service-plan" {
+#   client_id                    = azuread_application.app-service-plan.client_id
+#   app_role_assignment_required = false
+#   owners                       = [data.azuread_client_config.current.object_id]
+# }
+
+# data "azurerm_service_plan" "existing_plan" {
+#   name                = var.app_service_plan_name
+#   resource_group_name = var.app_service_plan.resource_group
+# }
+
+# resource "azurerm_key_vault_access_policy" "additional_rg_access" {
+#   key_vault_id = azurerm_key_vault.domshyra.id
+
+#   tenant_id = var.tenant_id
+#   # object_id = data.azurerm_service_plan.existing_plan.identity[0].principal_id
+#   object_id = data.azurerm_service_plan.existing_plan.app_service_environment_id
+
+#   certificate_permissions = [
+#     "Get",
+#     "List",
+#     "Create",
+#     "Update",
+#     "Delete",
+#   ]
+#   secret_permissions = [
+#     "Get",
+#     "List",
+#   ]
+#   key_permissions = [
+#     "Get",
+#     "List",
+#   ]
+# }
+
+resource "azurerm_key_vault_certificate" "domshyra" {
+  depends_on = [azurerm_key_vault.domshyra]
+  for_each   = toset(local.dns_types)
+
+  name         = "${each.value}-cert"
+  key_vault_id = azurerm_key_vault.domshyra.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = true
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      # Server Authentication = 1.3.6.1.5.5.7.3.1
+      # Client Authentication = 1.3.6.1.5.5.7.3.2
+      extended_key_usage = ["1.3.6.1.5.5.7.3.1"]
+
+      key_usage = [
+        "cRLSign",
+        "dataEncipherment",
+        "digitalSignature",
+        "keyAgreement",
+        "keyCertSign",
+        "keyEncipherment",
+      ]
+
+      subject_alternative_names {
+        dns_names = [local.domain_names[each.value]]
+      }
+
+      subject            = "CN=${local.domain_names[each.value]}"
+      validity_in_months = 12
+    }
+  }
+}
 
 #endregion
 
@@ -371,6 +423,8 @@ resource "azurerm_app_service_custom_hostname_binding" "domshyra" {
   depends_on = [
     azurerm_resource_group.domshyra,
     azurerm_windows_web_app.domshyra,
+    godaddy-dns_record.txt,
+    godaddy-dns_record.txt_www,
   ]
   for_each = toset(local.dns_types)
 
@@ -382,25 +436,36 @@ resource "azurerm_app_service_custom_hostname_binding" "domshyra" {
     ignore_changes = [ssl_state, thumbprint]
   }
 }
+data "azurerm_service_plan" "existing_plan" {
+  name                = var.app_service_plan_name
+  resource_group_name = var.app_service_plan.resource_group
+}
+# DOH: The resource group must be the same as that which the app service plan is defined in - otherwise the certificate will not show as available for the app services.
 #! for some reason two will succeed and the other two will fail, create those two manually in the portal, then import 
-resource "azurerm_app_service_managed_certificate" "domshyra" {
+resource "azurerm_app_service_certificate" "domshyra" {
   depends_on = [
-    azurerm_app_service_custom_hostname_binding.domshyra
+    azurerm_app_service_custom_hostname_binding.domshyra,
+    azurerm_key_vault_certificate.domshyra,
   ]
   for_each = toset(local.dns_types)
 
-  custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
+  location            = var.region.location
+  name                = "${local.domain_names[each.value]}-cert"
+  resource_group_name = azurerm_resource_group.domshyra.name
+  key_vault_secret_id = azurerm_key_vault_certificate.domshyra[each.value].secret_id
+  app_service_plan_id = data.azurerm_service_plan.existing_plan.id
 
+  tags = { Area = var.repo.name }
 }
 resource "azurerm_app_service_certificate_binding" "domshyra" {
   depends_on = [
-    azurerm_app_service_managed_certificate.domshyra,
+    azurerm_app_service_certificate.domshyra,
     azurerm_app_service_custom_hostname_binding.domshyra
   ]
   for_each = toset(local.dns_types)
 
   hostname_binding_id = azurerm_app_service_custom_hostname_binding.domshyra[each.value].id
-  certificate_id      = azurerm_app_service_managed_certificate.domshyra[each.value].id
+  certificate_id      = azurerm_app_service_certificate.domshyra[each.value].id
   ssl_state           = "SniEnabled"
   lifecycle {
     ignore_changes = [ssl_state]
