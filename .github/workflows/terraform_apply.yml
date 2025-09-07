@@ -111,7 +111,7 @@ jobs:
                   TF_VAR_spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
                   TF_VAR_spotify_client_secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
                   TF_VAR_app_service_plan_name: ${{ secrets.APP_SERVICE_PLAN_NAME }}
-                  TF_VAR_app_cert_prod: true
+                  TF_VAR_prod_cert_source: true
           
             # On push to "main", build or change infrastructure according to Terraform configuration files
             # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
@@ -127,7 +127,7 @@ jobs:
                   TF_VAR_spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
                   TF_VAR_spotify_client_secret: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
                   TF_VAR_app_service_plan_name: ${{ secrets.APP_SERVICE_PLAN_NAME }}
-                  TF_VAR_app_cert_prod: true
+                  TF_VAR_prod_cert_source: true
 
             # Outputs from Terraform
             - name: Export Terraform Outputs
