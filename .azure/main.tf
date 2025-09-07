@@ -414,7 +414,7 @@ resource "acme_certificate" "certificate" {
 }
 
 resource "azurerm_key_vault_certificate" "domshyra" {
-  depends_on = [azurerm_key_vault.domshyra, acme_certificate.certificate]
+  depends_on = [azurerm_key_vault.domshyra, acme_certificate.certificate, azurerm_key_vault_access_policy.domshyra]
   for_each   = toset(var.app_services.types)
 
   name         = "${each.value}-cert"
