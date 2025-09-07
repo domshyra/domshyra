@@ -1,4 +1,4 @@
-[![Web](https://github.com/domshyra/domshyra/actions/workflows/web.yml/badge.svg?branch=main)](https://github.com/domshyra/domshyra/actions/workflows/web.yml) [![Api](https://github.com/domshyra/domshyra/actions/workflows/api.yml/badge.svg)](https://github.com/domshyra/domshyra/actions/workflows/api.yml)
+[![Web](https://github.com/domshyra/domshyra/actions/workflows/web.yml/badge.svg?branch=main)](https://github.com/domshyra/domshyra/actions/workflows/web.yml) [![Api](https://github.com/domshyra/domshyra/actions/workflows/api.yml/badge.svg)](https://github.com/domshyra/domshyra/actions/workflows/api.yml)[![Resources](https://github.com/domshyra/domshyra/actions/workflows/terraform_apply.yml/badge.svg)](https://github.com/domshyra/domshyra/actions/workflows/terraform_apply.yml)
 # domshyra 
 Grabs spotify playlists based on appsettings `Spotify:Username` value.
 

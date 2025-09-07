@@ -199,7 +199,6 @@ resource "azurerm_windows_web_app" "domshyra" {
   service_plan_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${var.app_service_plan.resource_group}/providers/Microsoft.Web/serverFarms/${var.app_service_plan_name}"
   https_only                 = true
   client_certificate_enabled = false
-  # client_certificate_mode    = "Required" # Uncomment if you want to enforce client certificates
 
   tags = {
     Area = var.repo.name
@@ -393,6 +392,7 @@ resource "acme_registration" "domshyra" {
   email_address   = "domshyra@gmail.com"
 }
 
+// sometimes this will fail because the godaddy txt file isn't there to verify domain ownership, kick it and it will work
 resource "acme_certificate" "certificate" {
   depends_on = [
     acme_registration.domshyra,
