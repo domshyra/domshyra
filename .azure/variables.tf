@@ -119,4 +119,10 @@ variable "app_service_plan_name" {
   description = "from .env.local or yaml pipeline"
   type        = string
 }
+variable "prod_cert" {
+  sensitive   = false
+  description = "from .env.local or yaml pipeline - true for prod, false for staging"
+  type        = bool
+  default     = false
+}
 #endregion 
