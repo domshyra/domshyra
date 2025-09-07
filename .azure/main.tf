@@ -52,7 +52,8 @@ provider "tls" {
 }
 provider "acme" {
   // use staging for testing, production for live
-  server_url = var.prod_cert ? "https://acme-v02.api.letsencrypt.org/directory" : "https://acme-staging-v02.api.letsencrypt.org/directory"
+  # server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
+  server_url = "https://acme-v02.api.letsencrypt.org/directory"
 }
 #endregion
 
@@ -103,6 +104,11 @@ resource "azurerm_key_vault" "domshyra" {
     Area = var.repo.name
   }
 }
+#Note: to get this to run on git hub, make sure to add an access policy to the key vault in portal, use the other github-actions managed identity
+# import {
+#   to = azurerm_key_vault_access_policy.domshyra
+#   id = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.domshyra.name}/providers/Microsoft.KeyVault/vaults/${azurerm_key_vault.domshyra.name}/objectId/YOUR_OBJECT_ID"
+# }
 resource "azurerm_key_vault_access_policy" "domshyra" {
   key_vault_id = azurerm_key_vault.domshyra.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
