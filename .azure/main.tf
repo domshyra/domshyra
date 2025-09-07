@@ -129,7 +129,8 @@ resource "azurerm_key_vault_access_policy" "domshyra" {
     "Update",
     "Delete",
     "Purge",
-    "Import"
+    "Import",
+    "Recover",
   ]
 }
 
