@@ -52,11 +52,10 @@ provider "tls" {
 }
 provider "acme" {
   // use staging for testing, production for live
-  # server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
-  server_url = "https://acme-v02.api.letsencrypt.org/directory"
+  server_url = var.prod_cert_source ? "https://acme-v02.api.letsencrypt.org/directory" : "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
 #endregion
-
+// might need to destroy certs and make them again if you made them in staging first, only one account per domain
 #region Locals
 locals {
   azure_sites_name = {
