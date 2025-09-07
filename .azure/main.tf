@@ -52,7 +52,7 @@ provider "tls" {
 }
 provider "acme" {
   // use staging for testing, production for live
-  server_url = var.prod_cert ? "https://acme-staging-v02.api.letsencrypt.org/directory" : "https://acme-v02.api.letsencrypt.org/directory"
+  server_url = var.prod_cert ? "https://acme-v02.api.letsencrypt.org/directory" : "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
 #endregion
 
