@@ -1,11 +1,12 @@
 import { Box, AppBar as MuiAppBar, Toolbar, useTheme } from "@mui/material";
+import { about, root } from "@constants/routes";
 
 import { AppBarViewProps } from "./props";
 import HomeIcon from "@mui/icons-material/Home";
 import MediumScreenMenu from "@components/appBar/MediumScreenMenu";
 import { MenuItemProps } from "@fragments/appBar/props";
+import PersonIcon from "@mui/icons-material/Person";
 import SmallScreenMenu from "@components/appBar/SmallScreenMenu";
-import { root } from "@constants/routes";
 
 /**
  * Represents a styled app bar component.
@@ -19,6 +20,11 @@ const AppBarView = (props: AppBarViewProps) => {
 			label: "Home",
 			path: root,
 			icon: <HomeIcon />,
+		},
+		{
+			label: "About",
+			path: about,
+			icon: <PersonIcon />,
 		},
 	];
 
