@@ -4,6 +4,8 @@
  * The root route of the application.
  */
 export const root = "/";
+export const about = "/about";
+export const work = "work";
 export const account = "/account";
 export const notFound = "*";
 export const stations = "/stations";

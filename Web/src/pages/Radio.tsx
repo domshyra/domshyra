@@ -1,4 +1,4 @@
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
+import { Grid, Skeleton, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 import PlaylistCard from "@components/playlist/PlaylistCard";
@@ -27,11 +27,9 @@ const Radio = () => {
 
 	return (
 		<>
-			<Box sx={{ justifyContent: "center" }}>
-				<Typography variant="h3" gutterBottom>
-					Stations
-				</Typography>
-			</Box>
+			<Typography variant="h3" gutterBottom align="center">
+				Stations
+			</Typography>
 			<Grid container>{!isLoading ? cards : <Skeleton />}</Grid>
 		</>
 	);
