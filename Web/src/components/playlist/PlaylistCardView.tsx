@@ -1,4 +1,4 @@
-import { Box, Button, Tooltip } from "@mui/material";
+import { Box, Button, Skeleton, Tooltip } from "@mui/material";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -20,9 +20,20 @@ type PlaylistCardProps = {
 	spotifyMusicLink?: string;
 	title?: string;
 	trackAndFollowerText?: string;
+	loading?: boolean;
 };
 
-const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerText, playlistId, sectionWidth, cardWidth }: PlaylistCardProps) => {
+const PlaylistCard = ({
+	title,
+	imageURL,
+	description,
+	genre,
+	trackAndFollowerText,
+	playlistId,
+	sectionWidth,
+	cardWidth,
+	loading,
+}: PlaylistCardProps) => {
 	const nav = useNavigate();
 
 	return (
@@ -36,17 +47,17 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 						color="primary"
 						onClick={() => nav(`${stations}/${playlistId}`, { state: { title } })} // Navigate to playlist details
 					>
-						{title}
+						{loading ? <Skeleton /> : title}
 					</Typography>
 					<Typography sx={{ display: { xs: "block", md: "none" } }} component="div" variant="h6" color="text.secondary.light">
-						{title}
+						{loading ? <Skeleton /> : title}
 					</Typography>
 					<Typography variant="subtitle2" color="text.secondary" component="div" gutterBottom>
-						{description}
+						{loading ? <Skeleton /> : description}
 					</Typography>
-					<SpotifyLink playlistId={playlistId} />
+					<SpotifyLink playlistId={playlistId} loading={loading ?? false} />
 					<Typography sx={{ display: { xs: "block", md: "none" } }} component="div" variant="caption" color="text.secondary" align="center">
-						{genre}
+						{loading ? <Skeleton /> : genre}
 					</Typography>
 					<Typography
 						sx={{ display: { xs: "block", md: "none" } }}
@@ -66,11 +77,11 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 					</Tooltip>
 					<Typography sx={{ flex: "1 0 auto" }}>{/*left blank for spacing*/}</Typography>
 					<Typography variant="caption" color="text.secondary.light" noWrap align="right">
-						{trackAndFollowerText}
+						{loading ? <Skeleton width={25} /> : trackAndFollowerText}
 					</Typography>
 				</Box>
 			</Box>
-			<PlaylistPhoto imageURL={imageURL} title={title} cardWidth={cardWidth} />
+			<PlaylistPhoto imageURL={imageURL} title={title} cardWidth={cardWidth} loading={loading} />
 		</Card>
 	);
 };
