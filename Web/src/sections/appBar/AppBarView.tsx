@@ -1,11 +1,7 @@
 import { Box, AppBar as MuiAppBar, Toolbar, useTheme } from "@mui/material";
-import { about, root } from "@constants/routes";
 
 import { AppBarViewProps } from "./props";
-import HomeIcon from "@mui/icons-material/Home";
 import MediumScreenMenu from "@components/appBar/MediumScreenMenu";
-import { MenuItemProps } from "@fragments/appBar/props";
-import PersonIcon from "@mui/icons-material/Person";
 import SmallScreenMenu from "@components/appBar/SmallScreenMenu";
 
 /**
@@ -14,19 +10,6 @@ import SmallScreenMenu from "@components/appBar/SmallScreenMenu";
 const AppBarView = (props: AppBarViewProps) => {
 	const { anchorEl, open, hamburgerMenus, handleClick, handleClose, setAccessTokenCallback, accessToken, showHamburgerMenu } = props;
 	const theme = useTheme();
-
-	const menuItems: Array<MenuItemProps> = [
-		{
-			label: "Home",
-			path: root,
-			icon: <HomeIcon />,
-		},
-		{
-			label: "About",
-			path: about,
-			icon: <PersonIcon />,
-		},
-	];
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -38,7 +21,6 @@ const AppBarView = (props: AppBarViewProps) => {
 						hamburgerMenus={hamburgerMenus}
 						handleClick={handleClick}
 						handleClose={handleClose}
-						menuItems={menuItems}
 						open={open}
 						setAccessTokenCallback={setAccessTokenCallback}
 						showHamburgerMenu={showHamburgerMenu}
@@ -49,7 +31,6 @@ const AppBarView = (props: AppBarViewProps) => {
 						hamburgerMenus={hamburgerMenus}
 						handleClick={handleClick}
 						handleClose={handleClose}
-						menuItems={menuItems}
 						open={open}
 						setAccessTokenCallback={setAccessTokenCallback}
 						showHamburgerMenu={showHamburgerMenu}

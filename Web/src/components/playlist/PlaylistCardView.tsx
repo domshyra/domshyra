@@ -30,7 +30,7 @@ const PlaylistCard = ({ title, imageURL, description, genre, trackAndFollowerTex
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
 				<CardContent sx={{ flex: "1 0 auto", width: sectionWidth }}>
 					<Typography
-						sx={{ display: { xs: "none", md: "block" } }}
+						sx={{ display: { xs: "none", md: "block" }, cursor: "pointer" }}
 						component="div"
 						variant="h6"
 						color="primary"

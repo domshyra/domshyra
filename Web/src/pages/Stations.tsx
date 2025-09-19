@@ -1,19 +1,12 @@
 import { Grid, Skeleton, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
 
 import PlaylistCard from "@components/playlist/PlaylistCard";
+import React from "react";
 import { playlist } from "@_types/playlist";
 import { useGetPlaylistsQuery } from "@redux/services/spotifyApi";
 
-const Radio = () => {
-	const [cards, setCards] = useState<JSX.Element[]>([]);
-	const { data, isLoading } = useGetPlaylistsQuery();
-
-	useEffect(() => {
-		if (!isLoading && data) {
-			setCards(renderCards(data));
-		}
-	}, [data, isLoading]);
+const Stations = () => {
+	const { data: cards, isLoading } = useGetPlaylistsQuery();
 
 	const renderCards = (data: playlist[]) => {
 		return data.map((item) => (
@@ -30,9 +23,9 @@ const Radio = () => {
 			<Typography variant="h3" gutterBottom align="center">
 				Stations
 			</Typography>
-			<Grid container>{!isLoading ? cards : <Skeleton />}</Grid>
+			<Grid container>{!isLoading ? renderCards(cards!) : <Skeleton />}</Grid>
 		</>
 	);
 };
 
-export default Radio;
+export default Stations;
