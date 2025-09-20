@@ -52,9 +52,16 @@ declare module "@mui/material/Button" {
 	}
 }
 
+//TODO! REFACTOR BASE SO IT INCLUDES DARK AN LIGHT MODES
+//? https://mui.com/material-ui/customization/css-theme-variables/usage/
 const base = {
 	typography: {
 		fontFamily: ["Oswald", '"Helvetica Neue"', "Roboto", "Arial", "sans-serif"].join(","),
+	},
+	transition: {
+		duration: 20000,
+		easing: "ease-in-out",
+		property: "background-color, color",
 	},
 	components: {
 		MuiSlider: {
@@ -93,6 +100,24 @@ const base = {
                         border-radius: 8px;
                     }
                 `,
+			body: {
+				transition: {
+					duration: 20000,
+					easing: "ease-in-out",
+					property: "background-color, color",
+				},
+				// transition: "background-color 2s ease-in-out, color 2s ease-in-out",
+			},
+			"@global": {
+				body: {
+					// transition: "all 2s linear",
+					transition: {
+						duration: 20000,
+						easing: "ease-in-out",
+						property: "background-color, color",
+					},
+				},
+			},
 		},
 	},
 };

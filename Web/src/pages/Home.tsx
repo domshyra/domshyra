@@ -1,7 +1,8 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { about, stations } from "@constants/routes";
 
 import BorderPaper from "@fragments/paper/BorderPaper";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 type HomeSection = {
@@ -26,16 +27,25 @@ const data: HomeSection[] = [
 
 const Home = () => {
 	const nav = useNavigate();
+	const theme = useTheme();
+	const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+	const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+	const height = useCallback(() => {
+		if (isLargeScreen) return "22vh";
+		if (isMediumScreen) return "25vh";
+		return undefined;
+	}, [isLargeScreen, isMediumScreen]);
 
 	const homeSection = ({ title, description, link }: HomeSection) => {
 		return (
-			<Grid size={{ xs: 12, lg: 6 }}>
-				<BorderPaper onClick={() => nav(link)} sx={{ cursor: "pointer" }}>
+			<Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }} key={title}>
+				<BorderPaper onClick={() => nav(link)} sx={{ cursor: "pointer", height }}>
 					<Typography variant="h4" color="secondary" noWrap component="div" fontWeight={500}>
-						<Box display="flex" justifyContent="center">
+						<Box display="flex" justifyContent="center" color="primary.dark">
 							{title}
 						</Box>
 					</Typography>
+					<Divider sx={{ color: "primary.dark", my: 1, mx: 2 }} />
 					<Typography variant="caption" color="text.secondary" fontWeight={400} dangerouslySetInnerHTML={{ __html: description }} />
 				</BorderPaper>
 			</Grid>
@@ -43,7 +53,15 @@ const Home = () => {
 	};
 
 	return (
-		<Grid container spacing={4} direction="row" alignItems="center" justifyContent="center" sx={{ minHeight: "60vh", width: "100%" }} pb={4}>
+		<Grid
+			container
+			spacing={4}
+			direction="row"
+			alignItems="center"
+			justifyContent="center"
+			sx={{ minHeight: "60vh", width: "100%" }}
+			pb={isMediumScreen ? 4 : 1}
+		>
 			{data.map((section) => homeSection(section))}
 		</Grid>
 	);

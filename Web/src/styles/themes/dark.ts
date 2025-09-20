@@ -4,7 +4,9 @@ import base from "./base";
 import { createTheme } from "@mui/material/styles";
 
 const dark = createTheme({
+	cssVariables: true,
 	...base,
+	...base.transition,
 	palette: {
 		mode: "dark",
 		text: {
@@ -65,6 +67,7 @@ const dark = createTheme({
 			},
 		},
 		MuiCssBaseline: {
+			...base.components.MuiCssBaseline.body,
 			styleOverrides: `
                 *::-webkit-scrollbar-track {
                     background: ${colors.greyDarkest};

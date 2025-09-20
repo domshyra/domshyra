@@ -5,7 +5,9 @@ import { createTheme } from "@mui/material/styles";
 
 //#region default theme
 const light = createTheme({
+	cssVariables: true,
 	...base,
+	...base.transition,
 	palette: {
 		mode: "light",
 		primary: {
@@ -61,13 +63,16 @@ const light = createTheme({
 		},
 		MuiCssBaseline: {
 			styleOverrides: `
-                *::-webkit-scrollbar-track {
-                    background: ${colors.greyLightest};
-                }
-                *::-webkit-scrollbar-thumb {
-                    background-color: ${colors.greyMain};
-                }
-            `,
+				*::-webkit-scrollbar-track {
+					background: ${colors.greyLightest};
+				}
+				*::-webkit-scrollbar-thumb {
+					background-color: ${colors.greyMain};
+				}
+				transition: { 
+					background-color 2s ease-in-out, color 2s ease-in-out;
+				}
+			`,
 		},
 	},
 });

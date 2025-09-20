@@ -13,6 +13,7 @@ import PageTitle from "@sections/PageTitle";
 import { SnackbarLayout } from "./SnackbarLayout";
 import { getMuiTheme } from "@redux/slices/themeMode";
 import { useAppSelector } from "@redux/hooks";
+import { useMemo } from "react";
 
 //? https://mui.com/joy-ui/integrations/material-ui/
 /**
@@ -23,10 +24,14 @@ import { useAppSelector } from "@redux/hooks";
  */
 function Layout() {
 	const { themeName } = useAppSelector((state) => state.themeMode);
-	const theme = getMuiTheme(themeName);
-
+	const appTheme = useMemo(() => {
+		const theme = getMuiTheme(themeName);
+		return { [MATERIAL_THEME_ID]: theme };
+	}, [themeName]);
 	return (
-		<ThemeProvider theme={{ [MATERIAL_THEME_ID]: theme }}>
+		<ThemeProvider theme={appTheme}>
+			{/* //? https://mui.com/material-ui/customization/css-theme-variables/configuration/#instant-transition-between-color-schemes */}
+			{/* <Box sx={{ transition: "3s" }}> */}
 			<MaterialCssVarsProvider>
 				<JoyCssVarsProvider>
 					<CssBaseline enableColorScheme />
@@ -50,6 +55,7 @@ function Layout() {
 					<ScreenFooter />
 				</JoyCssVarsProvider>
 			</MaterialCssVarsProvider>
+			{/* </Box> */}
 		</ThemeProvider>
 	);
 }
