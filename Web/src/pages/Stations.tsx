@@ -4,21 +4,30 @@ import PlaylistCard from "@components/playlist/PlaylistCard";
 import { playlist } from "@_types/playlist";
 import { useGetPlaylistsQuery } from "@redux/services/spotifyApi";
 
+const CardGridItem = (props: { children: React.ReactNode; item: playlist }) => {
+	const { children, item } = props;
+	return (
+		<Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} pb={2} px={1} key={item.playlistId} justifyContent={"center"} display="flex">
+			{children}
+		</Grid>
+	);
+};
+
 const Stations = () => {
 	const { data: cards, isLoading } = useGetPlaylistsQuery();
 
 	const renderCards = (data: playlist[]) => {
 		return data.map((item) => (
-			<Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} pb={2} px={1} key={item.playlistId}>
+			<CardGridItem item={item} key={item.playlistId}>
 				<PlaylistCard {...item} />
-			</Grid>
+			</CardGridItem>
 		));
 	};
 
 	const loadingCards = Array.from({ length: 3 }, (_, index) => (
-		<Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} pb={2} px={1} key={index}>
+		<CardGridItem item={{ playlistId: "" }} key={index}>
 			<PlaylistCard playlistId="" loading={true} />
-		</Grid>
+		</CardGridItem>
 	));
 
 	return (
@@ -29,7 +38,9 @@ const Stations = () => {
 			<Typography component="p" textAlign="center" variant="caption" color="text.secondary" sx={{ width: "100%" }} pb={2}>
 				Radio stations I've curated on Spotify for different seasons, moods, and activities.
 			</Typography>
-			<Grid container>{!isLoading ? renderCards(cards!) : loadingCards}</Grid>
+			<Grid container sx={{ width: "100%" }}>
+				{!isLoading ? renderCards(cards!) : loadingCards}
+			</Grid>
 		</Grid>
 	);
 };
