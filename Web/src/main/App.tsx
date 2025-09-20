@@ -1,8 +1,9 @@
 import { RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { account, notFound, root, settings, stations, stationsWithId, work } from "@constants/routes";
+import { about, account, notFound, root, settings, stations, stationsWithId, work } from "@constants/routes";
 
 import About from "@pages/about/About";
 import CrumbLink from "src/fragments/breadcrumbs/CrumbLink";
+import Home from "@pages/Home";
 import Layout from "./Layout";
 import Login from "@pages/login/LoginPage";
 import NotFound from "@pages/NotFound";
@@ -16,8 +17,12 @@ const routes: RouteObject[] = [
 		Component: Layout,
 		children: [
 			{
+				path: root,
+				Component: Home,
+				index: true,
+			},
+			{
 				path: stations,
-
 				children: [
 					{ Component: Stations, index: true },
 					{
@@ -30,14 +35,14 @@ const routes: RouteObject[] = [
 				],
 			},
 			{
-				path: root,
+				path: about,
 				Component: About,
 				children: [
 					{
 						path: work,
 						Component: Work,
 						handle: {
-							crumb: () => <CrumbLink to={root} text="About" />,
+							crumb: () => <CrumbLink to={about} text="About" />,
 						},
 					},
 				],

@@ -29,7 +29,7 @@ const Stations = () => {
 			<Typography component="p" textAlign="center" variant="caption" color="text.secondary" sx={{ width: "100%" }} pb={2}>
 				Radio stations I've curated on Spotify for different seasons, moods, and activities.
 			</Typography>
-			<Grid container>{isLoading ? renderCards(cards!) : loadingCards}</Grid>
+			<Grid container>{!isLoading ? renderCards(cards!) : loadingCards}</Grid>
 		</Grid>
 	);
 };

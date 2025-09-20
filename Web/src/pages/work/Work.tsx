@@ -7,10 +7,10 @@ const Work = () => {
 	/* templates and msal-selenium for wsrb, modernizing things and bringing the team new technologies and best practices, for many a things */
 	return (
 		<>
-			<AboutDetails title="Wsrb" content="wsrb, currie and brown(add clients), arvixe, j crew" />
-			<AboutDetails title="Currie & Brown" content="wsrb, currie and brown(add clients), arvixe, j crew" />
-			<AboutDetails title="Arvixe" content="wsrb, currie and brown(add clients), arvixe, j crew" />
-			<AboutDetails title="J. Crew" content="wsrb, currie and brown(add clients), arvixe, j crew" />
+			<AboutDetails title="Wsrb" description="wsrb, currie and brown(add clients), arvixe, j crew" />
+			<AboutDetails title="Currie & Brown" description="wsrb, currie and brown(add clients), arvixe, j crew" />
+			<AboutDetails title="Arvixe" description="wsrb, currie and brown(add clients), arvixe, j crew" />
+			<AboutDetails title="J. Crew" description="wsrb, currie and brown(add clients), arvixe, j crew" />
 		</>
 	);
 };
