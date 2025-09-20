@@ -1,8 +1,8 @@
 import AppBarTitle from "@fragments/appBar/AppBarTitle";
 import { Box } from "@mui/material";
+import DarkModeToggleButton from "@fragments/appBar/DarkModeToggleButton";
 import Menu from "@fragments/appBar/Menu";
 import { MenuProps } from "@fragments/appBar/props";
-import SettingsButton from "@fragments/appBar/SettingButton";
 
 const SmallScreenMenu = (props: MenuProps) => {
 	const { showHamburgerMenu } = props;
@@ -23,7 +23,7 @@ const SmallScreenMenu = (props: MenuProps) => {
 			<Box sx={{ flexGrow: 1 }} />
 			<AppBarTitle />
 			<Box sx={{ flexGrow: 1 }} />
-			<SettingsButton />
+			<DarkModeToggleButton />
 		</Box>
 	);
 };

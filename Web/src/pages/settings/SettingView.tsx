@@ -1,28 +1,28 @@
-import { Box, Button, Container, Divider, FormHelperText, ToggleButton, ToggleButtonGroup, Typography, useTheme } from "@mui/material";
+import {
+	Box,
+	Button,
+	Container,
+	Divider,
+	FormHelperText,
+	ToggleButton,
+	ToggleButtonGroup,
+	Typography,
+	useColorScheme,
+	useTheme,
+} from "@mui/material";
 
-import BedtimeIcon from "@mui/icons-material/Bedtime";
 import BorderPaper from "src/fragments/paper/BorderPaper";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import { useAppSelector } from "@redux/hooks";
 import { useNavigate } from "react-router-dom";
 
-interface SettingsViewProps {
-	activateDarkMode: () => void;
-	activateLightMode: () => void;
-	activateCvdMode: () => void;
-}
+type SettingsViewProps = {
+	usingText: string;
+	themeOptions: () => { key: string; label: string; icon: React.ReactNode; onchange: () => void }[];
+};
 
-export default function SettingsView({ activateDarkMode, activateLightMode, activateCvdMode }: SettingsViewProps) {
+export default function SettingsView({ usingText, themeOptions }: SettingsViewProps) {
 	const theme = useTheme();
 	const navigate = useNavigate();
-	const { themeName } = useAppSelector((state) => state.themeMode);
-
-	const themeOptions = [
-		{ key: "light", label: "Light", icon: <WbSunnyIcon />, onchange: activateLightMode },
-		{ key: "dark", label: "Dark", icon: <BedtimeIcon />, onchange: activateDarkMode },
-		{ key: "cvd", label: "Color Vision Deficiency", icon: <VisibilityIcon />, onchange: activateCvdMode },
-	];
+	const { mode } = useColorScheme();
 
 	const boxDivider = (
 		<Divider
@@ -49,13 +49,13 @@ export default function SettingsView({ activateDarkMode, activateLightMode, acti
 				}}
 			>
 				<Typography variant="h5" color="textDisabled" align="center">
-					Select a Theme
+					Select a mode
 				</Typography>
 				<Box>
 					{boxDivider}
 					<Box display="flex" alignItems="center" pb={1}>
-						<ToggleButtonGroup color="primary" value={themeName} exclusive aria-label="Theme selection">
-							{themeOptions.map((option) => (
+						<ToggleButtonGroup color="primary" value={mode} exclusive aria-label="Theme selection">
+							{themeOptions().map((option) => (
 								<ToggleButton key={option.key} value={option.key} aria-label={option.label} onClick={option.onchange}>
 									{option.icon}
 									<Typography variant="body2" sx={{ ml: 1 }}>
@@ -66,7 +66,7 @@ export default function SettingsView({ activateDarkMode, activateLightMode, acti
 						</ToggleButtonGroup>
 					</Box>
 					<Box display="flex" alignItems="center">
-						<FormHelperText>Using {themeOptions.find((theme) => theme.key === themeName)?.label ?? themeName} Theme</FormHelperText>
+						<FormHelperText>Using {usingText}</FormHelperText>
 					</Box>
 				</Box>
 				{boxDivider}

@@ -1,19 +1,16 @@
 import "@styles/App.css";
 
-import { Box, Container, CssBaseline, IconButton, Link, THEME_ID as MATERIAL_THEME_ID, Paper, ThemeProvider, Typography } from "@mui/material";
+import { Box, Container, CssBaseline, IconButton, Link, Paper, ThemeProvider, Typography } from "@mui/material";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 
 import AppBar from "@sections/appBar/AppBar";
 import BreadCrumbs from "src/fragments/breadcrumbs/BreadCrumbs";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
-import { Experimental_CssVarsProvider as MaterialCssVarsProvider } from "@mui/material/styles";
 import { OfflineAlert } from "@components/offline/OfflineAlert";
 import PageTitle from "@sections/PageTitle";
 import { SnackbarLayout } from "./SnackbarLayout";
-import { getMuiTheme } from "@redux/slices/themeMode";
-import { useAppSelector } from "@redux/hooks";
-import { useMemo } from "react";
+import theme from "@styles/themes/base";
 
 //? https://mui.com/joy-ui/integrations/material-ui/
 /**
@@ -23,40 +20,28 @@ import { useMemo } from "react";
  * @returns The layout component.
  */
 function Layout() {
-	const { themeName } = useAppSelector((state) => state.themeMode);
-	const appTheme = useMemo(() => {
-		const theme = getMuiTheme(themeName);
-		return { [MATERIAL_THEME_ID]: theme };
-	}, [themeName]);
 	return (
-		<ThemeProvider theme={appTheme}>
-			{/* //? https://mui.com/material-ui/customization/css-theme-variables/configuration/#instant-transition-between-color-schemes */}
-			{/* <Box sx={{ transition: "3s" }}> */}
-			<MaterialCssVarsProvider>
-				<JoyCssVarsProvider>
-					<CssBaseline enableColorScheme />
-					<PageTitle />
-					<AppBar />
-					<OfflineAlert />
-					<Box sx={{ mb: 4, pb: 2 }}>
-						<div className="App">
-							<Container maxWidth="xl" sx={{ mt: 2 }}>
-								<SnackbarLayout>
-									<>
-										<ScrollRestoration />
-										<BreadCrumbs />
-										<Outlet />
-									</>
-								</SnackbarLayout>
-							</Container>
-						</div>
-					</Box>
-					<Box sx={{ mb: 2 }} />
-					<ScreenFooter />
-				</JoyCssVarsProvider>
-			</MaterialCssVarsProvider>
-			{/* </Box> */}
-		</ThemeProvider>
+		//joyprovider needed for the aspect ratio
+		<JoyCssVarsProvider>
+			<ThemeProvider theme={theme} defaultMode="system">
+				<CssBaseline enableColorScheme />
+				<PageTitle />
+				<AppBar />
+				<OfflineAlert />
+				<Box sx={{ mb: 6, pb: 2 }}>
+					<Container maxWidth="xl" sx={{ mt: 2 }}>
+						<SnackbarLayout>
+							<>
+								<ScrollRestoration />
+								<BreadCrumbs />
+								<Outlet />
+							</>
+						</SnackbarLayout>
+					</Container>
+				</Box>
+				<ScreenFooter />
+			</ThemeProvider>
+		</JoyCssVarsProvider>
 	);
 }
 
