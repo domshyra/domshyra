@@ -23,6 +23,9 @@ const routes: RouteObject[] = [
 			},
 			{
 				path: stations,
+				handle: {
+					crumb: () => <CrumbLink to={root} text="Home" />,
+				},
 				children: [
 					{ Component: Stations, index: true },
 					{
@@ -37,6 +40,9 @@ const routes: RouteObject[] = [
 			{
 				path: about,
 				Component: About,
+				handle: {
+					crumb: () => <CrumbLink to={root} text="Home" />,
+				},
 				children: [
 					{
 						path: work,
