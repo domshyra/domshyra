@@ -1,4 +1,3 @@
-import AboutDetails from "@sections/about/AboutDetails";
 import JobTimeline from "@components/jobTimeline/JobTimeline";
 import { Typography } from "@mui/material";
 
@@ -10,13 +9,10 @@ const WorkHistory = () => {
 
 	return (
 		<>
-			<Typography pb={2} variant="h4" textAlign="center" color="primary" sx={{ width: "100%" }}>
+			<Typography pb={0} variant="h4" textAlign="center" color="primary" sx={{ width: "100%" }}>
 				Work History
 			</Typography>
-
 			<JobTimeline />
-
-			<AboutDetails title="J. Crew" description="wsrb, currie and brown(add clients), arvixe, j crew" />
 		</>
 	);
 };

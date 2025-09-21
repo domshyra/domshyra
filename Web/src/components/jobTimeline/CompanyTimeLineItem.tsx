@@ -1,20 +1,22 @@
 import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab";
 
 import HomeIcon from "@mui/icons-material/Home";
+import { ReactNode } from "react";
 import { Typography } from "@mui/material";
 
 export type CompanyTimelineItemProps = {
 	company: string;
 	isFirstItem?: boolean;
+	companyIcon?: ReactNode;
 };
 
-const CompanyTimeLineItem = ({ company, isFirstItem }: CompanyTimelineItemProps) => {
+const CompanyTimeLineItem = ({ company, isFirstItem, companyIcon }: CompanyTimelineItemProps) => {
 	return (
 		<TimelineItem>
 			<TimelineSeparator>
 				{!isFirstItem && <TimelineConnector />}
 				<TimelineDot color="primary" variant="outlined" sx={{ my: 0 }}>
-					<HomeIcon />
+					{companyIcon ? companyIcon : <HomeIcon />}
 				</TimelineDot>
 				<TimelineConnector />
 			</TimelineSeparator>

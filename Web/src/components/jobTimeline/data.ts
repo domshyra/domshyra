@@ -7,10 +7,14 @@ export type JobDetails = {
 	end?: Date;
 };
 
+export const currieAndBrown = "Currie & Brown";
+export const jCrew = "J. Crew";
+export const wsrb = "WSRB";
+
 //TODO! add bold facing some how to the data
 export const jobDescription: JobDetails[] = [
 	{
-		company: "WSRB",
+		company: wsrb,
 		title: "Senior Software Engineer",
 		description:
 			"As a Senior Software Engineer, I focused on architecture, DevOps automation, and building reusable systems that accelerated development across teams.",
@@ -26,7 +30,7 @@ export const jobDescription: JobDetails[] = [
 		start: new Date("2025-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
 	{
-		company: "WSRB",
+		company: wsrb,
 		title: "Software Engineer II",
 		description:
 			"At WSRB, I worked as a full stack engineer delivering modern web applications for both internal and external customers. My contributions focused on building reusable frameworks, streamlining cloud deployments, and raising technical quality.",
@@ -42,7 +46,7 @@ export const jobDescription: JobDetails[] = [
 		end: new Date("2025-01-01 07:00:00 PST-0800 (Pacific Standard Time"),
 	},
 	{
-		company: "Currie & Brown",
+		company: currieAndBrown,
 		title: "Full Stack Developer / Lead UI/UX Designer",
 		description:
 			"At Currie & Brown, I designed and built enterprise software that supported some of the world’s most innovative companies, including <b>Tesla, SpaceX, Nike, Meta, and Intel</b>. My work combined usability, performance, and system reliability to solve billion-dollar challenges in procurement and vendor management.",
@@ -56,7 +60,7 @@ export const jobDescription: JobDetails[] = [
 		end: new Date("2021-07-07 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
 	{
-		company: "J. Crew",
+		company: jCrew,
 		title: "Personal Shopper / Stylist",
 		description: "Very Personal Stylist specializing in menswear and Crewcuts (J. Crew's kids line).",
 		bullets: [
@@ -69,7 +73,7 @@ export const jobDescription: JobDetails[] = [
 		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
 	{
-		company: "J. Crew",
+		company: jCrew,
 		title: "Sales Associate",
 		description: "Sales associate for menswear and Crewcuts (J. Crew's kids line).",
 		bullets: [
@@ -81,7 +85,7 @@ export const jobDescription: JobDetails[] = [
 		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
 	{
-		company: "J. Crew",
+		company: jCrew,
 		title: "Stock Associate",
 		description: "Stock associate helping with inventory, shipments, the sales floor and opening / closing the store.",
 		start: new Date("2012-01-08 07:00:00 PST-0800 (Pacific Standard Time)"),

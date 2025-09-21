@@ -1,4 +1,4 @@
-import { Box, Collapse, Divider, Grid, List, ListItem, Paper, Typography, useTheme } from "@mui/material";
+import { Box, Collapse, Divider, List, ListItem, Paper, Typography, useTheme } from "@mui/material";
 import { ReactNode, memo } from "react";
 import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab";
 import { formatDateTime, getTimeLengthInYearsAndMonths } from "@tools/datetime";

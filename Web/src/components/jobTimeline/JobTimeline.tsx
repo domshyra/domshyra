@@ -1,6 +1,10 @@
 import { Timeline, timelineItemClasses } from "@mui/lab";
+import { currieAndBrown, jCrew, wsrb } from "./data";
 
+import CheckroomIcon from "@mui/icons-material/Checkroom";
 import CompanyTimeLineItem from "./CompanyTimeLineItem";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import FireTruckIcon from "@mui/icons-material/FireTruck";
 import { Grid } from "@mui/material";
 import JobDetailsTimelineItem from "./JobDetailsTineLineItem";
 import React from "react";
@@ -8,6 +12,13 @@ import { jobDescription } from "@components/jobTimeline/data";
 
 const JobTimeline = () => {
 	const companies = Array.from(new Set(jobDescription.map((job) => job.company)));
+
+	const companyIcons = [
+		{ label: jCrew, icon: <CheckroomIcon /> },
+		{ label: currieAndBrown, icon: <EngineeringIcon /> },
+		{ label: wsrb, icon: <FireTruckIcon /> },
+		// Add more company-icon mappings as needed
+	];
 
 	return (
 		<Grid size={{ xs: 12, sm: 10, md: 8 }} sx={{ margin: "0 auto", pb: 2 }}>
@@ -23,7 +34,11 @@ const JobTimeline = () => {
 			>
 				{companies.map((company, companyIndex) => (
 					<React.Fragment key={company}>
-						<CompanyTimeLineItem company={company} isFirstItem={companyIndex === 0} />
+						<CompanyTimeLineItem
+							company={company}
+							isFirstItem={companyIndex === 0}
+							companyIcon={companyIcons.find((comp) => comp.label === company)?.icon}
+						/>
 						{jobDescription
 							.filter((job) => job.company === company)
 							.map((filteredJob, index) => (
