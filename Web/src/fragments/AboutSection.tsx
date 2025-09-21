@@ -3,15 +3,17 @@ import { Box, Divider, Grid, Typography } from "@mui/material";
 import BorderPaper from "./paper/BorderPaper";
 import { useNavigate } from "react-router-dom";
 
-export type HomeSection = {
+export type AboutSection = {
 	title: string;
 	description: string;
 	link: string;
+	show?: boolean;
 };
-const BorderSection = ({ title, description, link }: HomeSection) => {
+const AboutSection = ({ title, description, link, show }: AboutSection) => {
 	const nav = useNavigate();
+	if (show === false) return null;
 	return (
-		<Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflowY: "ellipse" }} key={title}>
+		<Grid size={6} sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflowY: "ellipse" }} key={title}>
 			<BorderPaper
 				onClick={() => nav(link)}
 				sx={{
@@ -25,7 +27,7 @@ const BorderSection = ({ title, description, link }: HomeSection) => {
 				}}
 			>
 				<Typography variant="h4" color="secondary" noWrap component="div" fontWeight={500}>
-					<Box display="flex" justifyContent="center" color="primary.dark">
+					<Box display="flex" justifyContent="center" color="primary.main">
 						{title}
 					</Box>
 				</Typography>
@@ -36,4 +38,4 @@ const BorderSection = ({ title, description, link }: HomeSection) => {
 	);
 };
 
-export default BorderSection;
+export default AboutSection;

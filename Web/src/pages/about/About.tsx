@@ -1,7 +1,8 @@
 import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { about, work } from "@constants/routes";
 
-import BorderSection from "@fragments/HomeSection";
+import AboutSection from "@fragments/AboutSection";
+import JobTimeline from "@components/jobTimeline/JobTimeline";
 
 const data = [
 	{
@@ -39,6 +40,7 @@ const About = () => {
 	const theme = useTheme();
 	const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
 	const maxWidth = isLargeScreen ? "60%" : "90%";
+
 	return (
 		<Box sx={{ flexGrow: 1, textAlign: "center", maxWidth, margin: "0 auto" }}>
 			<Typography pb={0} variant="h4">
@@ -53,14 +55,15 @@ const About = () => {
 				direction="row"
 				alignItems="center"
 				justifyContent="center"
-				sx={{ minHeight: { xs: "20vh", md: "60vh", lg: "70vh" }, width: "100%" }}
+				sx={{ width: "100%" }}
 				pb={{ md: 4, xs: 1 }}
 				pt={2}
 			>
 				{data.map((section, index) => (
-					<BorderSection key={index} {...section} headerColor="primary.main" />
+					<AboutSection key={index} {...section} />
 				))}
 			</Grid>
+			<JobTimeline />
 
 			{/* This will prob end up being it's own page, make sure to show responsibilities and what I did to make the company better. */}
 			{/* TODO:? would also be cool to build a timeline in the work history page */}
