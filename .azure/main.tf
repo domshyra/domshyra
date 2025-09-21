@@ -119,7 +119,9 @@ resource "azurerm_key_vault_access_policy" "domshyra" {
   ]
 
   key_permissions = [
-    "Verify"
+    "Verify",
+    "Get",
+    "List",
   ]
 
   certificate_permissions = [
