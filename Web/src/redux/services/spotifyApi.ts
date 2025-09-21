@@ -14,6 +14,7 @@ export const spotifyApi = createApi({
 	endpoints: (build) => ({
 		getPlaylists: build.query<playlist[], void>({
 			query: () => ``,
+			keepUnusedDataFor: 900, //15 min
 			providesTags: (result) =>
 				result
 					? [

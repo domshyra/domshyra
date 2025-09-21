@@ -1,15 +1,37 @@
-import { Box, Grid, Typography } from "@mui/material";
+import BorderSection, { HomeSection } from "@fragments/HomeSection";
+import { about, stations } from "@constants/routes";
+
+import { Grid } from "@mui/material";
+import { aboutMeElevatorPitch } from "@constants/data";
+
+const data: HomeSection[] = [
+	{
+		title: "Stations",
+		description:
+			"Radio stations I've curated on <b>Spotify</b> for different seasons, moods, and activities. From hip hop to instrumentals, I have a love of music and sharing it is the oldest form of story telling.",
+		link: stations,
+	},
+	{
+		title: "About Me",
+		description: aboutMeElevatorPitch,
+		link: about,
+	},
+];
 
 const Home = () => {
 	return (
-		<Grid container spacing={1} direction="row" alignItems="center" justifyContent="center" sx={{ minHeight: "60vh" }} pb={4}>
-			<Grid size={12}>
-				<Typography variant="h2" color="primary" noWrap component="div" fontWeight={600}>
-					<Box display="flex" justifyContent="center">
-						HOME
-					</Box>
-				</Typography>
-			</Grid>
+		<Grid
+			container
+			spacing={4}
+			direction="row"
+			alignItems="center"
+			justifyContent="center"
+			sx={{ minHeight: { xs: "20vh", md: "60vh", lg: "70vh" }, width: "100%" }}
+			pb={{ md: 4, xs: 1 }}
+		>
+			{data.map((section, index) => (
+				<BorderSection key={index} {...section} />
+			))}
 		</Grid>
 	);
 };

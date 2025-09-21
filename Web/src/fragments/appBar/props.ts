@@ -4,7 +4,6 @@ export type MenuProps = {
 	hamburgerMenus: (items: MenuItemProps[]) => JSX.Element[];
 	handleClick: (event: { currentTarget: Element }) => void;
 	handleClose: () => void;
-	menuItems: MenuItemProps[];
 	open: boolean;
 	setAccessTokenCallback: (response: { data: { accessToken: string } } | null) => void;
 	showHamburgerMenu?: boolean;

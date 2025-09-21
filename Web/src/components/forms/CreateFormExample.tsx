@@ -33,12 +33,7 @@ const CreateForm = () => {
 	//Utilized for dispatching redux actions
 	// const dispatch = useAppDispatch();
 
-	// const setSnackbarMessage = useCallback(
-	// 	(message: SnackbarMessage) => {
-	// 		dispatch(setSnackbar({ show: true, message: message.message, isError: message.isError }));
-	// 	},
-	// 	[dispatch]
-	// );
+	// const setSnackbarMessage = useSnackbarMessage();
 	/**
 	 * Save the record
 	 * @param {*} form

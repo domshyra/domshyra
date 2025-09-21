@@ -1,11 +1,7 @@
 import * as colors from "./colors";
 
-import base from "./base";
-import { createTheme } from "@mui/material/styles";
-
 //#region default theme
-const light = createTheme({
-	...base,
+const light = {
 	palette: {
 		mode: "light",
 		primary: {
@@ -48,29 +44,6 @@ const light = createTheme({
 			paperBorder: colors.themeColor,
 		},
 	},
-	components: {
-		...base.components,
-		MuiSlider: {
-			styleOverrides: {
-				root: {
-					"& .MuiSlider-thumb": {
-						backgroundColor: colors.white,
-					},
-				},
-			},
-		},
-		MuiCssBaseline: {
-			styleOverrides: `
-                *::-webkit-scrollbar-track {
-                    background: ${colors.greyLightest};
-                }
-                *::-webkit-scrollbar-thumb {
-                    background-color: ${colors.greyMain};
-                }
-            `,
-		},
-	},
-});
+};
 
 export default light;
-export { light as lightTheme };

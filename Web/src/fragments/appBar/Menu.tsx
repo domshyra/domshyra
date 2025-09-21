@@ -1,9 +1,35 @@
 import { IconButton, Menu as MenuMui } from "@mui/material";
+import { about, root, stations } from "@constants/routes";
 
+import HomeIcon from "@mui/icons-material/Home";
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import MenuIcon from "@mui/icons-material/Menu";
+import { MenuItemProps } from "@fragments/appBar/props";
 import { MenuProps } from "./props";
+import PersonIcon from "@mui/icons-material/Person";
+import { useMemo } from "react";
 
-const Menu = ({ handleClick, open, anchorEl, hamburgerMenus, menuItems, handleClose }: MenuProps) => {
+const Menu = ({ handleClick, open, anchorEl, hamburgerMenus, handleClose }: MenuProps) => {
+	const renderMenuItems = useMemo(() => {
+		const menuItems: Array<MenuItemProps> = [
+			{
+				label: "Home",
+				path: root,
+				icon: <HomeIcon />,
+			},
+			{
+				label: "About",
+				path: about,
+				icon: <PersonIcon />,
+			},
+			{
+				label: "Stations",
+				path: stations,
+				icon: <LibraryMusicIcon />,
+			},
+		];
+		return hamburgerMenus(menuItems);
+	}, [hamburgerMenus]);
 	return (
 		<>
 			<IconButton
@@ -28,7 +54,7 @@ const Menu = ({ handleClick, open, anchorEl, hamburgerMenus, menuItems, handleCl
 					},
 				}}
 			>
-				{hamburgerMenus(menuItems)}
+				{renderMenuItems}
 			</MenuMui>
 		</>
 	);

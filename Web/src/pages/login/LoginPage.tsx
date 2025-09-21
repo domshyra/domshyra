@@ -1,4 +1,3 @@
-import { SnackbarMessage, setSnackbar } from "@redux/slices/snackbar";
 import { useCallback, useState } from "react";
 import { useLoginMutation, useRegisterMutation } from "@redux/services/accountApi";
 
@@ -12,6 +11,7 @@ import { setAccessToken } from "@redux/slices/authorization";
 import { useAppDispatch } from "@redux/hooks";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import useSnackbarMessage from "@hooks/useSnackbarMessage";
 
 const LoginPage = () => {
 	const [loading, setLoading] = useState(false);
@@ -23,12 +23,7 @@ const LoginPage = () => {
 	const dispatch = useAppDispatch();
 	const [helperText, setHelperText] = useState("");
 
-	const setSnackbarMessage = useCallback(
-		(message: SnackbarMessage) => {
-			dispatch(setSnackbar({ show: true, message: message.message, severity: message.severity }));
-		},
-		[dispatch]
-	);
+	const setSnackbarMessage = useSnackbarMessage();
 
 	const setAccessTokenCallback = useCallback(
 		(response: any) => {
@@ -42,7 +37,7 @@ const LoginPage = () => {
 		(error: any) => {
 			const errorReason = (Object.values(error.data?.errors)[0] as string) ?? "";
 			setHelperText(errorReason);
-			setSnackbarMessage({ show: true, message: error.data.title, severity: "error" });
+			setSnackbarMessage({ message: error.data.title, severity: "error" });
 		},
 		[setSnackbarMessage]
 	);
@@ -68,7 +63,6 @@ const LoginPage = () => {
 						return handleError(response.error);
 					}
 					setSnackbarMessage({
-						show: true,
 						message: "Logged in",
 					});
 					navigate(link);
@@ -91,7 +85,6 @@ const LoginPage = () => {
 					return handleError(response.error);
 				}
 				setSnackbarMessage({
-					show: true,
 					message: "Record created.",
 					link: link,
 				});

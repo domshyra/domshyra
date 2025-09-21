@@ -1,9 +1,9 @@
 import { Box, Button } from "@mui/material";
 
 import AppBarTitle from "@fragments/appBar/AppBarTitle";
+import DarkModeToggleButton from "@fragments/appBar/DarkModeToggleButton";
 import Menu from "@fragments/appBar/Menu";
 import { MenuProps } from "@fragments/appBar/props";
-import SettingsButton from "@fragments/appBar/SettingButton";
 
 const MediumScreenMenu = (props: MenuProps) => {
 	const { accessToken, setAccessTokenCallback, showHamburgerMenu } = props;
@@ -28,7 +28,7 @@ const MediumScreenMenu = (props: MenuProps) => {
 					</Button>
 				) : null}
 			</Box>
-			<SettingsButton />
+			<DarkModeToggleButton />
 		</Box>
 	);
 };

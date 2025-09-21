@@ -103,6 +103,11 @@ resource "azurerm_key_vault" "domshyra" {
     Area = var.repo.name
   }
 }
+resource "azurerm_role_assignment" "keyvault_cert_officer" {
+  scope                = azurerm_key_vault.domshyra.id
+  role_definition_name = "Key Vault Certificates Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
 #Note: to get this to run on git hub, make sure to add an access policy to the key vault in portal, use the other github-actions managed identity
 # import {
 #   to = azurerm_key_vault_access_policy.domshyra
@@ -119,7 +124,9 @@ resource "azurerm_key_vault_access_policy" "domshyra" {
   ]
 
   key_permissions = [
-    "Verify"
+    "Verify",
+    "Get",
+    "List",
   ]
 
   certificate_permissions = [

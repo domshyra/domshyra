@@ -49,13 +49,6 @@
 			"postDebugTask": "terminate"
 		},
 		{
-			"name": "terraform apply",
-			"type": "node",
-			"request": "launch",
-			"preLaunchTask": "terraform apply",
-			"postDebugTask": "terminate"
-		},
-		{
 			"name": "terraform destroy",
 			"type": "node",
 			"request": "launch",

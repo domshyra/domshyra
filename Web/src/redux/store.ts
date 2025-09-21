@@ -9,7 +9,6 @@ import { rickAndMortyApi } from "./services/rickAndMortyApi";
 import snackbar from "./slices/snackbar";
 import { spotifyApi } from "./services/spotifyApi";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import themeMode from "./slices/themeMode";
 
 //?https://redux-toolkit.js.org/rtk-query/usage/persistence-and-rehydration talks about persisting the api reducer
 
@@ -19,7 +18,7 @@ import themeMode from "./slices/themeMode";
 const persistConfig = {
 	key: "root",
 	storage,
-	whitelist: ["authorization", "themeMode"],
+	whitelist: ["authorization"],
 	blacklist: [rickAndMortyApi.reducerPath, "connectionStatus", "snackbar", "passwordAuthorization"],
 };
 
@@ -28,7 +27,6 @@ const rootReducer = combineReducers({
 	snackbar,
 	connectionStatus,
 	authorization,
-	themeMode,
 	passwordAuthorization,
 	[accountApi.reducerPath]: accountApi.reducer,
 	[spotifyApi.reducerPath]: spotifyApi.reducer,

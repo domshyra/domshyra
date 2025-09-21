@@ -1,10 +1,6 @@
 import * as colors from "./colors";
 
-import base from "./base";
-import { createTheme } from "@mui/material/styles";
-
-const dark = createTheme({
-	...base,
+const dark = {
 	palette: {
 		mode: "dark",
 		text: {
@@ -50,32 +46,6 @@ const dark = createTheme({
 			cyan: colors.cyan,
 		},
 	},
-	components: {
-		...base.components,
-		MuiSlider: {
-			styleOverrides: {
-				root: {
-					"& .MuiSlider-thumb": {
-						backgroundColor: colors.darkDefault,
-					},
-					"& .MuiSlider-mark": {
-						color: colors.lightDefault,
-					},
-				},
-			},
-		},
-		MuiCssBaseline: {
-			styleOverrides: `
-                *::-webkit-scrollbar-track {
-                    background: ${colors.greyDarkest};
-                }
-                *::-webkit-scrollbar-thumb {
-                    background-color: ${colors.greyMain};
-                }
-            `,
-		},
-	},
-});
+};
 
 export default dark;
-export { dark as darkTheme };

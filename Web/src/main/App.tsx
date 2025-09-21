@@ -1,13 +1,16 @@
 import { RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { account, notFound, root, settings, stationsWithId } from "@constants/routes";
+import { about, account, notFound, root, settings, stations, stationsWithId, work } from "@constants/routes";
 
+import About from "@pages/about/About";
 import CrumbLink from "src/fragments/breadcrumbs/CrumbLink";
+import Home from "@pages/Home";
 import Layout from "./Layout";
 import Login from "@pages/login/LoginPage";
 import NotFound from "@pages/NotFound";
-import PlaylistDetails from "@components/playlist/PlaylistCardDetails";
-import Radio from "@pages/Radio";
 import Settings from "@pages/settings/Settings";
+import StationDetails from "@pages/stationDetails/StationDetails";
+import Stations from "@pages/Stations";
+import WorkHistory from "@pages/work/WorkHistory";
 
 const routes: RouteObject[] = [
 	{
@@ -15,30 +18,44 @@ const routes: RouteObject[] = [
 		children: [
 			{
 				path: root,
-
+				Component: Home,
+				index: true,
+			},
+			{
+				path: stations,
+				handle: {
+					crumb: () => <CrumbLink to={root} text="Home" />,
+				},
 				children: [
-					{ Component: Radio, index: true },
+					{ Component: Stations, index: true },
 					{
-						Component: PlaylistDetails,
+						Component: StationDetails,
 						path: stationsWithId,
 						handle: {
-							crumb: () => <CrumbLink to={root} text="Radio" />,
+							crumb: () => <CrumbLink to={stations} text="Stations" />,
 						},
 					},
 				],
 			},
 			{
-				path: account,
-				Component: Login,
+				path: about,
+				handle: {
+					crumb: () => <CrumbLink to={root} text="Home" />,
+				},
+				children: [
+					{ Component: About, index: true },
+					{
+						Component: WorkHistory,
+						path: `${about}/${work}`,
+						handle: {
+							crumb: () => <CrumbLink to={about} text="About" />,
+						},
+					},
+				],
 			},
-			{
-				path: settings,
-				Component: Settings,
-			},
-			{
-				path: notFound,
-				Component: NotFound,
-			},
+			{ path: account, Component: Login },
+			{ path: settings, Component: Settings },
+			{ path: notFound, Component: NotFound },
 		],
 	},
 ];

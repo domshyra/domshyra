@@ -1,4 +1,4 @@
-import PlaylistCardDetailsView from "./PlaylistCardDetailsView";
+import PlaylistCardDetailsView from "./StationDetailsView";
 import { useEffect } from "react";
 import { useGetPlaylistQuery } from "@redux/services/spotifyApi";
 import { useParams } from "react-router-dom";

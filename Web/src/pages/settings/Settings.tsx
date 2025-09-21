@@ -1,26 +1,27 @@
-import { setCvdMode, setDarkMode, setLightMode } from "@slices/themeMode";
-import { startTransition, useCallback } from "react";
+import { useColorScheme, useMediaQuery, useTheme } from "@mui/material";
 
+import BedtimeIcon from "@mui/icons-material/Bedtime";
+import ComputerIcon from "@mui/icons-material/Computer";
 import SettingsView from "./SettingView";
-import { useAppDispatch } from "@redux/hooks";
+import SmartphoneIcon from "@mui/icons-material/Smartphone";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import { useCallback } from "react";
 
 export default function Settings() {
-	const dispatch = useAppDispatch();
+	const theme = useTheme();
+	const { mode, setMode } = useColorScheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-	const activateDarkMode = useCallback(() => {
-		startTransition(() => {
-			dispatch(setDarkMode());
-		});
-	}, [dispatch]);
-	const activateLightMode = useCallback(() => {
-		startTransition(() => {
-			dispatch(setLightMode());
-		});
-	}, [dispatch]);
-	const activateCvdMode = useCallback(() => {
-		startTransition(() => {
-			dispatch(setCvdMode());
-		});
-	}, [dispatch]);
-	return <SettingsView activateCvdMode={activateCvdMode} activateDarkMode={activateDarkMode} activateLightMode={activateLightMode} />;
+	const themeOptions = useCallback(
+		() => [
+			{ key: "light", label: "Light", icon: <WbSunnyIcon />, onchange: () => setMode("light") },
+			{ key: "dark", label: "Dark", icon: <BedtimeIcon />, onchange: () => setMode("dark") },
+			{ key: "system", label: "System", icon: isMobile ? <SmartphoneIcon /> : <ComputerIcon />, onchange: () => setMode("system") },
+		],
+		[isMobile, setMode]
+	);
+
+	const usingText = mode === "system" ? "system settings" : `${mode} mode`;
+
+	return <SettingsView usingText={usingText} themeOptions={themeOptions} />;
 }

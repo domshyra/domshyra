@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs as MuiBreadCrumbs, Typography, useTheme } from "@mui/material";
+import { Box, Breadcrumbs as MuiBreadCrumbs, Typography } from "@mui/material";
 import { Params, useMatches } from "react-router-dom";
 
 import React from "react";
@@ -16,7 +16,6 @@ type HandleType = {
 };
 
 const BreadCrumbs = () => {
-	const theme = useTheme();
 	const matches: IMatches[] = useMatches();
 	const crumbs = matches
 		.filter((match) => Boolean(match.handle && (match.handle as HandleType).crumb))
@@ -28,13 +27,13 @@ const BreadCrumbs = () => {
 	const currentCrumb = crumbs.pop();
 
 	const crumbsToRender = crumbs.map((crumb, index) => (
-		<Typography color={theme.palette.primary.main} key={index}>
+		<Typography color="inherit" key={index}>
 			{crumb}
 		</Typography>
 	));
 
 	return (
-		<Box sx={{ width: "100%", pb: 2 }}>
+		<Box sx={{ width: "100%", mb: 1 }}>
 			<MuiBreadCrumbs aria-label="breadcrumb" separator="-">
 				{crumbsToRender}
 				<Typography>{currentCrumb}</Typography>
