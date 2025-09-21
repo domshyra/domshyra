@@ -1,10 +1,10 @@
 import { Box, Collapse, Divider, List, ListItem, Paper, Typography, useTheme } from "@mui/material";
 import { ReactNode, memo } from "react";
 import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab";
-import { formatDateTime, getTimeLengthInYearsAndMonths } from "@tools/datetime";
 import { greyDarkest, greyLightest } from "@styles/themes/colors";
 
 import { JobDetails } from "./data";
+import WorkTimeSpan from "@fragments/WorkTimeSpan";
 
 export type JobDetailsTimelineItemProps = JobDetails & {
 	isFirstItem: boolean;
@@ -12,8 +12,6 @@ export type JobDetailsTimelineItemProps = JobDetails & {
 };
 
 const JobDetailsTimelineItem = ({ title, description, start, end, bullets, isFirstItem, isFirstCompanyItem }: JobDetailsTimelineItemProps) => {
-	const format = "MMM/YY";
-	const timespan = getTimeLengthInYearsAndMonths(start, end);
 	const theme = useTheme();
 	const htmlFontSize = theme.typography.htmlFontSize;
 
@@ -28,21 +26,10 @@ const JobDetailsTimelineItem = ({ title, description, start, end, bullets, isFir
 				<Typography textAlign="left" color="text.primary" variant="h6" fontWeight={700} pb={0} mb={-1}>
 					{title}
 				</Typography>
-				<Typography pb={2} variant="caption" color="text.secondary" fontWeight={300} mt={-1}>
-					{`${formatDateTime(start, format)} - ${end ? formatDateTime(end, format) : "Present"}`} ·{" "}
-					{timespan.years > 0 ? `${timespan.years} yr${timespan.years > 1 ? "s" : ""} ` : ""}
-					{timespan.months > 0 ? `${timespan.months} mo${timespan.months > 1 ? "s" : ""} ` : ""}
-				</Typography>
+				<WorkTimeSpan start={start} end={end} marginTop={-1} />
 				<Divider sx={{ color: "primary.main", pr: 10, mr: 10, pt: 0.5 }} />
 				<Box justifyContent="space-between" alignItems="center" sx={{ px: 1, mt: 1 }}>
-					<Typography
-						component="span"
-						variant="body2"
-						textAlign="left"
-						// color="text.secondary"
-						dangerouslySetInnerHTML={{ __html: description }}
-						mb={1}
-					/>
+					<Typography component="span" variant="body2" textAlign="left" dangerouslySetInnerHTML={{ __html: description }} mb={1} />
 				</Box>
 				{bullets && (
 					<Box sx={{ px: 1 }}>

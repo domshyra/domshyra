@@ -23,9 +23,9 @@ const AboutSection = ({ title, description, link, show }: AboutSection) => {
 				sx={{
 					cursor: "pointer",
 					height: {
-						md: "28vh",
-						lg: "23vh",
-						xl: "18vh",
+						md: "21vh",
+						lg: "22.5vh",
+						xl: "15.5vh",
 						xs: undefined,
 					},
 				}}

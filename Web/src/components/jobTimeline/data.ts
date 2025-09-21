@@ -69,8 +69,8 @@ export const jobDescription: JobDetails[] = [
 			"Developing a strong understanding of fashion trends, fit, and customer preferences and learning to communicate highly effectively.",
 			"Temporary manager for the holidays and learned leadership skills.",
 		],
-		start: new Date("2025-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
-		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+		start: new Date("2014-01-02 07:00:00 PST-0800 (Pacific Standard Time)"),
+		end: new Date("2016-01-08 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
 	{
 		company: jCrew,
@@ -81,14 +81,14 @@ export const jobDescription: JobDetails[] = [
 			"Working with customers to find the right fit and style.",
 			"Giving insight knowledge on the new items of the seasons and their design inspiration.",
 		],
-		start: new Date("2025-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
-		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+		start: new Date("2013-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+		end: new Date("2014-01-02 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
 	{
 		company: jCrew,
 		title: "Stock Associate",
 		description: "Stock associate helping with inventory, shipments, the sales floor and opening / closing the store.",
 		start: new Date("2012-01-08 07:00:00 PST-0800 (Pacific Standard Time)"),
-		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+		end: new Date("2013-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
 ];

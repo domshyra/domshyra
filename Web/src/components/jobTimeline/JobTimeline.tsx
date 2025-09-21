@@ -38,6 +38,20 @@ const JobTimeline = () => {
 							company={company}
 							isFirstItem={companyIndex === 0}
 							companyIcon={companyIcons.find((comp) => comp.label === company)?.icon}
+							start={
+								new Date(
+									Math.min(...jobDescription.filter((job) => job.company === company).map((job) => new Date(job.start).getTime()))
+								)
+							}
+							end={
+								new Date(
+									Math.max(
+										...jobDescription
+											.filter((job) => job.company === company)
+											.map((job) => (job?.end ? new Date(job.end).getTime() : Date.now()))
+									)
+								)
+							}
 						/>
 						{jobDescription
 							.filter((job) => job.company === company)

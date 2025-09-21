@@ -3,14 +3,17 @@ import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, Timeline
 import HomeIcon from "@mui/icons-material/Home";
 import { ReactNode } from "react";
 import { Typography } from "@mui/material";
+import WorkTimeSpan from "@fragments/WorkTimeSpan";
 
 export type CompanyTimelineItemProps = {
 	company: string;
 	isFirstItem?: boolean;
 	companyIcon?: ReactNode;
+	start: Date;
+	end?: Date;
 };
 
-const CompanyTimeLineItem = ({ company, isFirstItem, companyIcon }: CompanyTimelineItemProps) => {
+const CompanyTimeLineItem = ({ company, isFirstItem, companyIcon, start, end }: CompanyTimelineItemProps) => {
 	return (
 		<TimelineItem>
 			<TimelineSeparator>
@@ -31,6 +34,7 @@ const CompanyTimeLineItem = ({ company, isFirstItem, companyIcon }: CompanyTimel
 				<Typography variant="h5" color="primary" mb={0} textAlign="left" pb={isFirstItem ? 4 : 0}>
 					{company}
 				</Typography>
+				<WorkTimeSpan start={start} end={end} marginTop={isFirstItem ? -1 : 3.4} paddingLeft={1} />
 			</TimelineContent>
 		</TimelineItem>
 	);
