@@ -13,7 +13,11 @@ const AboutSection = ({ title, description, link, show }: AboutSection) => {
 	const nav = useNavigate();
 	if (show === false) return null;
 	return (
-		<Grid size={6} sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflowY: "ellipse" }} key={title}>
+		<Grid
+			size={{ xs: 12, sm: 10, md: 8 }}
+			sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflowY: "ellipse" }}
+			key={title}
+		>
 			<BorderPaper
 				onClick={() => nav(link)}
 				sx={{

@@ -9,7 +9,7 @@ const data = [
 		title: "Work History",
 		link: `${about}/${work}`,
 		description:
-			"Senior software engineer working in <b>React, .NET, Azure, SQL</b>, and <b>Terraform</b>, delivering web based SaaS applications that are scalable, intuitive, and impactful. I’ve built tools for companies like <b>Tesla, SpaceX, Nike, Meta</b>, and <b>Intel</b> at Currie & Brown, as well as modernized core systems at WSRB.",
+			"Senior Full Stack Software Engineer with a Bachelor's in Computer Science, working in <b>React, .NET, Azure, SQL</b>, and <b>Terraform</b>, delivering web-based SaaS applications that are scalable, intuitive, and impactful. I’ve built tools for companies like <b>Tesla, SpaceX, Nike, Meta</b>, and <b>Intel</b> at Currie & Brown, as well as modernized core systems at WSRB.",
 	},
 	{
 		title: "Skills",
@@ -62,8 +62,8 @@ const About = () => {
 				{data.map((section, index) => (
 					<AboutSection key={index} {...section} />
 				))}
+				<JobTimeline />
 			</Grid>
-			<JobTimeline />
 
 			{/* This will prob end up being it's own page, make sure to show responsibilities and what I did to make the company better. */}
 			{/* TODO:? would also be cool to build a timeline in the work history page */}

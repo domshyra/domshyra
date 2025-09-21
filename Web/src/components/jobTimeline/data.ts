@@ -1,7 +1,14 @@
-import { JobDetailsTimelineItemProps } from "@components/jobTimeline/JobDetailsTineLineItem";
+export type JobDetails = {
+	title: string;
+	company: string;
+	description: string;
+	bullets?: string[];
+	start: Date;
+	end?: Date;
+};
 
 //TODO! add bold facing some how to the data
-const jobDescription: JobDetailsTimelineItemProps[] = [
+export const jobDescription: JobDetails[] = [
 	{
 		company: "WSRB",
 		title: "Senior Software Engineer",
@@ -48,6 +55,36 @@ const jobDescription: JobDetailsTimelineItemProps[] = [
 		start: new Date("2017-02-02 07:00:00 PST-0800 (Pacific Standard Time)"),
 		end: new Date("2021-07-07 07:00:00 PST-0800 (Pacific Standard Time)"),
 	},
+	{
+		company: "J. Crew",
+		title: "Personal Shopper / Stylist",
+		description: "Very Personal Stylist specializing in menswear and Crewcuts (J. Crew's kids line).",
+		bullets: [
+			"Managing client relationships and styling for events such as weddings, proms, and everyday wear.",
+			"Back to school events and styling.",
+			"Developing a strong understanding of fashion trends, fit, and customer preferences and learning to communicate highly effectively.",
+			"Temporary manager for the holidays and learned leadership skills.",
+		],
+		start: new Date("2025-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+	},
+	{
+		company: "J. Crew",
+		title: "Sales Associate",
+		description: "Sales associate for menswear and Crewcuts (J. Crew's kids line).",
+		bullets: [
+			"Helping with product insights, customer service, and styling.",
+			"Working with customers to find the right fit and style.",
+			"Giving insight knowledge on the new items of the seasons and their design inspiration.",
+		],
+		start: new Date("2025-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+	},
+	{
+		company: "J. Crew",
+		title: "Stock Associate",
+		description: "Stock associate helping with inventory, shipments, the sales floor and opening / closing the store.",
+		start: new Date("2012-01-08 07:00:00 PST-0800 (Pacific Standard Time)"),
+		end: new Date("2026-01-01 07:00:00 PST-0800 (Pacific Standard Time)"),
+	},
 ];
-
-export { jobDescription };
