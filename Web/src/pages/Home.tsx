@@ -6,13 +6,13 @@ import { aboutMeElevatorPitch } from "@constants/data";
 
 const data: HomeSection[] = [
 	{
-		title: "Stations Section",
+		title: "Stations",
 		description:
 			"Radio stations I've curated on <b>Spotify</b> for different seasons, moods, and activities. From hip hop to instrumentals, I have a love of music and sharing it is the oldest form of story telling.",
 		link: stations,
 	},
 	{
-		title: "About Me Section",
+		title: "About Me",
 		description: aboutMeElevatorPitch,
 		link: about,
 	},
