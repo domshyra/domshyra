@@ -19,10 +19,27 @@ export function parseRelativeDateTime(at: string) {
 	const date = new Date(JSON.parse(at));
 	return dayjs(date).fromNow();
 }
+
+export function getTimeLength(start: Date, end?: Date) {
+	const endDate = end || new Date();
+	const startDayJs = dayjs(start);
+	const endDayJs = dayjs(endDate);
+	return endDayJs.diff(startDayJs);
+}
+export function getTimeLengthInYearsAndMonths(start: Date, end?: Date) {
+	const endDate = end || new Date();
+	const startDayJs = dayjs(start);
+	const endDayJs = dayjs(endDate);
+	const years = endDayJs.diff(startDayJs, "year");
+	const months = endDayJs.diff(startDayJs.add(years, "year"), "month");
+	return { years, months };
+}
+
 /**
  * Formats a dayjs date time string
  * @param date
- * @returns
+ * @param formatTypeParam
+ * @returns {string}
  */
 export function formatDateTime(date: Date, formatTypeParam?: string): string {
 	const format = formatTypeParam || formatType;

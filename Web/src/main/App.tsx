@@ -39,14 +39,14 @@ const routes: RouteObject[] = [
 			},
 			{
 				path: about,
-				Component: About,
 				handle: {
 					crumb: () => <CrumbLink to={root} text="Home" />,
 				},
 				children: [
+					{ Component: About, index: true },
 					{
-						path: work,
 						Component: Work,
+						path: `${about}/${work}`,
 						handle: {
 							crumb: () => <CrumbLink to={about} text="About" />,
 						},

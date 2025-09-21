@@ -1,0 +1,2 @@
+export const aboutMeElevatorPitch =
+	"I’m a full stack software engineer who solves both technical and creative problems. My work spans <b>React, .NET, Azure, SQL</b>, and <b>Terraform</b>, delivering web based SaaS applications that are scalable, intuitive, and impactful. I’ve built tools for companies like <b>Tesla, SpaceX, Nike, Meta</b>, and <b>Intel</b> at Currie & Brown, as well as modernized core systems at WSRB. I believe that design and development are both hard skills, and software should not only work — but work intuitively and tell a story.";

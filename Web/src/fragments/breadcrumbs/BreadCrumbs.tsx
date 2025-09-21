@@ -34,7 +34,7 @@ const BreadCrumbs = () => {
 	));
 
 	return (
-		<Box sx={{ width: "100%", mb: -2 }}>
+		<Box sx={{ width: "100%", mb: 1 }}>
 			<MuiBreadCrumbs aria-label="breadcrumb" separator="-">
 				{crumbsToRender}
 				<Typography>{currentCrumb}</Typography>
