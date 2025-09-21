@@ -1,14 +1,14 @@
 import * as jsonpatch from "fast-json-patch";
 
 import { AutoSaveRecord, UseAutoSaveProps, mutationSuccess } from "@_types/autosave";
-import { SnackbarMessage, setSnackbar } from "@redux/slices/snackbar";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { useCallback, useEffect, useState } from "react";
 
 import { Dictionary } from "../types/common";
 import { UseFormResetField } from "react-hook-form";
 import { isProd } from "@tools/env";
+import { useAppSelector } from "@redux/hooks";
 import { useBeforeUnload } from "react-router-dom";
+import useSnackbarMessage from "./useSnackbarMessage";
 
 //2 seconds for local/dev, 5 seconds for deployed
 const autoSaveInterval = isProd() ? 5000 : 2000;
@@ -24,14 +24,7 @@ needing to be saved in the backend.
 export default function useAutoSave({ defaultValues, isDirty, getValues, resetField, id, label, rtkQueryMutation }: UseAutoSaveProps) {
 	const { online } = useAppSelector((state) => state.connectionStatus);
 	const [failedState, setFailedState] = useState(false);
-	const dispatch = useAppDispatch();
-
-	const setSnackbarMessage = useCallback(
-		(message: SnackbarMessage) => {
-			dispatch(setSnackbar({ show: true, message: message.message, severity: message.severity }));
-		},
-		[dispatch]
-	);
+	const setSnackbarMessage = useSnackbarMessage();
 
 	const [shouldAutoSave, setShouldAutoSave] = useState<null | boolean>(null);
 	const [savedAt, setSavedAt] = useState<null | Date>(null);
@@ -47,11 +40,11 @@ export default function useAutoSave({ defaultValues, isDirty, getValues, resetFi
 					setShouldAutoSave(false); // turn autosave off
 				}
 				if (response.saveTime) {
-					setSnackbarMessage({ show: true, message: `${label} saved at ${response.saveTime}` });
+					setSnackbarMessage({ message: `${label} saved at ${response.saveTime}` });
 					handleSave(new Date());
 				}
 			} else {
-				setSnackbarMessage({ show: true, message: "There was an error saving. Please try again later.", severity: "error" });
+				setSnackbarMessage({ message: "There was an error saving. Please try again later.", severity: "error" });
 			}
 		},
 		[handleSave, label, setSnackbarMessage]
@@ -67,7 +60,7 @@ export default function useAutoSave({ defaultValues, isDirty, getValues, resetFi
 		});
 		handleMutation(response);
 		if (response === null) {
-			setSnackbarMessage({ show: true, message: "Cannot save current page. Please refresh", severity: "error" });
+			setSnackbarMessage({ message: "Cannot save current page. Please refresh", severity: "error" });
 			setFailedState(true);
 			setShouldAutoSave(false);
 		}

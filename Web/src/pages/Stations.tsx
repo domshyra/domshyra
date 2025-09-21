@@ -2,7 +2,9 @@ import { Grid, Typography } from "@mui/material";
 
 import PlaylistCard from "@components/playlist/PlaylistCard";
 import { playlist } from "@_types/playlist";
+import { useEffect } from "react";
 import { useGetPlaylistsQuery } from "@redux/services/spotifyApi";
+import useSnackbarMessage from "@hooks/useSnackbarMessage";
 
 const CardGridItem = (props: { children: React.ReactNode; item: playlist }) => {
 	const { children, item } = props;
@@ -14,7 +16,16 @@ const CardGridItem = (props: { children: React.ReactNode; item: playlist }) => {
 };
 
 const Stations = () => {
-	const { data: cards, isLoading } = useGetPlaylistsQuery();
+	const { data: cards, isLoading, error, isError } = useGetPlaylistsQuery();
+	const setSnackbarMessage = useSnackbarMessage();
+
+	useEffect(() => {
+		if (isError) {
+			setSnackbarMessage({ message: "Error loading stations, please try again later", severity: "error" });
+			//TODO: use sentry io
+			console.error("Error loading stations", error);
+		}
+	}, [isError, error, setSnackbarMessage]);
 
 	const renderCards = (data: playlist[]) => {
 		return data.map((item) => (
@@ -39,7 +50,7 @@ const Stations = () => {
 				Radio stations I've curated on Spotify for different seasons, moods, and activities.
 			</Typography>
 			<Grid container sx={{ width: "100%" }}>
-				{!isLoading ? renderCards(cards!) : loadingCards}
+				{!isLoading ? renderCards(cards ?? []) : loadingCards}
 			</Grid>
 		</Grid>
 	);

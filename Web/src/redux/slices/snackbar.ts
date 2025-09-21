@@ -8,6 +8,7 @@ export type SnackbarMessage = {
 	link?: string;
 	message: string;
 	show: boolean;
+	duration?: number;
 };
 
 const initialState: SnackbarMessage = {
@@ -15,6 +16,7 @@ const initialState: SnackbarMessage = {
 	link: "",
 	message: "",
 	show: false,
+	duration: 5000,
 };
 
 /* istanbul ignore next */
@@ -29,11 +31,15 @@ const snackbar = createSlice({
 				message: action.payload.message,
 				link: action.payload.link,
 				severity: action.payload.severity,
+				duration: action.payload.duration ?? initialState.duration,
 			};
+		},
+		resetSnackbar: () => {
+			return initialState;
 		},
 	},
 });
 
-export const { setSnackbar } = snackbar.actions;
+export const { setSnackbar, resetSnackbar } = snackbar.actions;
 
 export default snackbar.reducer;
