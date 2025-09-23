@@ -1,17 +1,22 @@
+import { Grid, Typography } from "@mui/material";
+import { data, workHistory } from "@pages/about/data";
+
 import JobTimeline from "@components/jobTimeline/JobTimeline";
-import { Typography } from "@mui/material";
 
 const WorkHistory = () => {
-	/* This will prob end up being it's own page, make sure to show responsibilities and what I did to make the company better. */
-	/* TODO:? would also be cool to build a timeline in the work history page */
-	/* What was the most fun thing I could work on for each project? C&B was the tree's and what if for blocks */
-	/* templates and msal-selenium for wsrb, modernizing things and bringing the team new technologies and best practices, for many a things */
-
 	return (
 		<>
-			<Typography pb={0} variant="h4" textAlign="center" color="primary" sx={{ width: "100%" }}>
-				Work History
+			<Typography pb={1} variant="h4" textAlign="center" color="primary" sx={{ width: "100%" }}>
+				{workHistory}
 			</Typography>
+			<Grid size={{ xs: 12, sm: 10, md: 8 }} sx={{ margin: "0 auto", pb: 1, px: { sm: 4, lg: 6 } }}>
+				<Typography
+					variant="caption"
+					color="text.secondary"
+					fontWeight={400}
+					dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === workHistory)?.description || "" }}
+				/>
+			</Grid>
 			<JobTimeline />
 		</>
 	);

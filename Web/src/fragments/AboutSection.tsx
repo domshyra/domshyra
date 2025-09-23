@@ -35,7 +35,7 @@ const AboutSection = ({ title, description, link, show }: AboutSection) => {
 						{title}
 					</Box>
 				</Typography>
-				<Divider sx={{ color: "primary.dark", my: 1, mx: 2 }} />
+				<Divider sx={{ color: "primary.main", my: 1, mx: 2 }} />
 				<Typography variant="caption" color="text.secondary" fontWeight={400} dangerouslySetInnerHTML={{ __html: description }} />
 			</BorderPaper>
 		</Grid>

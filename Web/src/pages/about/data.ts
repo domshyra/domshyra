@@ -1,8 +1,10 @@
 import { about, work } from "@constants/routes";
 
+export const workHistory = "Work History";
+
 export const data = [
 	{
-		title: "Work History",
+		title: workHistory,
 		link: `${about}/${work}`,
 		description:
 			"Senior Full Stack Software Engineer with a Bachelor's in Computer Science, working in <b>React, .NET, Azure, SQL</b>, and <b>Terraform</b>, delivering web-based SaaS applications that are scalable, intuitive, and impactful. I’ve built tools for companies like <b>Tesla, SpaceX, Nike, Meta</b>, and <b>Intel</b> at Currie & Brown, as well as modernized core systems at WSRB.",
