@@ -1,8 +1,8 @@
 import { Box, Collapse, Divider, List, ListItem, Typography, useTheme } from "@mui/material";
 import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab";
 
+import JobBullets from "./JobBullets";
 import { JobDetails } from "./data";
-import JobPaper from "./JobPaper";
 import WorkTimeSpan from "@fragments/WorkTimeSpan";
 
 export type JobDetailsTimelineItemProps = JobDetails & {
@@ -32,7 +32,7 @@ const JobDetailsTimelineItem = ({ title, description, start, end, bullets, isFir
 				</Box>
 				{bullets && (
 					<Box sx={{ px: 1 }}>
-						<JobPaper mode={theme.palette.mode} htmlFontSize={htmlFontSize}>
+						<JobBullets htmlFontSize={htmlFontSize}>
 							<Collapse orientation="horizontal" in={true}>
 								<List sx={{ listStyleType: "disc", pl: 3 }} dense>
 									{bullets &&
@@ -49,7 +49,7 @@ const JobDetailsTimelineItem = ({ title, description, start, end, bullets, isFir
 										))}
 								</List>
 							</Collapse>
-						</JobPaper>
+						</JobBullets>
 					</Box>
 				)}
 			</TimelineContent>
