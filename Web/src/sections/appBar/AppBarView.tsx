@@ -13,7 +13,11 @@ const AppBarView = (props: AppBarViewProps) => {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<MuiAppBar position="static" color="default" sx={{ boxShadow: theme.palette.mode === "dark" ? theme.shadows[3] : theme.shadows[2] }}>
+			<MuiAppBar
+				position="static"
+				color="default"
+				sx={[{ boxShadow: theme.shadows[3] }, (theme) => theme.applyStyles("dark", { boxShadow: theme.shadows[2] })]}
+			>
 				<Toolbar>
 					<SmallScreenMenu
 						accessToken={accessToken}

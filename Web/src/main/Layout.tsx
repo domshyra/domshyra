@@ -1,6 +1,6 @@
 import "@styles/App.css";
 
-import { Box, Container, CssBaseline, IconButton, Link, Paper, ThemeProvider, Typography } from "@mui/material";
+import { Box, Container, CssBaseline, IconButton, InitColorSchemeScript, Link, Paper, ThemeProvider, Typography } from "@mui/material";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 
 import AppBar from "@sections/appBar/AppBar";
@@ -25,6 +25,7 @@ function Layout() {
 		<JoyCssVarsProvider>
 			<ThemeProvider theme={theme} defaultMode="system">
 				<CssBaseline enableColorScheme />
+				<InitColorSchemeScript attribute="class" />
 				<PageTitle />
 				<AppBar />
 				<OfflineAlert />

@@ -89,11 +89,11 @@ const base = createTheme({
 						"&:hover, &.Mui-focusVisible, &.Mui-active": {
 							boxShadow: "none",
 						},
-						backgroundColor: (theme: Theme) => (theme.palette.mode === "dark" ? colors.darkDefault : colors.white),
+						backgroundColor: (theme: Theme) => (colors.white, theme.applyStyles("dark", { backgroundColor: colors.greyDarkest })),
 					},
 					"& .MuiSlider-mark": {
 						height: tickHeight, // Default was too short
-						color: (theme: Theme) => (theme.palette.mode === "dark" ? colors.lightDefault : "inherit"),
+						color: (theme: Theme) => theme.applyStyles("dark", { color: colors.lightDefault }),
 					},
 					...transitionProperties,
 				}),
@@ -129,9 +129,9 @@ const base = createTheme({
 		},
 		MuiPaper: {
 			styleOverrides: {
-				root: () => ({
+				root: {
 					...transitionProperties,
-				}),
+				},
 			},
 		},
 		MuiAppBar: {
@@ -157,7 +157,7 @@ const base = createTheme({
 					},
 					"& *::-webkit-scrollbar-track": {
 						borderRadius: "8px",
-						background: theme.palette.mode === "dark" ? colors.greyDarkest : colors.greyLightest,
+						background: (colors.greyLightest, theme.applyStyles("dark", { backgroundColor: colors.greyDarkest })),
 					},
 					"& *::-webkit-scrollbar-thumb": {
 						borderRadius: "8px",
@@ -167,6 +167,7 @@ const base = createTheme({
 					//TODO! some how the background color transition is not working here, also tried to use this below and didn't seem to get it
 					// nor did using a body in app.css work
 					//? https://mui.com/material-ui/customization/css-theme-variables/configuration/#toggling-dark-mode-manually
+					//TOOD! srill a flicker https://mui.com/material-ui/customization/css-theme-variables/configuration/#toggling-dark-mode-manually
 				},
 			}),
 		},
