@@ -13,7 +13,7 @@ import { skillsList } from "@pages/skills/data";
 const About = () => {
 	return (
 		<>
-			<Typography pb={0.5} textAlign="center" variant="h4" sx={{ width: "100%" }}>
+			<Typography pb={0.5} textAlign="center" color="primary.main" variant="h4" sx={{ width: "100%" }}>
 				About
 			</Typography>
 			<Typography
