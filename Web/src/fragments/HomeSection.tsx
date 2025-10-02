@@ -7,9 +7,11 @@ export type HomeSection = {
 	title: string;
 	description: string;
 	link: string;
+	show?: boolean;
 };
-const BorderSection = ({ title, description, link }: HomeSection) => {
+const BorderSection = ({ title, description, link, show }: HomeSection) => {
 	const nav = useNavigate();
+	if (show === false) return null;
 	return (
 		<Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflowY: "ellipse" }} key={title}>
 			<BorderPaper
@@ -25,7 +27,7 @@ const BorderSection = ({ title, description, link }: HomeSection) => {
 				}}
 			>
 				<Typography variant="h4" color="secondary" noWrap component="div" fontWeight={500}>
-					<Box display="flex" justifyContent="center" color="primary.dark">
+					<Box display="flex" justifyContent="center" color="primary.main">
 						{title}
 					</Box>
 				</Typography>
