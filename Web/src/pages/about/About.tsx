@@ -38,16 +38,15 @@ const About = () => {
 				pb={{ md: 4, xs: 1 }}
 				pt={2}
 			>
-				<Stack direction="row" sx={{ width: "100%", justifyContent: "space-between", display: "flex" }} spacing={1}>
-					<Grid size={{ xs: 12, lg: 6 }}>
+				<Stack direction="row" sx={{ display: { xs: "block", md: "flex" }, width: "100%", justifyContent: "space-between" }} spacing={1}>
+					<Grid size={{ xs: 12, md: 6 }}>
 						<Typography pb={1} variant="h6" textAlign="center" sx={{ width: "100%" }}>
 							{workHistory}
 						</Typography>
 						<JobTimeline />
 					</Grid>
-					<Divider orientation="vertical" flexItem sx={{ display: { xs: "none", lg: "block" } }} />
-					{/* <Grid size={{ xs: 0, lg: 1 }} /> */}
-					<Grid size={{ xs: 12, lg: 6 }}>
+					<Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
+					<Grid size={{ xs: 12, md: 6 }}>
 						<Box pt={1} px={2}>
 							<Typography pb={2} variant="h6" textAlign="center" sx={{ width: "100%" }}>
 								{skillsTitle}
