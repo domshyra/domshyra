@@ -22,7 +22,7 @@ const JobDetailsTimelineItem = ({ title, description, start, end, bullets, isFir
 				<TimelineConnector />
 			</TimelineSeparator>
 			<TimelineContent sx={{ ml: 2.5, mt: isFirstItem ? -1 : 2 }}>
-				<Typography textAlign="left" color="text.primary" variant="h6" fontWeight={700} pb={0} mb={-1}>
+				<Typography textAlign="left" color={theme.palette.primary.light} variant="h6" fontWeight={700} pb={0} mb={-1}>
 					{title}
 				</Typography>
 				<WorkTimeSpan start={start} end={end} marginTop={-1} />

@@ -29,7 +29,7 @@ const JobBullets = memo(({ htmlFontSize, children }: { htmlFontSize: number; chi
 	return (
 		<Box mb={2} pt={0.5}>
 			<Paper
-				elevation={0}
+				elevation={1}
 				ref={ref}
 				sx={{
 					width: "100%",
@@ -40,6 +40,9 @@ const JobBullets = memo(({ htmlFontSize, children }: { htmlFontSize: number; chi
 					scrollbarGutter: "stable",
 					overflow: showMore ? "none" : "scroll",
 					px: 0.5,
+					borderColor: "divider",
+					borderWidth: 1,
+					borderStyle: "solid",
 				}}
 			>
 				{children}

@@ -5,14 +5,19 @@
  */
 export const root = "/";
 export const about = "/about";
-export const work = "work";
-export const account = "/account";
 export const notFound = "*";
+export const settings = "/settings";
+
+// #region account
+export const work = "work";
+export const skills = "skills";
+export const account = "/account";
+
+// #endregion
+
+// #region stations
 export const stations = "/stations";
 export const stationsWithId = `${stations}/:id`;
-export const settings = "/settings";
-export const muiComponents = "components";
-export const muiCharts = "charts";
-
+// #endregion
 
 
