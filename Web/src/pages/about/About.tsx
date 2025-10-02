@@ -13,7 +13,7 @@ import { skillsList } from "@pages/skills/data";
 const About = () => {
 	return (
 		<>
-			<Typography pb={0.5} textAlign="center" color="primary.main" variant="h4" sx={{ width: "100%" }}>
+			<Typography pb={0.5} textAlign="center" variant="h4" sx={{ width: "100%" }}>
 				About
 			</Typography>
 			<Typography
@@ -40,17 +40,31 @@ const About = () => {
 			>
 				<Stack direction="row" sx={{ display: { xs: "block", md: "flex" }, width: "100%", justifyContent: "space-between" }} spacing={1}>
 					<Grid size={{ xs: 12, md: 6 }}>
-						<Typography pb={1} variant="h6" textAlign="center" sx={{ width: "100%" }}>
+						<Typography variant="h6" textAlign="center" sx={{ cursor: "pointer" }}>
 							{workHistory}
 						</Typography>
+						{/* <Typography
+							textAlign="center"
+							variant="caption"
+							fontWeight={400}
+							dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === workHistory)?.description || "" }}
+							sx={{ px: 2 }}
+							pb={1}
+						/> */}
 						<JobTimeline />
 					</Grid>
 					<Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 					<Grid size={{ xs: 12, md: 6 }}>
 						<Box pt={1} px={2}>
-							<Typography pb={2} variant="h6" textAlign="center" sx={{ width: "100%" }}>
+							<Typography pb={2} variant="h6" textAlign="center">
 								{skillsTitle}
 							</Typography>
+							{/* <Typography
+								textAlign="center"
+								variant="caption"
+								fontWeight={400}
+								dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === skillsTitle)?.description || "" }}
+							/> */}
 							{skillsList.map((skill, index) => (
 								<Skill key={index} {...skill} />
 							))}

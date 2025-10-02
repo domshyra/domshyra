@@ -22,12 +22,14 @@ export const data: HomeSection[] = [
 	{
 		title: workHistory,
 		link: `${about}/${work}`,
+		show: false,
 		description:
 			"Senior Full Stack Software Engineer with a Bachelor's in Computer Science, working in <b>React, .NET, Azure, SQL</b>, and <b>Terraform</b>, delivering web-based SaaS applications that are scalable, intuitive, and impactful. I’ve built tools for companies like <b>Tesla, SpaceX, Nike, Meta</b>, and <b>Intel</b> at Currie & Brown, as well as modernized core systems at WSRB.",
 	},
 	{
 		title: skillsTitle,
 		link: `${about}/${skills}`,
+		show: false,
 		description:
 			"Building scalable, cloud-based applications using <b>C#, .NET, React, TypeScript, JavaScript, HCL, and SQL</b>. My work spans intuitive front-end development in <b>React</b>, to back-end systems with <b>Entity Framework</b> and secure <b>REST APIs</b>. Using Microsoft Azure with Terraform, supported by automated testing with <b>Selenium, Jest, Vitest, Xunit, and React Testing Library</b>. I focus on clean architecture, efficient workflows, and mentoring teams to uphold strong coding standards and best practices.",
 	},

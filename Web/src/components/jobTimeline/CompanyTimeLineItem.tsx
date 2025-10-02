@@ -31,7 +31,7 @@ const CompanyTimeLineItem = ({ company, isFirstItem, companyIcon, start, end }: 
 					display: "flex",
 				}}
 			>
-				<Typography variant="h5" color="primary" mb={0} textAlign="left" pb={isFirstItem ? 4 : 0}>
+				<Typography variant="h5" mb={0} textAlign="left" pb={isFirstItem ? 4 : 0}>
 					{company}
 				</Typography>
 				<WorkTimeSpan start={start} end={end} marginTop={isFirstItem ? -1 : 3.4} paddingLeft={1} />

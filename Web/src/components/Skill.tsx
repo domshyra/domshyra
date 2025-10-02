@@ -1,13 +1,22 @@
-import { Box, Card, Divider, Paper, Typography } from "@mui/material";
+import { Box, Card, Divider, Paper, Typography, useTheme } from "@mui/material";
 
+import { ColorNamePallet } from "@styles/themes/base";
 import { Skill as SkillType } from "@pages/skills/data";
 
+declare module "@mui/material/styles" {
+	interface Palette {
+		colors: ColorNamePallet;
+	}
+}
+
 const Skill = ({ title, description, icon }: SkillType) => {
+	const theme = useTheme();
+
 	return (
 		<Card component={Paper} variant="outlined" sx={{ p: 2, mb: 2 }}>
 			<Typography
 				textAlign="left"
-				color="primary.light"
+				color={theme.palette.primary.light}
 				variant="h6"
 				fontWeight={700}
 				pb={0}

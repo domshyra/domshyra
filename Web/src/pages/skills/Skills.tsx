@@ -7,7 +7,7 @@ import { skillsList } from "./data";
 const Skills = () => {
 	return (
 		<>
-			<Typography pb={1} variant="h4" textAlign="center" color="primary" sx={{ width: "100%" }}>
+			<Typography pb={1} variant="h4" textAlign="center" sx={{ width: "100%" }}>
 				{skillsTitle}
 			</Typography>
 			<Grid size={{ xs: 12, sm: 10, md: 8 }} sx={{ margin: "0 auto", px: { sm: 4, lg: 6 } }}>
