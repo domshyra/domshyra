@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { data, skillsTitle } from "@pages/home/data";
 
 import Skill from "@components/Skill";
+import SkillsTable from "./SkillsTable";
 import { skillsList } from "./data";
 
 const Skills = () => {
@@ -29,6 +30,9 @@ const Skills = () => {
 						<Skill {...skill} />
 					</Grid>
 				))}
+				<Grid size={{ md: 6, sm: 8 }}>
+					<SkillsTable />
+				</Grid>
 			</Grid>
 		</>
 	);

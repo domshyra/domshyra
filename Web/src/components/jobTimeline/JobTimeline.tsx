@@ -1,5 +1,5 @@
 import { Timeline, timelineItemClasses } from "@mui/lab";
-import { currieAndBrown, jCrew, wsrb } from "./data";
+import { currieAndBrown, jCrew, wsrb } from "@constants/common";
 
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import CompanyTimeLineItem from "./CompanyTimeLineItem";
@@ -53,8 +53,13 @@ const JobTimeline = () => {
 					{jobDescription
 						.filter((job) => job.company === company)
 						.map((filteredJob, index) => (
-							//use the companyIndex index cause it's only the first item on the timeline we wanna adjust
-							<JobDetailsTimelineItem key={index} {...filteredJob} isFirstItem={index === 0} isFirstCompanyItem={companyIndex === 0} />
+							<JobDetailsTimelineItem
+								key={index}
+								{...filteredJob}
+								isFirstItem={index === 0}
+								isFirstCompanyItem={companyIndex === 0}
+								isLastItem={index === jobDescription.filter((job) => job.company === company).length - 1}
+							/>
 						))}
 				</React.Fragment>
 			))}

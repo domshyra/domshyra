@@ -10,7 +10,7 @@ const Home = () => {
 			direction="row"
 			alignItems="center"
 			justifyContent="center"
-			sx={{ minHeight: { xs: "20vh", md: "60vh", lg: "70vh" } }}
+			sx={{ minHeight: { xs: "20vh", md: "60vh", lg: "70vh" }, overflowY: "ellipse" }}
 			pb={{ md: 4, xs: 1 }}
 		>
 			{data.map((section, index) => (

@@ -1,9 +1,5 @@
-import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
-import { aboutMeTitle, data, skillsTitle, workHistory } from "@pages/home/data";
-
-import JobTimeline from "@components/jobTimeline/JobTimeline";
-import Skill from "@components/Skill";
-import { skillsList } from "@pages/skills/data";
+import { Typography } from "@mui/material";
+import { aboutMeExtendedPitch } from "@constants/data";
 
 //TODO? use some animations for section transitions, like fade in or slide in
 //? https://mobbin.com/sites/retool-57b95056-1028-4d7b-a14a-c22f6c8694b6/65564b72-19e0-4bb7-b31e-288a72b5989a/preview
@@ -13,7 +9,7 @@ import { skillsList } from "@pages/skills/data";
 const About = () => {
 	return (
 		<>
-			<Typography pb={0.5} textAlign="center" variant="h4" sx={{ width: "100%" }}>
+			<Typography textAlign="center" variant="h4" sx={{ width: "100%" }}>
 				About
 			</Typography>
 			<Typography
@@ -21,57 +17,15 @@ const About = () => {
 				variant="caption"
 				color="text.secondary"
 				fontWeight={400}
-				sx={{ width: "100%", mx: { xs: 2, md: 20, lg: 40 } }}
-				dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === aboutMeTitle)?.description || "" }}
+				sx={{
+					width: "100%",
+					mx: { xs: 2, md: 20, lg: 40 },
+					whiteSpace: "pre-line",
+					mt: -4,
+					mb: 1,
+				}}
+				dangerouslySetInnerHTML={{ __html: aboutMeExtendedPitch }}
 			/>
-			<Typography textAlign="center" variant="caption" color="text.secondary" fontWeight={400} sx={{ width: "100%" }}>
-				Grew up in Portland Or, and out in Brooklyn Ny. <br />
-				<code>(this page is a work in progress)</code>
-			</Typography>
-			<Grid
-				container
-				spacing={4}
-				direction="row"
-				alignItems="center"
-				justifyContent="center"
-				sx={{ width: "100%" }}
-				pb={{ md: 4, xs: 1 }}
-				pt={2}
-			>
-				<Stack direction="row" sx={{ display: { xs: "block", md: "flex" }, width: "100%", justifyContent: "space-between" }} spacing={1}>
-					<Grid size={{ xs: 12, md: 6 }}>
-						<Typography variant="h6" textAlign="center" sx={{ cursor: "pointer" }}>
-							{workHistory}
-						</Typography>
-						{/* <Typography
-							textAlign="center"
-							variant="caption"
-							fontWeight={400}
-							dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === workHistory)?.description || "" }}
-							sx={{ px: 2 }}
-							pb={1}
-						/> */}
-						<JobTimeline />
-					</Grid>
-					<Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
-					<Grid size={{ xs: 12, md: 6 }}>
-						<Box pt={1} px={2}>
-							<Typography pb={2} variant="h6" textAlign="center">
-								{skillsTitle}
-							</Typography>
-							{/* <Typography
-								textAlign="center"
-								variant="caption"
-								fontWeight={400}
-								dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === skillsTitle)?.description || "" }}
-							/> */}
-							{skillsList.map((skill, index) => (
-								<Skill key={index} {...skill} />
-							))}
-						</Box>
-					</Grid>
-				</Stack>
-			</Grid>
 
 			{/* This will prob end up being it's own page, make sure to show responsibilities and what I did to make the company better. */}
 			{/* What was the most fun thing I could work on for each project? C&B was the tree's and what if for blocks */}

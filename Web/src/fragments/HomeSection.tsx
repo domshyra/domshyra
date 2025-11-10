@@ -13,14 +13,18 @@ const BorderSection = ({ title, description, link, show }: HomeSection) => {
 	const nav = useNavigate();
 	if (show === false) return null;
 	return (
-		<Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflowY: "ellipse" }} key={title}>
+		<Grid
+			size={{ xs: 12, md: 6, lg: 4 }}
+			sx={{ display: "flex", alignItems: "center", justifyContent: "center", overflowY: "ellipse" }}
+			key={title}
+		>
 			<BorderPaper
 				onClick={() => nav(link)}
 				sx={{
 					cursor: "pointer",
 					height: {
 						md: "28vh",
-						lg: "23vh",
+						lg: "29vh",
 						xl: "18vh",
 						xs: undefined,
 					},

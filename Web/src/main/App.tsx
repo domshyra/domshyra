@@ -11,7 +11,7 @@ import Settings from "@pages/settings/Settings";
 import Skills from "@pages/skills/Skills";
 import StationDetails from "@pages/stationDetails/StationDetails";
 import Stations from "@pages/Stations";
-import WorkHistory from "@pages/work/WorkHistory";
+import Work from "@pages/work/Work";
 
 const routes: RouteObject[] = [
 	{
@@ -46,7 +46,7 @@ const routes: RouteObject[] = [
 				children: [
 					{ Component: About, index: true },
 					{
-						Component: WorkHistory,
+						Component: Work,
 						path: `${about}/${work}`,
 						handle: {
 							crumb: () => <CrumbLink to={about} text="About" />,

@@ -1,3 +1,5 @@
+import { Arvixe, currieAndBrown, jCrew, wsrb } from "@constants/common";
+
 export type JobDetails = {
 	title: string;
 	company: string;
@@ -5,11 +7,13 @@ export type JobDetails = {
 	bullets?: string[];
 	start: Date;
 	end?: Date;
+	projects?: Project[];
 };
-
-export const currieAndBrown = "Currie & Brown";
-export const jCrew = "J. Crew";
-export const wsrb = "WSRB";
+type Project = {
+	title: string;
+	description: string;
+	bullets?: string[];
+};
 
 //TODO! add bold facing some how to the data
 export const jobDescription: JobDetails[] = [
@@ -58,6 +62,26 @@ export const jobDescription: JobDetails[] = [
 		],
 		start: new Date("2017-02-02T07:00:00-08:00"),
 		end: new Date("2021-07-07T07:00:00-08:00"),
+		projects: [
+			{
+				title: "Unit Rate Contracting System",
+				description: `A benchmarking tool for contractor bids, allowing companies to negotiate better rates based on historical data and market trends.
+					A system that performs analysis on construction unit rate contracts, allowing owners to compare how much it costs Contractor A vs Contractor B 
+					to perform the same job. Users input contractor rates and add multiple adjustments factors to a bill of quantity. Analysis of the resulting data is powerful, 
+					especially when similar scopes are compared over time`,
+				bullets: ["The project began in MVC then was converted to ASP.net Core 2.2, then to .NET 5 as the framework with react front end."],
+			},
+			{
+				title: "Purchase order tracking",
+				description:
+					"An application developed for Tesla to track construction purchase orders. It replaced the previous system of password protected Excel files. Eventually used by SpaceX as well.",
+				bullets: [
+					"Built a full stack web application using .NET Framework, C#, SQL Server, JavaScript, jQuery, and DevExpress.",
+					"This application has centralized all PO data and added roles/security.",
+					"With 1+ billion of dollars being tracked in the system.",
+				],
+			},
+		],
 	},
 	{
 		company: jCrew,
@@ -90,5 +114,20 @@ export const jobDescription: JobDetails[] = [
 		description: "Stock associate helping with inventory, shipments, the sales floor and opening / closing the store.",
 		start: new Date("2012-01-08T07:00:00-08:00"),
 		end: new Date("2013-01-01T07:00:00-08:00"),
+	},
+	{
+		company: Arvixe,
+		title: "UI/Ux Designer",
+		description: "UI/UX Designer for a web hosting company.",
+		bullets: [
+			"Led front-end redesign.",
+			"Updated out-of-date designs to modern and sleek designs for end users.",
+			"Educated Engineering Team on new practices.",
+			"Designed front-end website deployment strategy.",
+			"Refactored layouts and components to be user friendly and intuitive.",
+			"Defined and drove best practices surrounding web design components.",
+		],
+		start: new Date("2014-07-01T07:00:00-08:00"),
+		end: new Date("2014-10-10T07:00:00-08:00"),
 	},
 ];
