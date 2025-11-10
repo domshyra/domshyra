@@ -10,7 +10,7 @@ export type HomeSection = {
 	show?: boolean;
 	icon?: JSX.Element;
 };
-const BorderSection = ({ title, description, link, show, icon }: HomeSection) => {
+const BorderSection = ({ title, description, link, show }: HomeSection) => {
 	const nav = useNavigate();
 	if (show === false) return null;
 	return (

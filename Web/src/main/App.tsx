@@ -1,5 +1,5 @@
 import { RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { about, account, notFound, root, settings, skills, stations, stationsWithId, work, workHistory } from "@constants/routes";
+import { about, account, notFound, root, settings, skills, stations, stationsWithId, work } from "@constants/routes";
 
 import About from "@pages/about/About";
 import CrumbLink from "src/fragments/breadcrumbs/CrumbLink";
