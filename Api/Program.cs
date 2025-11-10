@@ -87,14 +87,14 @@ if (builder.Environment.IsProduction())
 {
   SentrySdk.Init(options =>
   {
-    options.Dsn = Environment.GetEnvironmentVariable("SentryDsn") ?? throw new ArgumentNullException("SentryDsn");
+    options.Dsn = builder.Configuration["Sentry:Dsn"] ?? throw new ArgumentNullException("SentryDsn");
     options.Debug = true;
     // Adds request URL and headers, IP and name for users, etc.
     options.SendDefaultPii = false;
     // A fixed sample rate of 0.2 - 20% of all transactions are getting sent
-    options.TracesSampleRate = float.Parse(Environment.GetEnvironmentVariable("SentryTracesSampleRate") ?? "0.2");
+    options.TracesSampleRate = float.Parse(builder.Configuration["Sentry:TracesSampleRate"] ?? "0.2");
     // A sample rate for profiling - this is relative to TracesSampleRate
-    options.ProfilesSampleRate = float.Parse(Environment.GetEnvironmentVariable("SentryProfilesSampleRate") ?? "0.5");
+    options.ProfilesSampleRate = float.Parse(builder.Configuration["Sentry:ProfilesSampleRate"] ?? "0.5");
     //?https://docs.sentry.io/platforms/dotnet/configuration/http-client-errors/
     options.CaptureFailedRequests = true;
     options.Environment = builder.Environment.EnvironmentName;

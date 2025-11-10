@@ -12,7 +12,7 @@ export const aboutMeImgUrl = new URL("/imgs/about_me_photo.jpeg", import.meta.ur
 
 //#region sentry config
 export const appVersion = APP_VERSION;
-export const sentryDsn = import.meta.env.VITE_SENTRY_DSN;
+export const sentryDsn = import.meta.env.VITE_SENTRY_DSN_WEB;
 export const sentryTracesSampleRate = parseFloat(import.meta.env.VITE_SENTRY_TRACES_SAMPLE_RATE) || 1.0;
 export const sentryReplaysSessionSampleRate = parseFloat(import.meta.env.VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE) || 0.1;
 export const sentryReplaysOnErrorSampleRate = parseFloat(import.meta.env.VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE) || 1.0;
