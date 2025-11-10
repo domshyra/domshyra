@@ -3,6 +3,7 @@ import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import SocialButtons from "@components/socalis/SocialButtons";
 import { aboutMeExtendedPitch } from "@constants/data";
 import { aboutMeImgUrl } from "@constants/common";
+import { useNavigate } from "react-router-dom";
 
 //TODO? use some animations for section transitions, like fade in or slide in
 //? https://mobbin.com/sites/retool-57b95056-1028-4d7b-a14a-c22f6c8694b6/65564b72-19e0-4bb7-b31e-288a72b5989a/preview
@@ -12,6 +13,11 @@ import { aboutMeImgUrl } from "@constants/common";
 const About = () => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+	const navigate = useNavigate();
+
+	const goToWork = () => {
+		navigate("../work");
+	};
 	return (
 		<>
 			<Typography textAlign="center" variant="h4" sx={{ width: "100%" }} pb={2}>
@@ -42,11 +48,27 @@ const About = () => {
 							mx: { xs: 2, md: 20, lg: 40 },
 							whiteSpace: "pre-line",
 							mt: -4,
-							mb: 1,
 						}}
 						dangerouslySetInnerHTML={{ __html: aboutMeExtendedPitch }}
 					/>
-					<Box sx={{ width: isMobile ? "100%" : "50%", margin: "0 auto", mb: 2, alignItems: "center" }}>
+					<Typography
+						textAlign="center"
+						variant="body1"
+						color="primary"
+						fontWeight={400}
+						sx={{
+							width: "100%",
+							mx: { xs: 2, md: 20, lg: 40 },
+							whiteSpace: "pre-line",
+							mb: 1,
+							cursor: "pointer",
+							underline: "hover",
+						}}
+						onClick={goToWork}
+					>
+						View my work here.
+					</Typography>
+					<Box sx={{ width: isMobile ? "100%" : "60%", margin: "0 auto", mb: 2, alignItems: "center" }}>
 						<SocialButtons />
 					</Box>
 				</Box>
@@ -54,7 +76,7 @@ const About = () => {
 			{/* show on right for desktop */}
 			<img
 				src={aboutMeImgUrl}
-				alt="A photo of Dom Shyra"
+				alt="A photo of myself"
 				loading="lazy"
 				style={{
 					marginLeft: "auto",
