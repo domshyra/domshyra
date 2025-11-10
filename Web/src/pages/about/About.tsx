@@ -4,6 +4,7 @@ import SocialButtons from "@components/socalis/SocialButtons";
 import { aboutMeExtendedPitch } from "@constants/data";
 import { aboutMeImgUrl } from "@constants/common";
 import { useNavigate } from "react-router-dom";
+import { work } from "@constants/routes";
 
 //TODO? use some animations for section transitions, like fade in or slide in
 //? https://mobbin.com/sites/retool-57b95056-1028-4d7b-a14a-c22f6c8694b6/65564b72-19e0-4bb7-b31e-288a72b5989a/preview
@@ -15,8 +16,9 @@ const About = () => {
 	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 	const navigate = useNavigate();
 
+	const typographyStyle = { width: "90%", mx: { xs: 3, md: 20, lg: 40 }, whiteSpace: "pre-line", px: 0.5 };
 	const goToWork = () => {
-		navigate("../work");
+		navigate(`../${work}`);
 	};
 	return (
 		<>
@@ -26,13 +28,13 @@ const About = () => {
 			{/* show on top for mobile */}
 			<img
 				src={aboutMeImgUrl}
-				alt="A photo of Dom Shyra"
+				alt="A photo of myself"
 				loading="lazy"
 				style={{
 					display: isMobile ? "block" : "none",
 					marginLeft: "auto",
 					marginRight: "auto",
-					width: isMobile ? "80%" : "35%",
+					width: "85%",
 					borderRadius: 8,
 				}}
 			/>
@@ -44,9 +46,7 @@ const About = () => {
 						color="text.secondary"
 						fontWeight={400}
 						sx={{
-							width: "100%",
-							mx: { xs: 2, md: 20, lg: 40 },
-							whiteSpace: "pre-line",
+							...typographyStyle,
 							mt: -4,
 						}}
 						dangerouslySetInnerHTML={{ __html: aboutMeExtendedPitch }}
@@ -57,12 +57,10 @@ const About = () => {
 						color="primary"
 						fontWeight={400}
 						sx={{
-							width: "90%",
-							mx: { xs: 2, md: 20, lg: 40 },
-							whiteSpace: "pre-line",
-							mb: 1,
+							...typographyStyle,
 							cursor: "pointer",
 							underline: "hover",
+							mb: 1,
 						}}
 						onClick={goToWork}
 					>
@@ -81,7 +79,7 @@ const About = () => {
 				style={{
 					marginLeft: "auto",
 					marginRight: "auto",
-					width: isMobile ? "100%" : "35%",
+					width: "35%",
 					borderRadius: 8,
 					display: isMobile ? "none" : "block",
 				}}
