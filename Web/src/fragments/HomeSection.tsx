@@ -8,8 +8,9 @@ export type HomeSection = {
 	description: string;
 	link: string;
 	show?: boolean;
+	icon?: JSX.Element;
 };
-const BorderSection = ({ title, description, link, show }: HomeSection) => {
+const BorderSection = ({ title, description, link, show, icon }: HomeSection) => {
 	const nav = useNavigate();
 	if (show === false) return null;
 	return (
@@ -33,6 +34,7 @@ const BorderSection = ({ title, description, link, show }: HomeSection) => {
 				<Typography variant="h4" color="secondary" noWrap component="div" fontWeight={500}>
 					<Box display="flex" justifyContent="center" color="primary.main">
 						{title}
+						{/* {icon && <Box ml={1}>{React.cloneElement(icon, { sx: { fontSize: "2.5rem", color: theme.palette.neutral.main } })}</Box>}sx={{ fontSize: "2rem" }} */}
 					</Box>
 				</Typography>
 				<Divider sx={{ color: "primary.dark", my: 1, mx: 2 }} />

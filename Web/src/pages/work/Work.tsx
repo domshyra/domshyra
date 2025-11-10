@@ -26,8 +26,9 @@ const Work = () => {
 						pb={2}
 					/>
 					<Divider sx={{ mt: 2, mb: 3 }} />
-
-					<JobTimeline />
+					<Box mx={2}>
+						<JobTimeline />
+					</Box>
 				</Grid>
 				<Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 				<Grid size={{ xs: 12, md: 6 }}>
@@ -45,10 +46,12 @@ const Work = () => {
 						/>
 						<Divider sx={{ mt: 2, mb: 3 }} />
 
-						{skillsList.map((skill, index) => (
-							<Skill key={index} {...skill} />
-						))}
-						<SkillsTable />
+						<Box mx={4}>
+							{skillsList.map((skill, index) => (
+								<Skill key={index} {...skill} />
+							))}
+							<SkillsTable />
+						</Box>
 					</Box>
 				</Grid>
 			</Stack>

@@ -1,12 +1,14 @@
 import { about, skills, stations, work } from "@constants/routes";
 import { aboutMeElevatorPitch, skillsAboutSection, workAboutSection } from "@constants/data";
 
+import BadgeIcon from "@mui/icons-material/Badge";
 import { HomeSection } from "@fragments/HomeSection";
+import InfoIcon from "@mui/icons-material/Info";
+import RadioIcon from "@mui/icons-material/Radio";
 
 export const workHistory = "Work History";
 export const skillsTitle = "Skills";
 export const aboutMeTitle = "About Me";
-
 export const data: HomeSection[] = [
 	{
 		title: "Stations",
@@ -14,17 +16,20 @@ export const data: HomeSection[] = [
 			From hip hop to instrumentals, I have a love of music and sharing it is the oldest form of story telling.
 			I've always had an affinity for music, and I tread each playlist sorta like a radio station.`,
 		link: stations,
+		icon: <RadioIcon />,
 	},
 	{
 		title: aboutMeTitle,
 		description: aboutMeElevatorPitch,
 		link: about,
+		icon: <InfoIcon />,
 	},
 	{
 		title: `${workHistory} & ${skillsTitle}`,
 		link: `${about}/${work}`,
 		show: true,
 		description: workAboutSection,
+		icon: <BadgeIcon />,
 	},
 	{
 		title: skillsTitle,
