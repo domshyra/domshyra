@@ -9,8 +9,9 @@ export const notFound = "*";
 export const settings = "/settings";
 
 // #region account
-export const work = "work";
-export const skills = "skills";
+export const work = `work`;
+export const skills = `${work}/skills`;
+export const workHistory = `${work}/history`;
 export const account = "/account";
 
 // #endregion

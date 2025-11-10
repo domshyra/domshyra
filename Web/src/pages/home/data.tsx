@@ -26,7 +26,7 @@ export const data: HomeSection[] = [
 	},
 	{
 		title: `${workHistory} & ${skillsTitle}`,
-		link: `${about}/${work}`,
+		link: work,
 		show: true,
 		description: workAboutSection,
 		icon: <BadgeIcon />,

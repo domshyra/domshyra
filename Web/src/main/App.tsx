@@ -1,5 +1,5 @@
 import { RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { about, account, notFound, root, settings, skills, stations, stationsWithId, work } from "@constants/routes";
+import { about, account, notFound, root, settings, skills, stations, stationsWithId, work, workHistory } from "@constants/routes";
 
 import About from "@pages/about/About";
 import CrumbLink from "src/fragments/breadcrumbs/CrumbLink";
@@ -12,6 +12,7 @@ import Skills from "@pages/skills/Skills";
 import StationDetails from "@pages/stationDetails/StationDetails";
 import Stations from "@pages/Stations";
 import Work from "@pages/work/Work";
+import WorkHistory from "@pages/work/WorkHistory";
 
 const routes: RouteObject[] = [
 	{
@@ -43,20 +44,27 @@ const routes: RouteObject[] = [
 				handle: {
 					crumb: () => <CrumbLink to={root} text="Home" />,
 				},
+				children: [{ Component: About, index: true }],
+			},
+			{
+				path: work,
+				handle: {
+					crumb: () => <CrumbLink to={root} text="Home" />,
+				},
 				children: [
-					{ Component: About, index: true },
+					{ Component: Work, index: true },
 					{
-						Component: Work,
-						path: `${about}/${work}`,
+						Component: Skills,
+						path: skills,
 						handle: {
-							crumb: () => <CrumbLink to={about} text="About" />,
+							crumb: () => <CrumbLink to={work} text="Work" />,
 						},
 					},
 					{
-						Component: Skills,
-						path: `${about}/${skills}`,
+						Component: WorkHistory,
+						path: "history",
 						handle: {
-							crumb: () => <CrumbLink to={about} text="About" />,
+							crumb: () => <CrumbLink to={work} text="Work" />,
 						},
 					},
 				],
