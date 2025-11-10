@@ -18,7 +18,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setUpActions =>
             {
-              setUpActions.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
+              setUpActions.SwaggerDoc($"v{Assembly.GetExecutingAssembly().GetName().Version?.Major.ToString() ?? "1"}", new OpenApiInfo { Title = "Api", Version = $"{Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0"}" });
               setUpActions.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
               {
                 Description = @"JWT Authorization header using the Bearer scheme. <br/> 
@@ -80,6 +80,31 @@ builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 builder.Services.AddHttpClient<SpotifyService>();
 
 #endregion
+
+#region sentry 
+//sentry 
+if (builder.Environment.IsProduction())
+{
+  SentrySdk.Init(options =>
+  {
+    options.Dsn = Environment.GetEnvironmentVariable("SentryDsn") ?? throw new ArgumentNullException("SentryDsn");
+    options.Debug = true;
+    // Adds request URL and headers, IP and name for users, etc.
+    options.SendDefaultPii = false;
+    // A fixed sample rate of 0.2 - 20% of all transactions are getting sent
+    options.TracesSampleRate = float.Parse(Environment.GetEnvironmentVariable("SentryTracesSampleRate") ?? "0.2");
+    // A sample rate for profiling - this is relative to TracesSampleRate
+    options.ProfilesSampleRate = float.Parse(Environment.GetEnvironmentVariable("SentryProfilesSampleRate") ?? "0.5");
+    //?https://docs.sentry.io/platforms/dotnet/configuration/http-client-errors/
+    options.CaptureFailedRequests = true;
+    options.Environment = builder.Environment.EnvironmentName;
+    options.Release = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
+    options.AttachStacktrace = true;
+  });
+}
+
+#endregion
+
 
 var app = builder.Build();
 // app.MapGroup("/account").WithTags("Account").MapIdentityApi<UserEntity>(); //uncomment this to use ALL of the identity endpoints

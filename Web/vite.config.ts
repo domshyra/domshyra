@@ -6,20 +6,10 @@ import svgr from "vite-plugin-svgr";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const defaultConfigStuff = {
-	plugins: [
-		//TODO: add vite-plugin-pwa
-		//? https://github.com/vite-pwa/vite-plugin-pwa
-		//adds support for React JSX/TSX
-		react(),
-		//adds support for SVG files
-		svgr(),
-		//sass dts
-		//? usage file https://github.com/activeguild/vite-plugin-sass-dts?tab=readme-ov-file#usage
-		sassDts(),
-		tsconfigPaths(),
-	],
+	plugins: [react(), svgr(), sassDts(), tsconfigPaths()],
 	define: {
 		global: "window",
+		APP_VERSION: JSON.stringify(process.env.npm_package_version),
 	},
 };
 

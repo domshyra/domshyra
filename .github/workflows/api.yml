@@ -66,6 +66,47 @@ jobs:
               with:
                   name: .net-app
 
+
+            - name: Transform production variables
+              shell: pwsh
+              run: |
+                $artifactPath = "D:\a\${{env.repo}}\${{env.repo}}\release.zip"
+                $destinationPath = "D:\a\${{env.repo}}\${{env.repo}}\release-transformed"
+                # Ensure the destination directory exists
+                if (!(Test-Path -Path $destinationPath)) {
+                    New-Item -ItemType Directory -Path $destinationPath | Out-Null
+                }
+                # Extract the artifact to a temporary location
+                Expand-Archive -Path $artifactPath -DestinationPath $destinationPath -Force
+                Get-ChildItem -Path "$destinationPath/dist/assets" -Filter *.js -Recurse | ForEach-Object {
+                    (Get-Content -Path $_.FullName) -replace '#{SENTRY_DSN}#', '${{ secrets.SENTRY_DSN }}' `
+                                                        -replace '#{SENTRY_REPLAYS_SESSION_SAMPLE_RATE}#', '${{ secrets.SENTRY_REPLAYS_SESSION_SAMPLE_RATE }}' `
+                                                        -replace '#{VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE}#', '${{ secrets.VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE }}' `
+                                                        -replace '#{VITE_SENTRY_TRACES_SAMPLE_RATE}#', '${{ secrets.VITE_SENTRY_TRACES_SAMPLE_RATE }}' |
+                    Set-Content -Path $_.FullName
+                }
+                $files = Get-ChildItem -Path "$destinationPath/dist/assets" -Filter *.js -Recurse
+                $errors = @()
+                foreach ($file in $files) {
+                    $content = Get-Content -Path $file.FullName -Raw
+                    if ($content -notmatch [regex]::Escape("${{ secrets.SENTRY_DSN }}")) {
+                        $errors += "SENTRY_DSN not transformed in $($file.FullName)"
+                    }
+                    if ($content -notmatch [regex]::Escape("${{ secrets.SENTRY_REPLAYS_SESSION_SAMPLE_RATE }}")) {
+                        $errors += "SENTRY_REPLAYS_SESSION_SAMPLE_RATE not transformed in $($file.FullName)"
+                    }
+                    if ($content -notmatch "${{ secrets.VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE }}") {
+                        $errors += "VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE not transformed in $($file.FullName)"
+                    }
+                }
+                if ($errors.Count -gt 0) {
+                    Write-Error "Transformation errors found:`n$($errors -join '`n')"
+                    exit 1
+                }
+                Write-Output "All variables successfully transformed."
+                # Re-zip the transformed files
+                Compress-Archive -Path "$destinationPath/*" -DestinationPath $artifactPath -Force
+          
             - name: Azure Login
               uses: azure/login@v2
               with:
