@@ -8,8 +8,11 @@ export const aboutMeElevatorPitch = `
 
 export const workHistoryInMy = `		
 		In my career, I have worked with multiple high-profile clients to deliver SaaS to solve their business problems. 
-		Both green field and legacy projects, throughout the whole stack. 
-		I enjoy being challenged and the growth a challenge affords me.
+		Both green field and legacy projects, throughout the whole stack. I enjoy being challenged and the growth a challenge affords me.
+		`;
+
+export const randomStuffAboutMe = `
+		Outside of work, I like to play music, I enjoy a good espresso and love exploring the city. I also enjoy films and video games with a great story.
 		`;
 
 export const aboutMeExtendedPitch = `
@@ -18,7 +21,8 @@ export const aboutMeExtendedPitch = `
 		This is the road to selling a product effectively as well as fine-tuning the product by focusing on the little details. 
 		"There is beauty when something works and it works intuitively." - Jonathan Ive. 
 		${workHistoryInMy}
-		Grew up in Portland, OR, and out in Brooklyn, NY. <br />
+		I grew up in Portland, OR, and have since moved to Brooklyn, NY.
+		${randomStuffAboutMe}
 	`;
 
 export const workAboutSection = `Senior Full Stack Software Engineer with a Bachelor's in Computer Science, working in <b>React, .NET, Azure, SQL</b>, and <b>Terraform</b>, 

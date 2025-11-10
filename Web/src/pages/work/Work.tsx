@@ -35,7 +35,7 @@ const Work = () => {
 				</Grid>
 				<Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 				<Grid size={{ xs: 12, md: 6 }}>
-					<Box px={2}>
+					<Box px={4} mx={1}>
 						<Typography
 							pb={2}
 							color="primary"

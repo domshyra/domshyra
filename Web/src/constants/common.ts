@@ -8,6 +8,7 @@ import { Social } from "@components/socalis/SocialButtons";
 export const baseApiUrl = import.meta.env.VITE_BASE_API_URL;
 
 export const appName = "domshyra";
+export const aboutMeImgUrl = new URL("/imgs/about_me_photo.jpeg", import.meta.url).href;
 
 //#region Social Links
 export const githubUrl = "https://github.com/domshyra/domshyra";
