@@ -1,4 +1,4 @@
-import { Arvixe, currieAndBrown, jCrew, wsrb } from "@constants/common";
+import { arvixe, currieAndBrown, jCrew, wsrb } from "@constants/common";
 
 export type JobDetails = {
 	title: string;
@@ -116,7 +116,7 @@ export const jobDescription: JobDetails[] = [
 		end: new Date("2013-01-01T07:00:00-08:00"),
 	},
 	{
-		company: Arvixe,
+		company: arvixe,
 		title: "UI/Ux Designer",
 		description: "UI/UX Designer for a web hosting company.",
 		bullets: [

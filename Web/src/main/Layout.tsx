@@ -10,6 +10,7 @@ import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
 import { OfflineAlert } from "@components/offline/OfflineAlert";
 import PageTitle from "@sections/PageTitle";
 import { SnackbarLayout } from "./SnackbarLayout";
+import { githubUrl } from "@constants/common";
 import theme from "@styles/themes/base";
 
 //? https://mui.com/joy-ui/integrations/material-ui/
@@ -51,7 +52,7 @@ const oldCode = () => {
 		<>
 			<Typography component="div" variant="caption" color="text.secondary">
 				View this code on{" "}
-				<Link rel="noopener" target="_blank" href="https://github.com/domshyra/domshyra" underline="none">
+				<Link rel="noopener" target="_blank" href={githubUrl} underline="none">
 					GitHub
 				</Link>
 			</Typography>
@@ -65,7 +66,7 @@ const ScreenFooter = () => {
 				<Box display="flex" flexGrow={1} />
 				<Box sx={{ width: "100%", position: "absolute", left: 0, textAlign: "center" }}>
 					{oldCode()}
-					<IconButton title="view code on github" size="small" href="https://github.com/domshyra/domshyra" target="_blank">
+					<IconButton title="view code on github" size="small" href={githubUrl} target="_blank">
 						<GitHubIcon sx={{ fontSize: "1rem" }} />
 					</IconButton>
 				</Box>

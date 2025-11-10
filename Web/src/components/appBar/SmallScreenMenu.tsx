@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import DarkModeToggleButton from "@fragments/appBar/DarkModeToggleButton";
 import Menu from "@fragments/appBar/Menu";
 import { MenuProps } from "@fragments/appBar/props";
-import SocialMenuIcons from "./SocialMenuIcons";
+import SocialMenuIcons from "../socalis/SocialMenuIcons";
 
 const SmallScreenMenu = (props: MenuProps) => {
 	const { showHamburgerMenu } = props;
