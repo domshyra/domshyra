@@ -57,7 +57,7 @@ const About = () => {
 						color="primary"
 						fontWeight={400}
 						sx={{
-							width: "100%",
+							width: "90%",
 							mx: { xs: 2, md: 20, lg: 40 },
 							whiteSpace: "pre-line",
 							mb: 1,
