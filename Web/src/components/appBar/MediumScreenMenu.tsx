@@ -4,7 +4,7 @@ import AppBarTitle from "@fragments/appBar/AppBarTitle";
 import DarkModeToggleButton from "@fragments/appBar/DarkModeToggleButton";
 import Menu from "@fragments/appBar/Menu";
 import { MenuProps } from "@fragments/appBar/props";
-import SocialMenuIcons from "./SocialMenuIcons";
+import SocialMenuIcons from "../socalis/SocialMenuIcons";
 
 const MediumScreenMenu = (props: MenuProps) => {
 	const { accessToken, setAccessTokenCallback, showHamburgerMenu } = props;

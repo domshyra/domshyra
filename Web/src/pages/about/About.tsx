@@ -1,9 +1,9 @@
-import { Box, Divider, Grid, Stack, Typography } from "@mui/material";
-import { aboutMeTitle, data, skillsTitle, workHistory } from "@pages/home/data";
+import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 
-import JobTimeline from "@components/jobTimeline/JobTimeline";
-import Skill from "@components/Skill";
-import { skillsList } from "@pages/skills/data";
+import SocialButtons from "@components/socalis/SocialButtons";
+import { aboutMeExtendedPitch } from "@constants/data";
+import { aboutMeImgUrl } from "@constants/common";
+import { useNavigate } from "react-router-dom";
 
 //TODO? use some animations for section transitions, like fade in or slide in
 //? https://mobbin.com/sites/retool-57b95056-1028-4d7b-a14a-c22f6c8694b6/65564b72-19e0-4bb7-b31e-288a72b5989a/preview
@@ -11,67 +11,81 @@ import { skillsList } from "@pages/skills/data";
 //? TODO: add a sticky sections for a title, such as I enjoy which stays at the top then adds (coding, music, etc.)
 //? as you scroll down and the content will switch much like the above example link
 const About = () => {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+	const navigate = useNavigate();
+
+	const goToWork = () => {
+		navigate("../work");
+	};
 	return (
 		<>
-			<Typography pb={0.5} textAlign="center" variant="h4" sx={{ width: "100%" }}>
+			<Typography textAlign="center" variant="h4" sx={{ width: "100%" }} pb={2}>
 				About
 			</Typography>
-			<Typography
-				textAlign="center"
-				variant="caption"
-				color="text.secondary"
-				fontWeight={400}
-				sx={{ width: "100%", mx: { xs: 2, md: 20, lg: 40 } }}
-				dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === aboutMeTitle)?.description || "" }}
+			{/* show on top for mobile */}
+			<img
+				src={aboutMeImgUrl}
+				alt="A photo of Dom Shyra"
+				loading="lazy"
+				style={{
+					display: isMobile ? "block" : "none",
+					marginLeft: "auto",
+					marginRight: "auto",
+					width: isMobile ? "80%" : "35%",
+					borderRadius: 8,
+				}}
 			/>
-			<Typography textAlign="center" variant="caption" color="text.secondary" fontWeight={400} sx={{ width: "100%" }}>
-				Grew up in Portland Or, and out in Brooklyn Ny. <br />
-				<code>(this page is a work in progress)</code>
-			</Typography>
-			<Grid
-				container
-				spacing={4}
-				direction="row"
-				alignItems="center"
-				justifyContent="center"
-				sx={{ width: "100%" }}
-				pb={{ md: 4, xs: 1 }}
-				pt={2}
-			>
-				<Stack direction="row" sx={{ display: { xs: "block", md: "flex" }, width: "100%", justifyContent: "space-between" }} spacing={1}>
-					<Grid size={{ xs: 12, md: 6 }}>
-						<Typography variant="h6" textAlign="center" sx={{ cursor: "pointer" }}>
-							{workHistory}
-						</Typography>
-						{/* <Typography
-							textAlign="center"
-							variant="caption"
-							fontWeight={400}
-							dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === workHistory)?.description || "" }}
-							sx={{ px: 2 }}
-							pb={1}
-						/> */}
-						<JobTimeline />
-					</Grid>
-					<Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
-					<Grid size={{ xs: 12, md: 6 }}>
-						<Box pt={1} px={2}>
-							<Typography pb={2} variant="h6" textAlign="center">
-								{skillsTitle}
-							</Typography>
-							{/* <Typography
-								textAlign="center"
-								variant="caption"
-								fontWeight={400}
-								dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === skillsTitle)?.description || "" }}
-							/> */}
-							{skillsList.map((skill, index) => (
-								<Skill key={index} {...skill} />
-							))}
-						</Box>
-					</Grid>
-				</Stack>
-			</Grid>
+			<Stack spacing={2} sx={{ width: isMobile ? "100%" : "50%", mt: 1 }}>
+				<Box justifyItems={"center"}>
+					<Typography
+						textAlign="center"
+						variant="body1"
+						color="text.secondary"
+						fontWeight={400}
+						sx={{
+							width: "100%",
+							mx: { xs: 2, md: 20, lg: 40 },
+							whiteSpace: "pre-line",
+							mt: -4,
+						}}
+						dangerouslySetInnerHTML={{ __html: aboutMeExtendedPitch }}
+					/>
+					<Typography
+						textAlign="center"
+						variant="body1"
+						color="primary"
+						fontWeight={400}
+						sx={{
+							width: "100%",
+							mx: { xs: 2, md: 20, lg: 40 },
+							whiteSpace: "pre-line",
+							mb: 1,
+							cursor: "pointer",
+							underline: "hover",
+						}}
+						onClick={goToWork}
+					>
+						View my work here.
+					</Typography>
+					<Box sx={{ width: isMobile ? "100%" : "60%", margin: "0 auto", mb: 2, alignItems: "center" }}>
+						<SocialButtons />
+					</Box>
+				</Box>
+			</Stack>
+			{/* show on right for desktop */}
+			<img
+				src={aboutMeImgUrl}
+				alt="A photo of myself"
+				loading="lazy"
+				style={{
+					marginLeft: "auto",
+					marginRight: "auto",
+					width: isMobile ? "100%" : "35%",
+					borderRadius: 8,
+					display: isMobile ? "none" : "block",
+				}}
+			/>
 
 			{/* This will prob end up being it's own page, make sure to show responsibilities and what I did to make the company better. */}
 			{/* What was the most fun thing I could work on for each project? C&B was the tree's and what if for blocks */}

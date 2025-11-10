@@ -7,7 +7,7 @@ import { PlaylistPhoto } from "@fragments/playlistPhoto/PlaylistPhoto";
 import SpotifyLink from "@fragments/spotify/SpotifyLink";
 import Typography from "@mui/material/Typography";
 import { playlist } from "@_types/playlist";
-import { root } from "@constants/routes";
+import { stations } from "@constants/routes";
 import { useNavigate } from "react-router-dom";
 
 const PlaylistCardDetailsView = ({ title, imageURL, description, genre, trackCount, followerCount, playlistId }: playlist) => {
@@ -18,7 +18,7 @@ const PlaylistCardDetailsView = ({ title, imageURL, description, genre, trackCou
 	return (
 		<Grid container justifyContent="center" alignContent="center" pb={4} sx={{ width: "100%" }}>
 			<Stack>
-				<Button onClick={() => nav(root)} variant="text" startIcon={<ArrowBackIosIcon />}>
+				<Button onClick={() => nav(stations)} variant="text" startIcon={<ArrowBackIosIcon />}>
 					Back to stations
 				</Button>
 

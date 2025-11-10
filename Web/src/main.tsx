@@ -1,4 +1,7 @@
+import * as Sentry from "@sentry/react";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
+import { appVersion, sentryDsn, sentryReplaysOnErrorSampleRate, sentryReplaysSessionSampleRate, sentryTracesSampleRate } from "@constants/common";
 
 import App from "./main/App";
 // import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
@@ -19,6 +22,28 @@ const store = setupStore({});
 const msalInstance = new PublicClientApplication(msalConfig);
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 const persitor = persistStore(store);
+
+//#region Sentry Setup
+//sets up sentry error tracking for console errors
+Sentry.init({
+	dsn: sentryDsn,
+	integrations: [
+		Sentry.captureConsoleIntegration({
+			levels: ["error", "debug"],
+		}),
+		Sentry.replayIntegration({
+			maskAllText: true,
+			blockAllMedia: true,
+		}),
+		Sentry.httpContextIntegration(),
+	],
+	tracesSampleRate: sentryTracesSampleRate,
+	replaysSessionSampleRate: sentryReplaysSessionSampleRate,
+	replaysOnErrorSampleRate: sentryReplaysOnErrorSampleRate,
+	release: appVersion,
+	enableLogs: true, // Enable Sentry logging
+});
+//#endregion
 
 root.render(
 	<React.StrictMode>

@@ -1,8 +1,8 @@
+import { Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab";
 
 import HomeIcon from "@mui/icons-material/Home";
 import { ReactNode } from "react";
-import { Typography } from "@mui/material";
 import WorkTimeSpan from "@fragments/WorkTimeSpan";
 
 export type CompanyTimelineItemProps = {
@@ -14,6 +14,8 @@ export type CompanyTimelineItemProps = {
 };
 
 const CompanyTimeLineItem = ({ company, isFirstItem, companyIcon, start, end }: CompanyTimelineItemProps) => {
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 	return (
 		<TimelineItem>
 			<TimelineSeparator>
@@ -26,15 +28,18 @@ const CompanyTimeLineItem = ({ company, isFirstItem, companyIcon, start, end }: 
 
 			<TimelineContent
 				sx={{
-					py: 0,
+					pb: 0,
+					mt: isFirstItem ? -1 : 4,
 					alignItems: "center",
 					display: "flex",
 				}}
 			>
-				<Typography variant="h5" mb={0} textAlign="left" pb={isFirstItem ? 4 : 0}>
-					{company}
-				</Typography>
-				<WorkTimeSpan start={start} end={end} marginTop={isFirstItem ? -1 : 3.4} paddingLeft={1} />
+				<Stack direction="column" justifyContent="space-between" spacing={2} pb={4}>
+					<Typography variant={isMobile ? "h5" : "h4"} mb={0} textAlign="left">
+						{company}
+						<WorkTimeSpan start={start} end={end} />
+					</Typography>
+				</Stack>
 			</TimelineContent>
 		</TimelineItem>
 	);

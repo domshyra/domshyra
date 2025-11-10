@@ -1,7 +1,8 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { data, skillsTitle } from "@pages/home/data";
 
 import Skill from "@components/Skill";
+import SkillsTable from "./SkillsTable";
 import { skillsList } from "./data";
 
 const Skills = () => {
@@ -23,13 +24,18 @@ const Skills = () => {
 					"I've got a particular set of skills"
 				</Typography>
 			</Grid>
-			<Grid container spacing={2}>
-				{skillsList.map((skill, index) => (
-					<Grid key={index} size={{ md: 6, sm: 8 }}>
-						<Skill {...skill} />
+			<Box sx={{ width: "80%", margin: "0 auto", pt: 2, pb: 4 }}>
+				<Grid container spacing={2}>
+					{skillsList.map((skill, index) => (
+						<Grid key={index} size={{ md: 6, sm: 8 }}>
+							<Skill {...skill} />
+						</Grid>
+					))}
+					<Grid size={{ md: 6, sm: 8 }}>
+						<SkillsTable />
 					</Grid>
-				))}
-			</Grid>
+				</Grid>
+			</Box>
 		</>
 	);
 };

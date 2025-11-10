@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { data, workHistory } from "@pages/home/data";
 
 import JobTimeline from "@components/jobTimeline/JobTimeline";
+import { workHistoryInMy } from "@constants/data";
 
 const WorkHistory = () => {
 	return (
@@ -16,6 +17,7 @@ const WorkHistory = () => {
 					fontWeight={400}
 					dangerouslySetInnerHTML={{ __html: data.find((x) => x.title === workHistory)?.description || "" }}
 				/>
+				<Typography variant="caption" color="text.secondary" fontWeight={400} dangerouslySetInnerHTML={{ __html: workHistoryInMy }} />
 			</Grid>
 			<Grid size={{ xs: 12, sm: 10, md: 8 }} sx={{ margin: "0 auto", pb: 2, pt: 2 }}>
 				<JobTimeline />

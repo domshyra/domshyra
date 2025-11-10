@@ -1,4 +1,4 @@
-import { Box, Collapse, Divider, List, ListItem, Typography, useTheme } from "@mui/material";
+import { Box, Collapse, Divider, List, ListItem, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab";
 
 import JobBullets from "./JobBullets";
@@ -8,24 +8,35 @@ import WorkTimeSpan from "@fragments/WorkTimeSpan";
 export type JobDetailsTimelineItemProps = JobDetails & {
 	isFirstItem: boolean;
 	isFirstCompanyItem?: boolean;
+	isLastItem: boolean;
 };
 
-const JobDetailsTimelineItem = ({ title, description, start, end, bullets, isFirstItem, isFirstCompanyItem }: JobDetailsTimelineItemProps) => {
+const JobDetailsTimelineItem = ({
+	title,
+	description,
+	start,
+	end,
+	bullets,
+	isFirstItem,
+	isFirstCompanyItem,
+	isLastItem,
+}: JobDetailsTimelineItemProps) => {
 	const theme = useTheme();
 	const htmlFontSize = theme.typography.htmlFontSize;
+	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
 	return (
-		<TimelineItem sx={{ mt: isFirstCompanyItem ? -3 : -1 }}>
+		<TimelineItem sx={{ mt: isFirstCompanyItem ? -3 : -1, mb: isLastItem ? -3 : 0 }}>
 			<TimelineSeparator sx={{ ml: 1.5 }}>
 				<TimelineConnector sx={{ minHeight: `${37 / htmlFontSize}rem` }} />
 				<TimelineDot variant="outlined" />
 				<TimelineConnector />
 			</TimelineSeparator>
-			<TimelineContent sx={{ ml: 2.5, mt: isFirstItem ? -1 : 2 }}>
-				<Typography textAlign="left" color={theme.palette.primary.light} variant="h6" fontWeight={700} pb={0} mb={-1}>
+			<TimelineContent sx={{ ml: isMobile ? 2.5 : 3, mt: isFirstItem ? -1 : 2 }}>
+				<Typography textAlign="left" color={theme.palette.primary.light} variant="h6" fontWeight={700} pb={0.5} mb={-1}>
 					{title}
 				</Typography>
-				<WorkTimeSpan start={start} end={end} marginTop={-1} />
+				<WorkTimeSpan start={start} end={end} />
 				<Divider sx={{ color: "primary.main", pr: 10, mr: 10, pt: 0.5 }} />
 				<Box justifyContent="space-between" alignItems="center" sx={{ px: 1, mt: 1 }}>
 					<Typography component="span" variant="body2" textAlign="left" dangerouslySetInnerHTML={{ __html: description }} mb={1} />

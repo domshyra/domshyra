@@ -1,13 +1,138 @@
+import {
+	cSharp,
+	currieAndBrown,
+	dotNet,
+	entityFramework,
+	hcl,
+	javaScript,
+	jest,
+	react,
+	reactTestingLibrary,
+	selenium,
+	sql,
+	typeScript,
+	vitestLabel,
+	wsrb,
+	xunit,
+} from "@constants/common";
+import dayjs, { Dayjs } from "dayjs";
+
 import BusinessIcon from "@mui/icons-material/Business";
 import CloudIcon from "@mui/icons-material/Cloud";
 import CodeIcon from "@mui/icons-material/Code";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 
+type Category = {
+	title: string;
+	skills: SkillBase[] | ProgrammingSkill[];
+};
+
+type SkillBase = {
+	title: string;
+	start: Dayjs;
+	end?: Dayjs;
+};
+
+export type ProgrammingSkill = {
+	companies: string[];
+	rating: "beginner" | "intermediate" | "advanced";
+} & SkillBase;
+
+const languages: Category = {
+	title: "Languages",
+	skills: [
+		{
+			title: cSharp,
+			start: dayjs("2017-01-01"),
+			companies: [currieAndBrown, wsrb],
+			rating: "advanced",
+		},
+		{
+			title: typeScript,
+			start: dayjs("2022-01-01"),
+			companies: [wsrb],
+			rating: "advanced",
+		},
+		{
+			title: javaScript,
+			start: dayjs("2017-01-01"),
+			companies: [wsrb],
+			rating: "advanced",
+		},
+		{
+			title: sql,
+			start: dayjs("2017-01-01"),
+			companies: [currieAndBrown, wsrb],
+			rating: "intermediate",
+		},
+		{
+			title: hcl,
+			start: dayjs("2024-01-01"),
+			companies: [wsrb],
+			rating: "intermediate",
+		},
+	],
+};
+const frameworks: Category = {
+	title: "Frameworks",
+	skills: [
+		{
+			title: dotNet,
+			start: dayjs("2017-01-01"),
+			companies: [currieAndBrown, wsrb],
+			rating: "advanced",
+		},
+		{
+			title: react,
+			start: dayjs("2019-01-01"),
+			companies: [currieAndBrown, wsrb],
+			rating: "advanced",
+		},
+		{
+			title: entityFramework,
+			start: dayjs("2017-01-01"),
+			companies: [currieAndBrown, wsrb],
+			rating: "advanced",
+		},
+	],
+};
+const testing: Category = {
+	title: "Testing",
+	skills: [
+		{
+			title: selenium,
+			start: dayjs("2021-01-01"),
+			companies: [wsrb],
+			rating: "intermediate",
+		},
+		{ title: xunit, start: dayjs("2017-01-01"), companies: [currieAndBrown, wsrb], rating: "intermediate" },
+
+		{
+			title: jest,
+			start: dayjs("2021-01-01"),
+			end: dayjs("2023-01-01"),
+			companies: [wsrb],
+			rating: "intermediate",
+		},
+		{
+			title: vitestLabel,
+			start: dayjs("2023-01-01"),
+			companies: [wsrb],
+			rating: "intermediate",
+		},
+		{
+			title: reactTestingLibrary,
+			start: dayjs("2021-01-01"),
+			companies: [wsrb],
+			rating: "intermediate",
+		},
+	],
+};
+
+export const categories: Category[] = [languages, frameworks, testing];
+
 const programmingAndDevelopment = [
-	"<b>Languages</b>: C#, JavaScript, TypeScript, SQL, HCL",
-	"<b>Frameworks</b>: .NET (Framework & Core), React (Hooks, Redux, RTK Query), Entity Framework (Code-First)",
-	"<b>Testing</b>: Selenium, Jest, Vitest, Xunit, React Testing Library",
 	"<b>Algorithm design & debugging</b>: applied in large-scale procurement and contractor comparison tools",
 	"<b>REST API Development</b> with secure authentication (JWT, OAuth2, Identity)",
 ];
@@ -40,39 +165,41 @@ const domainExpertise = [
 	"<b>Insurance / Risk Data Applications</b>: Modernized WSRB’s core systems with cloud-based solutions",
 ];
 
-export type Skill = {
+export type SkillCard = {
 	description: string[];
+	categories?: Category[];
 	title: string;
 	icon: React.ReactElement;
 };
 
-const programming: Skill = {
+const programming: SkillCard = {
+	categories: categories,
 	description: programmingAndDevelopment,
 	title: "Programming & Development",
 	icon: <CodeIcon sx={{ pr: 1 }} />,
 };
-const cloud: Skill = {
+const cloud: SkillCard = {
 	description: cloudAndInfrastructure,
 	title: "Cloud & Infrastructure",
 	icon: <CloudIcon sx={{ pr: 1 }} />,
 };
-const architecture: Skill = {
+const architecture: SkillCard = {
 	description: architectureAndDesign,
 	title: "Architecture & Design",
 	icon: <DesignServicesIcon sx={{ pr: 1 }} />,
 };
-const leadership: Skill = {
+const leadership: SkillCard = {
 	description: collaborationAndLeadership,
 	title: "Collaboration & Leadership",
 	icon: <EmojiPeopleIcon sx={{ pr: 1 }} />,
 };
-const domain: Skill = {
+const domain: SkillCard = {
 	description: domainExpertise,
 	title: "Domain Expertise",
 	icon: <BusinessIcon sx={{ pr: 1 }} />,
 };
 
-const skillsList: Skill[] = [programming, cloud, architecture, leadership, domain];
+const skillsList: SkillCard[] = [programming, cloud, architecture, leadership, domain];
 
 export { skillsList };
 
