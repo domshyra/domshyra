@@ -5,7 +5,6 @@ import SocialButtons from "@components/socalis/SocialButtons";
 import WorkHistory from "@pages/work/WorkHistory";
 import { aboutMeExtendedPitch } from "@constants/data";
 import { aboutMeImgUrl } from "@constants/common";
-import { useNavigate } from "react-router-dom";
 
 //TODO? use some animations for section transitions, like fade in or slide in
 //? https://mobbin.com/sites/retool-57b95056-1028-4d7b-a14a-c22f6c8694b6/65564b72-19e0-4bb7-b31e-288a72b5989a/preview
@@ -15,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 const About = () => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-	const navigate = useNavigate();
 
 	const typographyStyle = { width: "90%", mx: { xs: 3, md: 20, lg: 40 }, whiteSpace: "pre-line", px: 0.5 };
 	const goToWork = () => {
