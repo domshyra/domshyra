@@ -1,7 +1,10 @@
 [![Web](https://github.com/domshyra/domshyra/actions/workflows/web.yml/badge.svg?branch=main)](https://github.com/domshyra/domshyra/actions/workflows/web.yml) [![Api](https://github.com/domshyra/domshyra/actions/workflows/api.yml/badge.svg)](https://github.com/domshyra/domshyra/actions/workflows/api.yml) [![Resources](https://github.com/domshyra/domshyra/actions/workflows/terraform_apply.yml/badge.svg)](https://github.com/domshyra/domshyra/actions/workflows/terraform_apply.yml)
 # About me
 
-I’m a full stack software engineer who solves both technical and creative problems. My work spans React, .NET, Azure, SQL, and Terraform, delivering web based SaaS applications that are scalable, intuitive, and impactful. I’ve built tools for companies like Tesla, SpaceX, Nike, Meta, and Intel at Currie & Brown, as well as modernized core systems at WSRB. I believe that design and development are both hard skills, and software should not only works — but should works intuitively and tell a story.
+Full stack software engineer with a Bachelors in computer science and 8+ years of experience delivering scalable, cloud-based web applications using React, .NET, Azure, SQL, and Terraform. Known for bridging design and engineering, mentoring developers, and creating intuitive user experiences that drive business value. 
+I believe great software tells a story — functional, elegant, and user-centered. I also strongly believe in good quality code top to bottom, like a carpenter making cabinets, it’s essential to have even the unseen screws be designed with consideration and intent. 
+I excel at transforming nebulous tasks into well-defined solutions through POCs and design documentation. I present these with clear pros and cons to drive technical direction and mentor the team on the new technologies or approaches being introduced. 
+I’ve built tools for companies like Tesla, SpaceX, Nike, Meta, and Intel at Currie & Brown, as well as modernized core systems at WSRB.
 
 # The code base
 

@@ -6,7 +6,6 @@ import AppBarView from "./AppBarView";
 import MenuItem from "@mui/material/MenuItem";
 import { MenuItemProps } from "@fragments/appBar/props";
 import { NavLink } from "react-router-dom";
-import { isLocal } from "@tools/env";
 import { setAccessToken } from "@redux/slices/authorization";
 
 // import { useIsAuthenticated } from "@azure/msal-react";
@@ -42,7 +41,7 @@ const AppBar = () => {
 			));
 	};
 	const accessToken = authorization?.accessToken;
-	const showHamburgerMenu = accessToken != null || isLocal(); //TODO remove use authenticated if using msal
+	// const showHamburgerMenu = accessToken != null || isLocal(); //TODO remove use authenticated if using msal
 	const dispatch = useAppDispatch();
 
 	const setAccessTokenCallback = useCallback(
@@ -61,7 +60,7 @@ const AppBar = () => {
 			handleClose={handleClose}
 			open={open}
 			setAccessTokenCallback={setAccessTokenCallback}
-			showHamburgerMenu={showHamburgerMenu}
+			showHamburgerMenu={true}
 		/>
 	);
 };
