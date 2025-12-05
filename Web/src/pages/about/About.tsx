@@ -1,5 +1,6 @@
 import { Box, Divider, Link, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 
+import Education from "@components/education/Education";
 import Skills from "@pages/skills/Skills";
 import SocialButtons from "@components/socalis/SocialButtons";
 import WorkHistory from "@pages/work/WorkHistory";
@@ -16,9 +17,8 @@ const About = () => {
 	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
 	const typographyStyle = { width: "90%", mx: { xs: 3, md: 20, lg: 40 }, whiteSpace: "pre-line", px: 0.5 };
-	const goToWork = () => {
-		window.open("https://domdeckard.com", "_blank", "noopener noreferrer");
-	};
+	const domDeckardUrl = "https://domdeckard.com";
+	const dividerStyle = { color: "primary.main", pr: 10, mr: 10, my: 4, width: "100%" };
 	return (
 		<>
 			<Typography textAlign="center" variant="h3" sx={{ width: "100%" }} pb={2}>
@@ -60,9 +60,16 @@ const About = () => {
 							mb: 1,
 						}}
 					>
-						I also create music under the moniker of Dom Deckard{" "}
-						<Link fontWeight={400} onClick={goToWork} target="_blank" rel="noopener" underline="none" sx={{ cursor: "pointer" }}>
-							here
+						I also create music under the moniker of{" "}
+						<Link
+							fontWeight={400}
+							href={domDeckardUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							underline="none"
+							sx={{ cursor: "pointer" }}
+						>
+							Dom Deckard
 						</Link>
 					</Typography>
 					<Typography variant="caption" fontWeight={400} justifyContent="center" display="flex" sx={{ width: "100%" }}>
@@ -87,10 +94,12 @@ const About = () => {
 				}}
 			/>
 
-			<Divider sx={{ color: "primary.main", pr: 10, mr: 10, my: 4, width: "100%" }} />
+			<Divider sx={dividerStyle} />
 			<WorkHistory />
-			<Divider sx={{ color: "primary.main", pr: 10, mr: 10, my: 4, width: "100%" }} />
+			<Divider sx={dividerStyle} />
 			<Skills />
+			<Divider sx={dividerStyle} />
+			<Education />
 			{/* This will prob end up being it's own page, make sure to show responsibilities and what I did to make the company better. */}
 			{/* What was the most fun thing I could work on for each project? C&B was the tree's and what if for blocks */}
 			{/* templates and msal-selenium for wsrb, modernizing things and bringing the team new technologies and best practices, for many a things */}

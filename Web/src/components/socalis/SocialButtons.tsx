@@ -33,9 +33,9 @@ const SocialButton = (props: Social) => {
 				<ListItemButton
 					aria-label={label}
 					style={style}
-					onClick={() => {
-						window.open(url, "_blank");
-					}}
+					href={url}
+					target="_blank"
+					rel="noopener noreferrer"
 					sx={{ paddingTop: 0.5, paddingBottom: 0.5, paddingRight: 0.5, paddingLeft: 0.5 }}
 				>
 					<Box

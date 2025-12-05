@@ -20,8 +20,8 @@ const SkillsTable = () => {
 	//Todo: use a datagrid here instead for better accessibility and features
 	return (
 		<Box px={3}>
-			<Typography pb={2} variant="h6" textAlign="center" sx={{ fontSize: "0.75rem" }}>
-				Programming Skills Overview
+			<Typography pb={2} variant="h5" textAlign="center">
+				Languages and Frameworks
 			</Typography>
 			<TableContainer component={Paper} sx={{ borderColor: "divider", borderWidth: 1, borderStyle: "solid" }}>
 				<Table size="small">
