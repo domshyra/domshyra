@@ -88,6 +88,8 @@ if (builder.Environment.IsProduction())
   builder.WebHost.UseSentry();
   SentrySdk.Init(options =>
   {
+    var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+    string versionString = assemblyVersion != null ? $"{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}" : "1.0.0";
     options.Dsn = builder.Configuration["Sentry:Dsn"] ?? throw new ArgumentNullException("SentryDsn");
     options.Debug = true;
     // Adds request URL and headers, IP and name for users, etc.
@@ -99,7 +101,7 @@ if (builder.Environment.IsProduction())
     //?https://docs.sentry.io/platforms/dotnet/configuration/http-client-errors/
     options.CaptureFailedRequests = true;
     options.Environment = builder.Environment.EnvironmentName;
-    options.Release = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
+    options.Release = versionString;
     options.AttachStacktrace = true;
   });
 }
