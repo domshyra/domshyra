@@ -2,6 +2,7 @@ import { Box, Divider, Grid, Stack, Typography, useMediaQuery, useTheme } from "
 import { skillsAboutSection, workAboutSection, workHistoryInMy } from "@constants/data";
 import { skillsTitle, workHistory } from "@pages/home/data";
 
+import Education from "@components/education/Education";
 import JobTimeline from "@components/jobTimeline/JobTimeline";
 import Skill from "@components/Skill";
 import SkillsTable from "@pages/skills/SkillsTable";
@@ -67,6 +68,8 @@ const Work = () => {
 							))}
 							<SkillsTable />
 						</Box>
+						<Divider sx={{ mt: 2, mb: 3 }} />
+						<Education />
 					</Box>
 				</Grid>
 			</Stack>

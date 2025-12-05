@@ -31,10 +31,10 @@ const Skills = () => {
 							<Skill {...skill} />
 						</Grid>
 					))}
-					<Grid size={{ md: 6, sm: 8 }}>
-						<SkillsTable />
-					</Grid>
 				</Grid>
+			</Box>
+			<Box sx={{ margin: "0 auto", pb: 1, px: { sm: 4, lg: 6 }, width: { sm: "100%", md: "40%" } }}>
+				<SkillsTable />
 			</Box>
 		</>
 	);
