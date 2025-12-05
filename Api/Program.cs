@@ -85,6 +85,7 @@ builder.Services.AddHttpClient<SpotifyService>();
 //sentry 
 if (builder.Environment.IsProduction())
 {
+  builder.WebHost.UseSentry();
   SentrySdk.Init(options =>
   {
     options.Dsn = builder.Configuration["Sentry:Dsn"] ?? throw new ArgumentNullException("SentryDsn");
@@ -143,6 +144,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+  app.UseSentryTracing();
   app.UseCors(p => p.WithOrigins(
   [
     app.Configuration["FrontEndUrlAzureSites"] ?? throw new ArgumentNullException("FrontEndUrlAzureSites"),
