@@ -101,7 +101,7 @@ if (builder.Environment.IsProduction())
     //?https://docs.sentry.io/platforms/dotnet/configuration/http-client-errors/
     options.CaptureFailedRequests = true;
     options.Environment = builder.Environment.EnvironmentName;
-    options.Release = versionString;
+    options.Release = $"domshyra-api@{versionString}";
     options.AttachStacktrace = true;
   });
 }
