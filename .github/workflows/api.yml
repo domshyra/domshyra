@@ -49,12 +49,12 @@ jobs:
               with:
                 files: 'D:\a\domshyra\domshyra\Api\appsettings.json'
               env:
-                Sentry.Dsn: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+                Sentry.Dsn: ${{ secrets.SENTRY_DSN_API }}
                 Sentry.TracesSampleRate: ${{ secrets.SENTRY_TRACES_SAMPLE_RATE }}
                 Sentry.ProfilesSampleRate: ${{ secrets.SENTRY_PROFILES_SAMPLE_RATE }}
 
             - name: dotnet publish
-              run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Api
+              run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/Api -p:SentryOrg=domshyra -p:SentryProject=domshyra-api -p:SentryUploadSymbols=true -p:SentryUploadSources=true -p:SentryAuthToken=${{ secrets.SENTRY_AUTH_TOKEN }}
 
             - name: Upload artifact for deployment job
               uses: actions/upload-artifact@v4

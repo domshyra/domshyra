@@ -81,8 +81,8 @@ jobs:
                 Get-ChildItem -Path "$destinationPath/dist/assets" -Filter *.js -Recurse | ForEach-Object {
                     (Get-Content -Path $_.FullName) -replace '#{SENTRY_DSN_Web}#', '${{ secrets.SENTRY_DSN_Web }}' `
                                                         -replace '#{SENTRY_REPLAYS_SESSION_SAMPLE_RATE}#', '${{ secrets.SENTRY_REPLAYS_SESSION_SAMPLE_RATE }}' `
-                                                        -replace '#{VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE}#', '${{ secrets.VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE }}' `
-                                                        -replace '#{VITE_SENTRY_TRACES_SAMPLE_RATE}#', '${{ secrets.VITE_SENTRY_TRACES_SAMPLE_RATE }}' |
+                                                        -replace '#{SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE}#', '${{ secrets.SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE }}' `
+                                                        -replace '#{SENTRY_TRACES_SAMPLE_RATE}#', '${{ secrets.SENTRY_TRACES_SAMPLE_RATE }}' |
                     Set-Content -Path $_.FullName
                 }
                 $files = Get-ChildItem -Path "$destinationPath/dist/assets" -Filter *.js -Recurse
@@ -95,8 +95,8 @@ jobs:
                     if ($content -notmatch [regex]::Escape("${{ secrets.SENTRY_REPLAYS_SESSION_SAMPLE_RATE }}")) {
                         $errors += "SENTRY_REPLAYS_SESSION_SAMPLE_RATE not transformed in $($file.FullName)"
                     }
-                    if ($content -notmatch "${{ secrets.VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE }}") {
-                        $errors += "VITE_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE not transformed in $($file.FullName)"
+                    if ($content -notmatch "${{ secrets.SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE }}") {
+                        $errors += "SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE not transformed in $($file.FullName)"
                     }
                 }
                 if ($errors.Count -gt 0) {
