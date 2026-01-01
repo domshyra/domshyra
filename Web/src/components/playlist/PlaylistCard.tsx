@@ -1,4 +1,5 @@
 import { Box, Button, Skeleton, Stack, Tooltip } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -25,14 +26,29 @@ const PlaylistCard = ({
 	const sectionWidth = 215;
 	const cardWidth = sectionWidth * 2;
 	const nav = useNavigate();
+	const [contentHeight, setContentHeight] = useState<number | null>(null);
+	const footerRef = useRef<HTMLDivElement>(null);
+	const cardRef = useRef<HTMLDivElement>(null);
+	const photoRef = useRef<HTMLDivElement>(null);
 	const trackCountFollowerCountText = trackAndFollowerText
 		? trackAndFollowerText
 		: loading
 			? ""
 			: `${trackCount ?? 0} tracks${followerCount ? `, ${followerCount} followers` : ""}`;
+
+	const photoHeightAfterLoad = photoRef.current?.offsetHeight ?? 0;
+
+	useEffect(() => {
+		if (footerRef.current && cardRef.current && photoHeightAfterLoad) {
+			const footerHeight = footerRef.current.offsetHeight;
+			const cardHeight = cardRef.current.offsetHeight;
+			setContentHeight(cardHeight - footerHeight);
+		}
+	}, [footerRef, cardRef, photoHeightAfterLoad]);
+
 	return (
-		<Card sx={{ width: cardWidth, minHeight: 200 }} className="Cardbk">
-			<Stack direction={{ xs: "column", md: isDetailsPage ? "column" : "row" }}>
+		<Card sx={{ width: cardWidth, minHeight: 200 }} className="Cardbk" ref={cardRef}>
+			<Stack direction={{ xs: "column", md: isDetailsPage ? "column" : "row" }} sx={{ height: contentHeight ? contentHeight : "auto" }}>
 				<Box sx={{ display: "flex", flexDirection: "column", width: { xs: "100%", md: isDetailsPage ? "100%" : "50%" } }}>
 					<CardContent sx={{ flex: "1 0 auto" }}>
 						<Typography
@@ -56,7 +72,7 @@ const PlaylistCard = ({
 					<PlaylistPhoto imageURL={imageURL} title={title} loading={loading} />
 				</Box>
 			</Stack>
-			<Box sx={{ display: "flex", flexDirection: "column" }}>
+			<Box sx={{ display: "flex", flexDirection: "column" }} ref={footerRef}>
 				<Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", justifyContent: "space-between", px: 1, width: "100%" }}>
 					<Tooltip title={genre} placement="bottom-start" arrow>
 						<Button aria-label="genre" color="secondary" size="small" startIcon={<MusicNoteIcon />}>
