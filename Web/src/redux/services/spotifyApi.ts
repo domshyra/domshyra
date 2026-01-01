@@ -20,15 +20,14 @@ export const spotifyApi = createApi({
 					? [
 							...result.map(({ playlistId }: { playlistId: string }) => ({
 								type: "playlist" as const,
-								playlistId,
+								id: playlistId,
 							})),
-							{ type: "playlist" as const },
 						]
 					: [{ type: "playlist" as const }],
 		}),
-		getPlaylist: build.query({
+		getPlaylist: build.query<playlist, string>({
 			query: (playlistId) => `/${playlistId}`,
-			providesTags: (_result, _err, playlistId) => [{ type: tagType, playlistId }],
+			providesTags: (_result, _err, playlistId) => [{ type: tagType, id: playlistId }],
 		}),
 	}),
 	tagTypes: [tagType],

@@ -9,11 +9,11 @@ import PlaylistPhoto from "@fragments/playlistPhoto/PlaylistPhoto";
 import SpotifyLink from "@fragments/spotify/SpotifyLink";
 import Typography from "@mui/material/Typography";
 import { stations } from "@constants/routes";
+import { useGetPlaylistQuery } from "@redux/services/spotifyApi";
 import { useNavigate } from "react-router-dom";
 
 const PlaylistCard = ({
 	title,
-	imageURL,
 	description,
 	genre,
 	trackAndFollowerText,
@@ -40,15 +40,16 @@ const PlaylistCard = ({
 
 	const photoHeightAfterLoad = isDetailsPage ? (photoRef.current?.offsetHeight ?? 0) : 0;
 	const navLinkToSpotify = isMobile || isDetailsPage;
+	const { isLoading, isFetching } = useGetPlaylistQuery(playlistId);
 
 	useEffect(() => {
 		// this is only needed on the details page as the photo is a bit larger and affects height calculations
-		if (footerRef.current && cardRef.current && ((isDetailsPage && photoHeightAfterLoad > 0) || !isDetailsPage)) {
+		if (footerRef.current && cardRef.current && ((isDetailsPage && photoHeightAfterLoad > 0) || !isDetailsPage) && !isLoading && !isFetching) {
 			const footerHeight = footerRef.current.offsetHeight;
 			const cardHeight = cardRef.current.offsetHeight;
 			setContentHeight(cardHeight - footerHeight);
 		}
-	}, [footerRef, cardRef, photoHeightAfterLoad, isDetailsPage]);
+	}, [footerRef, cardRef, photoHeightAfterLoad, isDetailsPage, isLoading, isFetching]);
 
 	return (
 		<Card sx={{ width: cardWidth, minHeight: 200 }} className="Cardbk" ref={cardRef}>
@@ -81,7 +82,7 @@ const PlaylistCard = ({
 					</CardContent>
 				</Box>
 				<Box sx={{ display: "block", width: { xs: "100%", md: isDetailsPage ? "100%" : "50%" } }}>
-					<PlaylistPhoto imageURL={imageURL} title={title} loading={loading} />
+					<PlaylistPhoto playlistId={playlistId} />
 				</Box>
 			</Stack>
 			<Box sx={{ display: "flex", flexDirection: "column" }} ref={footerRef}>

@@ -1,17 +1,18 @@
 import AspectRatio from "@mui/joy/AspectRatio";
 import CardMedia from "@mui/material/CardMedia";
 import ImageIcon from "@mui/icons-material/Image";
+import { useGetPlaylistQuery } from "@redux/services/spotifyApi";
 
 type PlaylistPhotoProps = {
-	imageURL: string | undefined;
-	title: string | undefined;
-	loading?: boolean;
+	playlistId: string;
 };
 
-const PlaylistPhoto = ({ imageURL, title, loading }: PlaylistPhotoProps) => {
+const PlaylistPhoto = ({ playlistId }: PlaylistPhotoProps) => {
+	const { data, isLoading, isFetching } = useGetPlaylistQuery(playlistId);
+	const { imageURL, title } = data || {};
 	return (
 		<CardMedia>
-			{loading ? (
+			{isLoading || isFetching ? (
 				<AspectRatio sx={{ width: "100%" }}>
 					<div>
 						<ImageIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
