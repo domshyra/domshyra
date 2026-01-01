@@ -9,7 +9,7 @@ import useSnackbarMessage from "@hooks/useSnackbarMessage";
 const CardGridItem = (props: { children: React.ReactNode; item: playlist }) => {
 	const { children, item } = props;
 	return (
-		<Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} pb={2} px={1} key={item.playlistId} justifyContent={"center"} display="flex">
+		<Grid size={{ xs: 12, md: 6, lg: 4 }} pb={2} px={1} key={item.playlistId} justifyContent={"center"} display="flex">
 			{children}
 		</Grid>
 	);
@@ -42,7 +42,7 @@ const Stations = () => {
 	));
 
 	return (
-		<Grid container spacing={0.5} pb={2}>
+		<Grid container spacing={0.5} pb={2} mx={{ xs: 0, md: 2, lg: 4, xl: 6 }}>
 			<Typography component="div" variant="h3" textAlign="center" sx={{ width: "100%" }}>
 				Stations
 			</Typography>

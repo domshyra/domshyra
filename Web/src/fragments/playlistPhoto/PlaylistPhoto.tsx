@@ -1,24 +1,31 @@
 import AspectRatio from "@mui/joy/AspectRatio";
 import CardMedia from "@mui/material/CardMedia";
-import { Skeleton } from "@mui/material";
+import ImageIcon from "@mui/icons-material/Image";
 
 type PlaylistPhotoProps = {
 	imageURL: string | undefined;
 	title: string | undefined;
-	cardWidth: number;
 	loading?: boolean;
 };
 
-export const PlaylistPhoto = ({ cardWidth, imageURL, title, loading }: PlaylistPhotoProps) => {
+const PlaylistPhoto = ({ imageURL, title, loading }: PlaylistPhotoProps) => {
 	return (
-		<CardMedia sx={{ width: cardWidth }}>
+		<CardMedia>
 			{loading ? (
-				<Skeleton variant="rectangular" height="75%" />
-			) : (
-				<AspectRatio ratio="4/3" objectFit="contain">
-					<img src={imageURL} alt={`${title} image`} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+				<AspectRatio sx={{ width: "100%" }}>
+					<div>
+						<ImageIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
+					</div>
 				</AspectRatio>
+			) : (
+				<>
+					<AspectRatio ratio="1/1" objectFit="cover" sx={{ overflow: "hidden", width: "100%" }}>
+						<img src={imageURL} alt={`${title} image`} />
+					</AspectRatio>
+				</>
 			)}
 		</CardMedia>
 	);
 };
+
+export default PlaylistPhoto;
