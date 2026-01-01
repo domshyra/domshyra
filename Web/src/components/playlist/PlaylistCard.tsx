@@ -38,16 +38,17 @@ const PlaylistCard = ({
 			? ""
 			: `${trackCount ?? 0} tracks${followerCount ? `, ${followerCount} followers` : ""}`;
 
-	const photoHeightAfterLoad = photoRef.current?.offsetHeight ?? 0;
+	const photoHeightAfterLoad = isDetailsPage ? (photoRef.current?.offsetHeight ?? 0) : 0;
 	const navLinkToSpotify = isMobile || isDetailsPage;
 
 	useEffect(() => {
-		if (footerRef.current && cardRef.current && photoHeightAfterLoad) {
+		// this is only needed on the details page as the photo is a bit larger and affects height calculations
+		if (footerRef.current && cardRef.current && ((isDetailsPage && photoHeightAfterLoad > 0) || !isDetailsPage)) {
 			const footerHeight = footerRef.current.offsetHeight;
 			const cardHeight = cardRef.current.offsetHeight;
 			setContentHeight(cardHeight - footerHeight);
 		}
-	}, [footerRef, cardRef, photoHeightAfterLoad]);
+	}, [footerRef, cardRef, photoHeightAfterLoad, isDetailsPage]);
 
 	return (
 		<Card sx={{ width: cardWidth, minHeight: 200 }} className="Cardbk" ref={cardRef}>
