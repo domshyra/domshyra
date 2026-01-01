@@ -34,7 +34,6 @@ function Layout() {
 					<Container maxWidth="xl" sx={{ mt: 2 }}>
 						<SnackbarLayout>
 							<>
-								<ScrollRestoration />
 								<BreadCrumbs />
 								<Outlet />
 							</>
@@ -43,6 +42,7 @@ function Layout() {
 				</Box>
 				<ScreenFooter />
 			</ThemeProvider>
+			<ScrollRestoration />
 		</JoyCssVarsProvider>
 	);
 }
