@@ -10,8 +10,8 @@ const PlaylistCardDetailsView = ({ title, imageURL, description, genre, trackCou
 	const nav = useNavigate();
 
 	return (
-		<Grid container justifyContent="center" alignContent="center" pb={4} sx={{ width: "100%" }}>
-			<Stack>
+		<Grid container justifyContent="center" alignContent="center" spacing={0.5} pb={4} sx={{ width: "100%" }} mx={1}>
+			<Stack width="100%">
 				<Button onClick={() => nav(stations)} variant="text" startIcon={<ArrowBackIosIcon />}>
 					Back to stations
 				</Button>

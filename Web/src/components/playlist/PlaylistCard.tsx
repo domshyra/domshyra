@@ -1,4 +1,4 @@
-import { Box, Button, Skeleton, Stack, Tooltip } from "@mui/material";
+import { Box, Button, Link, Skeleton, Stack, Tooltip, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
 import Card from "@mui/material/Card";
@@ -30,6 +30,8 @@ const PlaylistCard = ({
 	const footerRef = useRef<HTMLDivElement>(null);
 	const cardRef = useRef<HTMLDivElement>(null);
 	const photoRef = useRef<HTMLDivElement>(null);
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 	const trackCountFollowerCountText = trackAndFollowerText
 		? trackAndFollowerText
 		: loading
@@ -37,6 +39,7 @@ const PlaylistCard = ({
 			: `${trackCount ?? 0} tracks${followerCount ? `, ${followerCount} followers` : ""}`;
 
 	const photoHeightAfterLoad = photoRef.current?.offsetHeight ?? 0;
+	const navLinkToSpotify = isMobile || isDetailsPage;
 
 	useEffect(() => {
 		if (footerRef.current && cardRef.current && photoHeightAfterLoad) {
@@ -56,9 +59,17 @@ const PlaylistCard = ({
 							component="div"
 							variant="h5"
 							color="primary"
-							onClick={() => nav(`${stations}/${playlistId}`, { state: { title } })} // Navigate to playlist details
+							onClick={navLinkToSpotify ? undefined : () => nav(`${stations}/${playlistId}`, { state: { title } })} // Navigate to playlist details in not on mobile or details page
 						>
-							{loading ? <Skeleton /> : title}
+							{loading ? (
+								<Skeleton />
+							) : navLinkToSpotify ? (
+								<Link rel="noopener" target="_blank" href={`https://open.spotify.com/playlist/${playlistId}`} underline="hover">
+									{title}
+								</Link>
+							) : (
+								<>{title}</>
+							)}
 						</Typography>
 						<Typography variant="subtitle2" color="text.secondary" component="div">
 							{loading ? <Skeleton width="100%" /> : description}
