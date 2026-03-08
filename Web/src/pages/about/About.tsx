@@ -50,28 +50,6 @@ const About = () => {
 						}}
 						dangerouslySetInnerHTML={{ __html: aboutMeExtendedPitch }}
 					/>
-					<Typography
-						textAlign="center"
-						variant="body1"
-						color="text.secondary"
-						fontWeight={400}
-						sx={{
-							...typographyStyle,
-							mb: 1,
-						}}
-					>
-						I also create music under the moniker of{" "}
-						<Link
-							fontWeight={400}
-							href={domDeckardUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-							underline="none"
-							sx={{ cursor: "pointer" }}
-						>
-							Dom Deckard
-						</Link>
-					</Typography>
 					<Typography variant="caption" fontWeight={400} justifyContent="center" display="flex" sx={{ width: "100%" }}>
 						View my other coding profiles, and social links below
 					</Typography>
